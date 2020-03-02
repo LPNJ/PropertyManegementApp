@@ -1,1 +1,1 @@
-include ':app', ':sdk', ':openCVLibrary', ':myapplication'
+include ':app', ':sdk', ':openCVLibrary'

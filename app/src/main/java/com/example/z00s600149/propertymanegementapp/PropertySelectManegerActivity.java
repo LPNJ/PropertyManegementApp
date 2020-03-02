@@ -17,42 +17,34 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import JSONCLASS.PropertyInfoJSON;
+import entity.LoginNameSingleton;
 import entity.PropertyInfo;
-import task.AsyncTaskListener.CallbackListener_getProperties;
+import task.AsyncTaskListener.CallbackListener;
 import task.GetTargetNamePropertyInfoTask;
 import task.ResultListener;
 import task.impl.GetPropertyInfoTaskImpl;
 import task.mock.GetTargetNamePropertyInfoTaskMock;
 import task.response.GetPropertyResponse;
+import task.response.RegisterPropertyResponse;
 
-public class PropertySelectManegerActivity extends AppCompatActivity implements CallbackListener_getProperties {
+public class PropertySelectManegerActivity extends AppCompatActivity implements CallbackListener<GetPropertyResponse> {
 
     ArrayList<String> mProductName;
     ArrayList<String> mControlNumber;
     ArrayList<String> mProductNumber;
 
-    final String NAME = "komiyama";
-
-    /**
-     *
-     */
+    /**/
     private GetTargetNamePropertyInfoTask mPropertyInfosTask;
 
-    /**
-     *
-     */
+    /**/
     private GetPropertyInfoTaskImpl mGetPropertyInfoTaskImpl;
 
-    /**
-     * デフォルトコンストラクタ
-     */
+    /*デフォルトコンストラクタ*/
     public PropertySelectManegerActivity() {
         super();
-//        mPropertyInfosTask = new GetTargetNamePropertyInfoTaskMock();
         mGetPropertyInfoTaskImpl = new GetPropertyInfoTaskImpl(this);
-        //mErrorMessage.put(-1, R.string.cannot_connect);
-        //mErrorMessage.put(11, R.string.cannot_register_error);
-        Log.i("Regist", "register activity contstructor");
+        Log.i("PropertySelectManeger", "PropertySelectManeger activity contstructor");
     }
 
 
@@ -61,8 +53,7 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_select_maneger);
 
-//        mPropertyInfosTask.execute("", responseListener);
-        mGetPropertyInfoTaskImpl.execute("");
+        mGetPropertyInfoTaskImpl.execute();
     }
 
 
@@ -76,7 +67,7 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
             mProductNumber = new ArrayList<>();
 
             for (int i = 0; i < propertyInfos.size(); i++) {
-                if (NAME.equals(propertyInfos.get(i).getPropertyManager())) {
+                if (LoginNameSingleton.getInstanse().getName().equals(propertyInfos.get(i).getPropertyManager())) {
                     mProductName.add(propertyInfos.get(i).getProductName());
                     mControlNumber.add(propertyInfos.get(i).getControlNumber());
                     String ProductNumber = propertyInfos.get(i).getProductName() + propertyInfos.get(i).getControlNumber();
@@ -95,7 +86,6 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                     Intent i = new Intent(PropertySelectManegerActivity.this, PropertyReferenceActivity.class);
-
                     i.putExtra(IntentKey.CONTROL_NUMBER, mControlNumber.get(position));
                     startActivity(i);
 
@@ -116,32 +106,19 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
         ObjectMapper mapper = new ObjectMapper();
         try {
             for (int i = 0; response.getInfos().size() > i; i++) {
-                Info_GetProperties_JSON info = mapper.readValue(response.getInfos().get(i).getProperty(), Info_GetProperties_JSON.class);
-                Log.i("管理者" + i, info.mPropertyManager);
-                Log.i("利用者" + i, info.mPropertyUser);
-                Log.i("設置場所" + i, info.mLocation);
-                Log.i("製品名" + i, info.mProductName);
+                PropertyInfoJSON info = mapper.readValue(response.getInfos().get(i).getProperty(), PropertyInfoJSON.class);
                 pManager.add(info.mPropertyManager);
                 pName.add(info.mProductName);
-//                mapper = new ObjectMapper();
             }
 
             mProductName = new ArrayList<>();
             mControlNumber = new ArrayList<>();
             mProductNumber = new ArrayList<>();
 
-            Log.i("CallBackできてる？", "できてるよ");
-
             for (int i = 0; i < response.getInfos().size(); i++) {
-                Log.i("for文にはいってる？", "入ってるよ");
-                if(pManager.get(i).equals("komiyama")) {
-//            mProductName.add(response.getInfos().get(i).getProperty().getProductName());
+                if(pManager.get(i).equals(LoginNameSingleton.getInstanse().getName())) {
                     mProductName.add(response.getInfos().get(i).getProperty());
-//            mControlNumber.add(response.getInfos().get(i).getProperty().getControlNumber());
                     mControlNumber.add(response.getInfos().get(i).getProperty());
-//            String ProductNumber = response.getInfos().get(i).getProperty().getProductName() + response.getInfos().get(i).getProperty().getControlNumber();
-//            String ProductNumber = response.getInfos().get(i).getProperty() + response.getInfos().get(i).getProperty();
-//            mProductNumber.add(ProductNumber);
                     mProductNumber.add(response.getInfos().get(i).getAssetId().toString() + " " + pName.get(i));
                     SendNumber.add(response.getInfos().get(i).getAssetId().toString());
                 }
@@ -158,13 +135,7 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                     Intent i = new Intent(PropertySelectManegerActivity.this, PropertyReferenceActivity.class);
-
-//                    i.putExtra(IntentKey.NUMBER, response.getInfos().get(position).getAssetId().toString());
-//                    Log.i("資産番号は？", response.getInfos().get(position).getAssetId().toString());
-//                    startActivity(i);
-
                     i.putExtra(IntentKey.NUMBER, SendNumber.get(position));
-                    Log.i("資産番号は？", SendNumber.get(position));
                     startActivity(i);
 
                 }
@@ -179,28 +150,4 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
             e.printStackTrace();
         }
     }
-}
-
-class Info_GetPropertiesManager_JSON {
-    @JsonProperty("mPropertyManager")
-    public String mPropertyManager;
-    @JsonProperty("mPropertyUser")
-    public String mPropertyUser;
-    @JsonProperty("mLocation")
-    public String mLocation;
-    @JsonProperty("mControlNumber")
-    public String mControlNumber;
-    @JsonProperty("mProductName")
-    public String mProductName;
-    @JsonProperty("mPurchaseCategory")
-    public String mPurchaseCategory;
-    @JsonProperty("mPropertyCategory")
-    public String mPropertyCategory;
-    @JsonProperty("mComplement")
-    public String mComplement;
-
-    public String getProductName() {
-        return mProductName;
-    }
-
 }

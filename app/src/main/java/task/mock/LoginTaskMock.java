@@ -5,6 +5,7 @@ import task.LoginTask;
 import task.ResultListener;
 
 public class LoginTaskMock implements LoginTask {
+
     @Override
     public void execute(UserInfo userInfo, ResultListener resultListener) {
         if("failure".equals(userInfo.getUserId())) {

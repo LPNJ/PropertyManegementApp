@@ -65,7 +65,6 @@ public class QRcodeReaderActivity extends AppCompatActivity implements ZXingScan
         final String scanResult = result.getText();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scan Result");
-//        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
         builder.setPositiveButton("戻る", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
@@ -75,10 +74,8 @@ public class QRcodeReaderActivity extends AppCompatActivity implements ZXingScan
         builder.setNeutralButton("資産情報表示", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
-//                Intent intent = new Intent(Intent.ACTION_VIEW , Uri.parse(scanResult));
-//                startActivity(intent);
                 Intent intent = new Intent(QRcodeReaderActivity.this , PropertyReferenceActivity.class);
-                intent.putExtra(IntentKey.CONTROL_NUMBER, scanResult);
+                intent.putExtra(IntentKey.NUMBER, scanResult);
                 startActivity(intent);
             }
         });

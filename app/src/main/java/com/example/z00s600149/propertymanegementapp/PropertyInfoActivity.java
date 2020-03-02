@@ -1,10 +1,12 @@
 package com.example.z00s600149.propertymanegementapp;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -13,10 +15,10 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import entity.LoginNameSingleton;
 import entity.PropertyInfo;
 import entity.UserInfo;
-import task.AsyncTaskListener.CallbackListener_GetNames;
-import task.AsyncTaskListener.CallbackListener_getAssetId;
+import task.AsyncTaskListener.CallbackListener;
 import task.GetNameTask;
 import task.LoginTask;
 import task.PropertyInfoTask;
@@ -33,17 +35,10 @@ import task.response.RegisterPropertyResponse;
 import task.serialize.PropertyRegistRequest;
 import task.serialize.PropertyRegistResponse;
 
-public class PropertyInfoActivity extends AppCompatActivity {
+public class PropertyInfoActivity extends AppCompatActivity implements View.OnClickListener{
 
+    /*ログインユーザー情報保持用リスト*/
     ArrayAdapter<String> myAdapter_Manager;
-
-
-    /** 名前保持用リスト */
-    private ArrayList<String> mNames;
-    /** 購入区分保持用リスト */
-    private ArrayList<String> mPurchase_Category;
-    /** 資産区分保持用リスト */
-    private ArrayList<String> mProperty_Category;
     /** 資産情報登録用ボタン */
     private Button mPropertyRegist;
     /** 資産管理者用スピナー */
@@ -55,50 +50,31 @@ public class PropertyInfoActivity extends AppCompatActivity {
     /** 資産区分スピナー */
     private Spinner mProperty_Category_Spinner;
 
-    /** ログイン用ID */
+    /** 管理場所情報保持用 */
     private EditText mLocation;
-    /** ログイン用ID */
+    /** 製品名情報保持用 */
     private EditText mProductName;
-    /** ログイン用ID */
+    /** 備考情報保持用 */
     private EditText mRemarks;
 
-
-    /**
-     *
-     */
+    /* MOCK */
     private GetNameTask mGetNameTask;
 
-    /**
-     *
-     */
+    /* MOCK */
     private PropertyInfoTask mPropertyInfoTask;
 
-    /**
-     *
-     */
+    /*サーバー接続用（ログインユーザー情報取得）*/
     private GetNameTaskImpl mGetNameTaskImpl;
 
-    /**
-     *
-     */
+    /*サーバー接続用（資産番号と、エラーコード）*/
     private RegisterPropertyInfoTaskImpl mRegisterPropertyInfoTaskImpl;
 
-    private String mUserId;
-
-
-    /**
-     * デフォルトコンストラクタ
-     */
+    /*デフォルトコンストラクタ*/
     public PropertyInfoActivity() {
         super();
-//        mGetNameTask = new GetNameTaskMock();
-//        mPropertyInfoTask = new PropertyInfoTaskMock();
-
         mGetNameTaskImpl = new GetNameTaskImpl(mCallBackListener);
         mRegisterPropertyInfoTaskImpl = new RegisterPropertyInfoTaskImpl(mCallBackListener_AssetId);
-        //mErrorMessage.put(-1, R.string.cannot_connect);
-        //mErrorMessage.put(11, R.string.cannot_register_error);
-        Log.i("Regist", "register activity contstructor");
+        Log.i("Property", "Property activity contstructor");
     }
 
     @Override
@@ -106,50 +82,47 @@ public class PropertyInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_info);
 
-        mUserId = getIntent().getStringExtra(IntentKey.LOGIN_NAME);
-
+        //ID対応付け
         mPropertyRegist = (Button) findViewById(R.id.property_button_regist);
         mManager = (Spinner) findViewById(R.id.property_info_spinner_1);
         mPropertyUser = (Spinner) findViewById(R.id.property_info_spinner_2);
         mPurchase_Category_Spinner = (Spinner) findViewById(R.id.property_info_spinner_3);
         mProperty_Category_Spinner = (Spinner) findViewById(R.id.property_info_spinner_4);
-
         mLocation = (EditText) findViewById(R.id.property_info_editText_location);
         mProductName = (EditText) findViewById(R.id.property_info_editText_productname);
         mRemarks = (EditText) findViewById(R.id.property_info_editText_remarks);
 
-        PropertyInfoActivityOnClickListener listener = new PropertyInfoActivityOnClickListener();
-        mPropertyRegist.setOnClickListener(listener);
+        //ボタン押下の動作
+        mPropertyRegist.setOnClickListener(this);
 
-        mNames = new ArrayList<>();
-        mGetNameTaskImpl.execute("");
+        //ログイン名一覧取得
+        mGetNameTaskImpl.execute();
 
     }
 
-    class PropertyInfoActivityOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.property_button_regist: {
-//                    Log.i("ログインIDでてますか？",mUserId);
-                    mRegisterPropertyInfoTaskImpl.execute(
-                            new RegisterPropertyRequest(
-                                    "komiyama",
-                                    new PropertyInfo((String) mManager.getSelectedItem(),
-                                            (String)mPropertyUser.getSelectedItem(),
-                                            mLocation.getText().toString(),
-                                            "",
-                                            mProductName.getText().toString(),
-                                            (String)mPurchase_Category_Spinner.getSelectedItem(),
-                                            (String)mProperty_Category_Spinner.getSelectedItem(),
-                                            mRemarks.getText().toString()))
-                            );
-                }
-                break;
+    @Override
+    //ボタン押下後の動作確認
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.property_button_regist: {
+                mRegisterPropertyInfoTaskImpl.execute(
+                        new RegisterPropertyRequest(
+                                LoginNameSingleton.getInstanse().getName(),
+                                new PropertyInfo((String) mManager.getSelectedItem(),
+                                        (String)mPropertyUser.getSelectedItem(),
+                                        mLocation.getText().toString(),
+                                        "",
+                                        mProductName.getText().toString(),
+                                        (String)mPurchase_Category_Spinner.getSelectedItem(),
+                                        (String)mProperty_Category_Spinner.getSelectedItem(),
+                                        mRemarks.getText().toString()))
+                );
             }
+            break;
         }
     }
 
+    //MOCK用
     private ResultListener<ArrayList<String>> mResultListener = new ResultListener<ArrayList<String>>() {
         @Override
         public void onResult(ArrayList<String> names) {
@@ -163,8 +136,6 @@ public class PropertyInfoActivity extends AppCompatActivity {
             myAdapter_Purchase_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
             myAdapter_Property_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
 
-            myAdapter_Manager.getContext().toString();
-
             mManager.setAdapter(myAdapter_Manager);
             mPropertyUser.setAdapter(myAdapter_User);
             mPurchase_Category_Spinner.setAdapter(myAdapter_Purchase_Category);
@@ -172,8 +143,8 @@ public class PropertyInfoActivity extends AppCompatActivity {
         }
     };
 
+    //MOCK用
     private ResultListener<PropertyRegistResponse> mResponseListener = new ResultListener<PropertyRegistResponse>() {
-
         @Override
         public void onResult(PropertyRegistResponse result) {
             if (result == null) {
@@ -188,10 +159,10 @@ public class PropertyInfoActivity extends AppCompatActivity {
         }
     };
 
-    private CallbackListener_GetNames mCallBackListener = new CallbackListener_GetNames() {
+    //GetNameTask実行後の結果の処理
+    private CallbackListener<GetNameResponse> mCallBackListener = new CallbackListener<GetNameResponse>() {
         @Override
         public void onPostExecute(GetNameResponse response) {
-
             if(Integer.parseInt(response.getError()) == 1){
                 show("不明なエラー");
             }
@@ -206,35 +177,45 @@ public class PropertyInfoActivity extends AppCompatActivity {
                 myAdapter_Purchase_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
                 myAdapter_Property_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
 
-                myAdapter_Manager.getContext().toString();
-
                 mManager.setAdapter(myAdapter_Manager);
                 mPropertyUser.setAdapter(myAdapter_User);
                 mPurchase_Category_Spinner.setAdapter(myAdapter_Purchase_Category);
                 mProperty_Category_Spinner.setAdapter(myAdapter_Property_Category);
             }
-
         }
     };
 
-    private CallbackListener_getAssetId mCallBackListener_AssetId = new CallbackListener_getAssetId() {
+    //RegisterPropertyTask実行時の結果
+    private CallbackListener<RegisterPropertyResponse> mCallBackListener_AssetId = new CallbackListener<RegisterPropertyResponse>() {
         @Override
         public void onPostExecute(RegisterPropertyResponse response) {
-
             if (response == null) {
                 throw new IllegalArgumentException("result is null");
             }
             if (Integer.parseInt(response.getmError()) == 0) {
                 Intent intent = new Intent(PropertyInfoActivity.this, ControlNumberIssuedActivity.class);
                 intent.putExtra(IntentKey.CONTROL_NUMBER, response.getmControlNumber());
-                Log.i("CONTROLNUMBER",response.getmControlNumber());
                 startActivity(intent);
             }
-
+            else if(Integer.parseInt(response.getmError()) == 1){
+                show("通信に異常がありました");
+            }
+            else if(Integer.parseInt(response.getmError()) == 2){
+                show("不正なパラメーターが渡されました");
+            }
+            else if(Integer.parseInt(response.getmError()) == 12){
+                show("登録対象のユーザーが見つかりません");
+            }
+            else if(Integer.parseInt(response.getmError()) == 31){
+                show("イベントが見つかりません");
+            }
+            else if(Integer.parseInt(response.getmError()) == 32){
+                show("資産登録上限に達しています");
+            }
         }
     };
 
-
+    //エラーメッセージの表示
     void show(String msg){
         new AlertDialog.Builder(PropertyInfoActivity.this)
                 .setMessage(msg)
@@ -243,4 +224,24 @@ public class PropertyInfoActivity extends AppCompatActivity {
                 .show();
     }
 
+    //Backキー押下後の処理
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // BackBtnアクション
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            new AlertDialog.Builder(PropertyInfoActivity.this)
+                    .setMessage("メニュー画面に戻りますか？")
+                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(PropertyInfoActivity.this, MenuActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancel",null)
+                    .create()
+                    .show();
+        }
+        return true;
+    }
 }

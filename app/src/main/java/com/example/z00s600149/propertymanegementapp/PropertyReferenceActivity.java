@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -18,10 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
+import JSONCLASS.PropertyInfoJSON;
+import entity.LoginNameSingleton;
 import entity.UserInfo;
-import task.AsyncTaskListener.CallbackListener_Delete;
-import task.AsyncTaskListener.CallbackListener_getProperties;
-import task.AsyncTaskListener.CallbackListener_getReferenceProperty;
+import task.AsyncTaskListener.CallbackListener;
 import task.DeletePropertyInfoTask;
 import task.GetPropertyInfoTask;
 import task.Request.DeletePropertyRequest;
@@ -37,87 +38,51 @@ import task.serialize.PropertyDeleteRequest;
 import task.serialize.PropertyInfoRequest;
 import task.serialize.PropertyInfoResponse;
 
-public class PropertyReferenceActivity extends AppCompatActivity {
+public class PropertyReferenceActivity extends AppCompatActivity implements View.OnClickListener{
 
-    /**
-     * 資産管理者用ID
-     */
+    /*資産管理者用ID*/
     private TextView mManager;
-    /**
-     * 資産管理者用ID
-     */
+    /*資産利用用ID*/
     private TextView mUser;
-    /**
-     * 資産管理者用ID
-     */
+    /*資産保管場所用ID*/
     private TextView mPlace;
-    /**
-     * 資産管理者用ID
-     */
+    /*資産番号ID*/
     private TextView mControlNumber;
-    /**
-     * 資産管理者用ID
-     */
+    /*製品名用ID*/
     private TextView mProduct;
-    /**
-     * 資産管理者用ID
-     */
+    /*購入区分用ID*/
     private TextView mPurchase;
-    /**
-     * 資産管理者用ID
-     */
+    /*資産区分用ID*/
     private TextView mAssets;
-    /**
-     * 資産管理者用ID
-     */
+    /*補足用ID*/
     private TextView mRemark;
 
-    /**
-     * 変更画面遷移用ボタン
-     */
+    /*編集画面遷移用ボタン*/
     private Button mEditButton;
 
-    /**
-     * 削除用ボタン
-     */
+    /*削除用ボタン*/
     private Button mDeleteButton;
-    /**
-     * 印刷画面遷移用ボタン
-     */
+    /*印刷画面遷移用ボタン*/
     private Button mPrinterButton;
 
-    /**
-     *
-     */
+    /* MOCK */
     private GetPropertyInfoTask mGetPropertyInfoTask;
 
-    /**
-     *
-     */
+    /* BOCK*/
     private DeletePropertyInfoTask mDeletePropertyInfoTask;
 
-    /**
-     *
-     */
+    /* サーバー通信（ユーザー名取得）*/
     private GetReferenceInfoTaskImpl mGetReferenceTaskImpl;
 
-    /**
-     *
-     */
+    /*サーバー通信（データ削除）*/
     private DeletePropertyTaskImpl mDeleteTaskImpl;
 
-    /**
-     * デフォルトコンストラクタ
-     */
+    /*デフォルトコンストラクタ*/
     public PropertyReferenceActivity() {
         super();
-//        mGetPropertyInfoTask = new GetPropertyInfoTaskMock();
         mGetReferenceTaskImpl = new GetReferenceInfoTaskImpl(mGetProperty);
-//        mDeletePropertyInfoTask = new DeletePropertyInfoTaskMock();
         mDeleteTaskImpl = new DeletePropertyTaskImpl(mDeleteProperty);
-        //mErrorMessage.put(-1, R.string.cannot_connect);
-        //mErrorMessage.put(11, R.string.cannot_register_error);
-        Log.i("Regist", "register activity contstructor");
+        Log.i("PropertyReference", "PropertyReference activity contstructor");
     }
 
     @Override
@@ -125,6 +90,7 @@ public class PropertyReferenceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_reference);
 
+        //ID対応付け
         mManager = (TextView) findViewById(R.id.reference_manager);
         mUser = (TextView) findViewById(R.id.reference_user);
         mPlace = (TextView) findViewById(R.id.reference_place);
@@ -133,24 +99,21 @@ public class PropertyReferenceActivity extends AppCompatActivity {
         mPurchase = (TextView) findViewById(R.id.reference_purchase);
         mAssets = (TextView) findViewById(R.id.reference_assets);
         mRemark = (TextView) findViewById(R.id.reference_remark);
-
         mEditButton = (Button) findViewById(R.id.reference_edit);
         mDeleteButton = (Button) findViewById(R.id.reference_delete);
         mPrinterButton = (Button) findViewById(R.id.reference_print);
 
-
-        Log.i("渡された資産番号は？", getIntent().getStringExtra(IntentKey.NUMBER));
-
+        //サーバー接続（名前取得）
         mGetReferenceTaskImpl.execute(getIntent().getStringExtra(IntentKey.NUMBER));
 
-        PropertyReferenceOnClickListener listener = new PropertyReferenceOnClickListener();
-        mEditButton.setOnClickListener(listener);
-        mDeleteButton.setOnClickListener(listener);
-        mPrinterButton.setOnClickListener(listener);
-
+        //ボタン押下
+        mEditButton.setOnClickListener(this);
+        mDeleteButton.setOnClickListener(this);
+        mPrinterButton.setOnClickListener(this);
 
     }
 
+    //MOCK
     private ResultListener<PropertyInfoResponse> mResultListener = new ResultListener<PropertyInfoResponse>() {
 
         @Override
@@ -166,40 +129,38 @@ public class PropertyReferenceActivity extends AppCompatActivity {
         }
     };
 
-    class PropertyReferenceOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.reference_edit: {
-                    Intent intent = new Intent(PropertyReferenceActivity.this, PropertyEditActivity.class);
-                    intent.putExtra(IntentKey.CONTROL_NUMBER, mControlNumber.getText().toString());
-                    startActivity(intent);
-                }
-                break;
-                case R.id.reference_delete: {
-                    new AlertDialog.Builder(PropertyReferenceActivity.this)
-                            .setMessage("削除してもよろしいですか？")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-//                                    mDeletePropertyInfoTask.execute(new PropertyDeleteRequest("", ""), mResultListenerDelete);
-                                    mDeleteTaskImpl.execute(new DeletePropertyRequest("komiyama",Integer.parseInt(getIntent().getStringExtra(IntentKey.NUMBER))));
-                                }
-                            })
-                            .setNegativeButton("Cancel", null)
-                            .show();
-                }
-                break;
-                case R.id.reference_print: {
-                    Intent intent = new Intent(PropertyReferenceActivity.this, PrinterActivity.class);
-                    intent.putExtra(IntentKey.CONTROL_NUMBER, mControlNumber.getText().toString());
-                    startActivity(intent);
-                }
-                break;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.reference_edit: {
+                Intent intent = new Intent(PropertyReferenceActivity.this, PropertyEditActivity.class);
+                intent.putExtra(IntentKey.CONTROL_NUMBER, mControlNumber.getText().toString());
+                startActivity(intent);
             }
+            break;
+            case R.id.reference_delete: {
+                new AlertDialog.Builder(PropertyReferenceActivity.this)
+                        .setMessage("削除してもよろしいですか？")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mDeleteTaskImpl.execute(new DeletePropertyRequest(LoginNameSingleton.getInstanse().getName(),Integer.parseInt(getIntent().getStringExtra(IntentKey.NUMBER))));
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            }
+            break;
+            case R.id.reference_print: {
+                Intent intent = new Intent(PropertyReferenceActivity.this, PrinterActivity.class);
+                intent.putExtra(IntentKey.CONTROL_NUMBER, mControlNumber.getText().toString());
+                startActivity(intent);
+            }
+            break;
         }
     }
 
+    //MOCK
     private ResultListener<Integer> mResultListenerDelete = new ResultListener<Integer>() {
 
         @Override
@@ -220,17 +181,14 @@ public class PropertyReferenceActivity extends AppCompatActivity {
         }
     };
 
-    private CallbackListener_getReferenceProperty mGetProperty = new CallbackListener_getReferenceProperty() {
+    //サーバー通信結果
+    private CallbackListener<GetReferencePropertyResponse> mGetProperty = new CallbackListener<GetReferencePropertyResponse>() {
         @Override
         public void onPostExecute(GetReferencePropertyResponse response) {
 
             ObjectMapper mapper = new ObjectMapper();
             try {
-                Info_GetReferenseProperties_JSON info = mapper.readValue(response.getInfos(), Info_GetReferenseProperties_JSON.class);
-                Log.i("管理者", info.mPropertyManager);
-                Log.i("利用者", info.mPropertyUser);
-                Log.i("設置場所", info.mLocation);
-                Log.i("製品名", info.mProductName);
+                PropertyInfoJSON info = mapper.readValue(response.getInfos(), PropertyInfoJSON.class);
 
                 mManager.setText(info.mPropertyManager);
                 mUser.setText(info.mPropertyUser);
@@ -252,7 +210,8 @@ public class PropertyReferenceActivity extends AppCompatActivity {
     };
 
 
-    private CallbackListener_Delete mDeleteProperty = new CallbackListener_Delete() {
+    //サーバー通信結果
+    private CallbackListener<String> mDeleteProperty = new CallbackListener<String>() {
 
         @Override
         public void onPostExecute(String response) {
@@ -270,28 +229,24 @@ public class PropertyReferenceActivity extends AppCompatActivity {
         }
     };
 
-}
-
-class Info_GetReferenseProperties_JSON {
-    @JsonProperty("mPropertyManager")
-    public String mPropertyManager;
-    @JsonProperty("mPropertyUser")
-    public String mPropertyUser;
-    @JsonProperty("mLocation")
-    public String mLocation;
-    @JsonProperty("mControlNumber")
-    public String mControlNumber;
-    @JsonProperty("mProductName")
-    public String mProductName;
-    @JsonProperty("mPurchaseCategory")
-    public String mPurchaseCategory;
-    @JsonProperty("mPropertyCategory")
-    public String mPropertyCategory;
-    @JsonProperty("mComplement")
-    public String mComplement;
-
-    public String getProductName() {
-        return mProductName;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // BackBtnアクション
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            new AlertDialog.Builder(PropertyReferenceActivity.this)
+                    .setMessage("メニュー画面に戻りますか？")
+                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(PropertyReferenceActivity.this, MenuActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancel",null)
+                    .create()
+                    .show();
+        }
+        return true;
     }
 
 }

@@ -1,18 +1,21 @@
 package com.example.z00s600149.propertymanegementapp;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ControlNumberIssuedActivity extends AppCompatActivity {
+public class ControlNumberIssuedActivity extends AppCompatActivity implements View.OnClickListener{
 
-    /** メニュー画面遷移用ボタン */
-    private Button mToMenu;
-    /** メニュー画面遷移用ボタン */
+    /** 印刷画面遷移用ボタン */
+    private Button mToPrint;
+    /** 資産番号発行用 */
     private TextView mControlNumber;
 
     @Override
@@ -20,23 +23,35 @@ public class ControlNumberIssuedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control_number_issued);
 
-        mToMenu = (Button) findViewById(R.id.control_button_tomenu);
+        mToPrint = (Button) findViewById(R.id.control_button_tomenu);
         mControlNumber = (TextView) findViewById(R.id.control_number);
         mControlNumber.setText(getIntent().getStringExtra(IntentKey.CONTROL_NUMBER));
-        ControlNumberIssuedActivityOnClickListener listener = new ControlNumberIssuedActivityOnClickListener();
-        mToMenu.setOnClickListener(listener);
+        mToPrint.setOnClickListener(this);
     }
 
-    class ControlNumberIssuedActivityOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.control_button_tomenu: {
-                    Intent intent = new Intent(ControlNumberIssuedActivity.this, PrinterActivity.class);
-                    startActivity(intent);
-                }
-                break;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.control_button_tomenu: {
+                Intent intent = new Intent(ControlNumberIssuedActivity.this, PrinterActivity.class);
+                intent.putExtra(IntentKey.CONTROL_NUMBER, getIntent().getStringExtra(IntentKey.CONTROL_NUMBER));
+                startActivity(intent);
             }
+            break;
         }
     }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        // BackBtnアクション
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            new AlertDialog.Builder(ControlNumberIssuedActivity.this)
+                    .setMessage("印刷ボタンを押下してください")
+                    .setNegativeButton("OK",null)
+                    .create()
+                    .show();
+        }
+        return true;
+    }
+
 }

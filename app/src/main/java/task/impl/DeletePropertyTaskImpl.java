@@ -17,20 +17,23 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import task.AsyncTaskListener.CallbackListener_Delete;
+import JSONCLASS.ErrorJSON;
+import task.AsyncTaskListener.CallbackListener;
 import task.Request.DeletePropertyRequest;
 import task.response.GetNameResponse;
 
 public class DeletePropertyTaskImpl extends AsyncTask<DeletePropertyRequest, Void, String> {
 
-    private CallbackListener_Delete listener = null;
+    private CallbackListener<String> listener = null;
 
-    public DeletePropertyTaskImpl(CallbackListener_Delete listener) {
+    public DeletePropertyTaskImpl(CallbackListener<String> listener) {
         this.listener = listener;
     }
 
     @Override
     protected String doInBackground(DeletePropertyRequest... params) {
+
+        ConnectionSetUp cs = new ConnectionSetUp();
 
         org.json.JSONObject json = new org.json.JSONObject();
         try {
@@ -44,50 +47,33 @@ public class DeletePropertyTaskImpl extends AsyncTask<DeletePropertyRequest, Voi
         String data = json.toString();
 
         HttpURLConnection con = null;
-        URL url = null;
-
-        String urlSt = "http://133.139.115.154:8080/assets/api/asset";
-//        String urlSt = "http://133.139.115.154:8080/event/api/user";
 
         try {
-            // URLの作成
-            url = new URL(urlSt);
-            // 接続用HttpURLConnectionオブジェクト作成
-            con = (HttpURLConnection)url.openConnection();
-            // リクエストメソッドの設定
-            con.setRequestMethod("DELETE");
-            // リダイレクトを自動で許可しない設定
-//            con.setInstanceFollowRedirects(false);
-            // URL接続からデータを読み取る場合はtrue
-            con.setDoInput(true);
-            // URL接続にデータを書き込む場合はtrue
-            con.setDoOutput(true);
-            //
-            con.setRequestProperty("Content-Type", "application/json");
-            //
+
+            try {
+                con = cs.setup("DELETE",new URLList().getDelete());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
             OutputStream os = con.getOutputStream();
             // 送信するデータの設定
             os.write(data.getBytes());
-            //
             os.flush();
-            //
             os.close();
 
             // 接続
             con.connect(); // ①
 
-            Log.i("ステータスコードは？",String.valueOf(con.getResponseCode()));
-
-
             InputStream in = con.getInputStream();
-            String readSt = readInputStream(in);
+            String readSt = new ConnectionSetUp().readInputStream(in);
             Log.i("JSON",readSt);
 
             String returnCode = null;
 
             ObjectMapper mapper = new ObjectMapper();
             try {
-                Info_Delete info = mapper.readValue(readSt,Info_Delete.class);
+                ErrorJSON info = mapper.readValue(readSt,ErrorJSON.class);
                 returnCode = info.error;
             } catch (IOException e) {
                 e.printStackTrace();
@@ -112,37 +98,6 @@ public class DeletePropertyTaskImpl extends AsyncTask<DeletePropertyRequest, Voi
         super.onPostExecute(result);
 
         listener.onPostExecute(result);
-    }
-
-    public String readInputStream(InputStream in) throws IOException {
-        StringBuffer sb = new StringBuffer();
-        String st = "";
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-        while((st = br.readLine()) != null)
-        {
-            sb.append(st);
-        }
-        try
-        {
-            in.close();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
-        return sb.toString();
-    }
-
-}
-
-class Info_Delete {
-    @JsonProperty("error")
-    public String error;
-
-    public String getError() {
-        return error;
     }
 
 }

@@ -12,121 +12,84 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+import entity.LoginNameSingleton;
 import task.LogoutTask;
 import task.ResultListener;
 import task.mock.LogoutTaskMock;
 import task.mock.NewAccountTaskMock;
 
-public class MenuActivity extends AppCompatActivity {
+public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
-    /** QRカメラ用ボタン */
+    /*資産情報画面遷移用ボタン*/
     private Button mPropertyRegist;
-    /** QRカメラ用ボタン */
+    /*資産情報一覧確認画面遷移用ボタン*/
     private Button mPropertyInfo;
-    /** QRカメラ用ボタン */
+    /*資産情報一覧確認遷移用ボタン*/
     private Button mQRcodeReader;
-    /** QRカメラ用ボタン */
+    /** QRカメラ画面用遷移ボタン */
     private Button mLogout;
 
-    private LogoutTask mLogoutTask;
-
-    private String mUserId;
-
-    /**
-     * デフォルトコンストラクタ
-     */
+    /*デフォルトコンストラクタ*/
     public MenuActivity() {
         super();
-        mLogoutTask = new LogoutTaskMock();
-        //mErrorMessage.put(-1, R.string.cannot_connect);
-        //mErrorMessage.put(11, R.string.cannot_register_error);
-        Log.i("Regist", "register activity contstructor");
+        Log.i("MENU", "MENU Activity contstructor");
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        mUserId = getIntent().getStringExtra(IntentKey.LOGIN_NAME);
-
+        //IDと対応付け
         mPropertyRegist = (Button) findViewById(R.id.menu_button_propertyregist);
         mPropertyInfo = (Button) findViewById(R.id.menu_button_propertyinfo);
         mQRcodeReader = (Button) findViewById(R.id.menu_button_qrcodereader);
         mLogout = (Button) findViewById(R.id.menu_button_logout);
-        MenuActivityOnClickListener listener = new MenuActivityOnClickListener();
-        mPropertyRegist.setOnClickListener(listener);
-        mPropertyInfo.setOnClickListener(listener);
-        mQRcodeReader.setOnClickListener(listener);
-        mLogout.setOnClickListener(listener);
+
+        //ボタン押下の動作
+        mPropertyRegist.setOnClickListener(this);
+        mPropertyInfo.setOnClickListener(this);
+        mQRcodeReader.setOnClickListener(this);
+        mLogout.setOnClickListener(this);
 
     }
 
-        class MenuActivityOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.menu_button_propertyregist: {
-                    Intent intent = new Intent(MenuActivity.this, PropertyInfoActivity.class);
-                    intent.putExtra(IntentKey.LOGIN_NAME,mUserId);
-                    startActivity(intent);
-                }
-                break;
-                case R.id.menu_button_propertyinfo: {
-                    Intent intent = new Intent(MenuActivity.this, PropertySelectActivity.class);
-                    startActivity(intent);
-                }
-                break;
-                case R.id.menu_button_qrcodereader: {
-//                    Intent intent = new Intent(MenuActivity.this, AnotherQRcodeReaderActivity.class);
-                    Intent intent = new Intent(MenuActivity.this, AnotherQRcodeReaderActivity.class);
-                    startActivity(intent);
-                }
-                break;
-
-                case R.id.menu_button_logout: {
-                    new AlertDialog.Builder(MenuActivity.this)
-                            .setMessage("ログアウトしますか？")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    mLogoutTask.execute("",mResultListener);
-                                }
-                            })
-                            .setNegativeButton("Cancel", null)
-                            .create()
-                            .show();
-
-                }
-                break;
-
-            }
-        }
-    }
-
-
-    private ResultListener<Integer> mResultListener = new ResultListener<Integer>() {
-
-        @Override
-        public void onResult(Integer result) {
-
-            if (result != 0) {
-                new AlertDialog.Builder(MenuActivity.this)
-                        .setMessage("ログアウトできませんでした")
-                        .setPositiveButton("OK", null)
-                        .create()
-                        .show();
-                return;
-            }
-            else if(result == 0){
-                Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+    @Override
+    //ボタン押下後の画面遷移など
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.menu_button_propertyregist: {
+                Intent intent = new Intent(MenuActivity.this, PropertyInfoActivity.class);
                 startActivity(intent);
             }
-
+            break;
+            case R.id.menu_button_propertyinfo: {
+                Intent intent = new Intent(MenuActivity.this, PropertySelectActivity.class);
+                startActivity(intent);
+            }
+            break;
+            case R.id.menu_button_qrcodereader: {
+                Intent intent = new Intent(MenuActivity.this, QRcodeReaderActivity.class);
+                startActivity(intent);
+            }
+            break;
+            case R.id.menu_button_logout: {
+                new AlertDialog.Builder(MenuActivity.this)
+                        .setMessage("ログアウトしますか？")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .create()
+                        .show();
+            }
+            break;
         }
-
-    };
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -137,7 +100,8 @@ public class MenuActivity extends AppCompatActivity {
                     .setPositiveButton("OK",new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            mLogoutTask.execute("",mResultListener);
+                            Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+                            startActivity(intent);
                         }
                     })
                     .setNegativeButton("Cancel",null)
@@ -146,7 +110,6 @@ public class MenuActivity extends AppCompatActivity {
         }
         return true;
     }
-
 }
 
 
