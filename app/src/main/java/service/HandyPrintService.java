@@ -30,6 +30,7 @@ import static jp.co.ricoh.hmp.sdk.image.generator.Qrcode.Ratio.NORMAL;
 public class HandyPrintService implements PrintService {
     ArrayList<HmpImage> mImages = new ArrayList<>();
 
+    // TODO タグ名おかしい
     private static final String TAG = "時間測定";
 
     private long mStartTime;
@@ -197,6 +198,7 @@ public class HandyPrintService implements PrintService {
 //            mPrinter.close();
             Log.i(TAG,"BBBBB");
         }
+        // TODO if分の中に入れる、ここでcloseしたら上でnullチェックしている意味がない
         mPrinter.close();
         Log.i(TAG,"onDestroy");
         mAdapter.cancelDiscovery();
@@ -297,7 +299,12 @@ public class HandyPrintService implements PrintService {
     /////////////////////////////
 
 
-
+    // TODO *がおかしい正しいjavadocの書き方は以下の通りなので修正する
+    // そもそもこのメソッド使ってないので消す
+    /**
+     * メソッドの説明
+     * @param printer 引数の説明
+     */
     /** * 接続 * *
      @param printer プリンタデバイス
      */

@@ -24,6 +24,8 @@ public class NewAccountActivity extends AppCompatActivity implements ResultListe
     /*データ登録用ボタン*/
     private Button mRegist;
     /*ユーザーIDデータ保持用*/
+    // TODO javaは基本キャメルケースで統一する　mIdInfo
+    // ほかの箇所も同様
     private String mId_info;
     /*ユーザーPASSWARDデータ保持用*/
     private String mPass_info;
@@ -89,6 +91,8 @@ public class NewAccountActivity extends AppCompatActivity implements ResultListe
     }
 
     /*エラーメッセージ表示*/
+    // TODO ほかのところにも同じ処理があるので共通化する
+    // ダイアログのutilsクラスみたいなんを作るとよい
     void show(String msg) {
         new AlertDialog.Builder(NewAccountActivity.this)
                 .setMessage(msg)

@@ -17,8 +17,13 @@ import JSONCLASS.ErrorJSON;
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
 
+/**
+ * TODO implはクラス名が不適切
+ * LoginTaskというインターフェースがあってそれを実装していると勘違いしてしまう。
+ */
 public class LoginTaskImpl extends AsyncTask<UserInfo, Void, String> {
 
+    // TODO メンバ変数はmで統一する mListener　ほかも同様
     private CallbackListener<String> listener = null;
 
     public LoginTaskImpl(CallbackListener<String> listener) {

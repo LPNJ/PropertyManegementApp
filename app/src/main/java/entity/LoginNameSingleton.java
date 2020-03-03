@@ -1,5 +1,7 @@
 package entity;
 
+// TODO Singleton ってクラス名に付けない。
+// LoginUserNameを保持するからLoginUserNameHolderとかのほうが良いと思う。
 public class LoginNameSingleton {
 
     private static LoginNameSingleton name = null;

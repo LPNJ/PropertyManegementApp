@@ -25,6 +25,7 @@ import task.serialize.PropertyRegistResponse;
 
 public class PropertySelectActivity extends AppCompatActivity implements View.OnClickListener{
 
+    // TODO コメントに意味がないからこのコメントであれば書く必要がない
     /*ボタン*/
     private Button mManagerButton;
     /*ボタン*/
@@ -32,6 +33,7 @@ public class PropertySelectActivity extends AppCompatActivity implements View.On
     /*ボタン*/
     private Button mAllPropertyButton;
 
+    // TODO コメントに意味がないからこのコメントであれば書く必要がない
     /*デフォルトコンストラクタ*/
     public PropertySelectActivity() {
         super();

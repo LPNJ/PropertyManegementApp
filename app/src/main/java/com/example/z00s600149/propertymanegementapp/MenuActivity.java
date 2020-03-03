@@ -21,6 +21,8 @@ import task.mock.NewAccountTaskMock;
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
     /*資産情報画面遷移用ボタン*/
+    // TODO 登録するはregistじゃなくてregister、androidstudioで文字の下に緑の波線がある場合は
+    // タイポしている可能性があるので確認する、ほかのクラスも同様
     private Button mPropertyRegist;
     /*資産情報一覧確認画面遷移用ボタン*/
     private Button mPropertyInfo;
@@ -32,6 +34,8 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     /*デフォルトコンストラクタ*/
     public MenuActivity() {
         super();
+        // TODO ログのタグは private static final String TAG = "MenuAct"という感じでメンバ変数として宣言する
+        // 何度も使うので、ほかのクラスも同様
         Log.i("MENU", "MENU Activity contstructor");
     }
 

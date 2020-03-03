@@ -8,6 +8,7 @@ import jp.co.ricoh.hmp.sdk.printer.HmpSettings;
 
 import static android.content.Context.MODE_PRIVATE;
 
+// TODO 必要ないクラスは削除する
 public class PreferenceManager {
 
     /**

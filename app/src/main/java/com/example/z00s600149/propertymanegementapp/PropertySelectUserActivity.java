@@ -93,6 +93,9 @@ public class PropertySelectUserActivity extends AppCompatActivity implements Cal
         }
     };
 
+    // TODO GetPropertyResponseのJson解析をPropertySelectManagerActivityとPropertySelectUserActivityと
+    // PropertySelectAllActivityでやっとるから共通化する。
+    // Jsonの解析は画面ごとじゃなくてタスクごとやと思うからそっちに移動させるとよいかも。
     @Override
     public void onPostExecute(GetPropertyResponse response) {
 

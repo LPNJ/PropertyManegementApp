@@ -30,6 +30,7 @@ public class DeletePropertyTaskImpl extends AsyncTask<DeletePropertyRequest, Voi
         this.listener = listener;
     }
 
+    // TODO 同じ処理がいろんなところにあるので共通化する
     @Override
     protected String doInBackground(DeletePropertyRequest... params) {
 

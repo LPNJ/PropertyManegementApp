@@ -30,6 +30,7 @@ import task.response.GetPropertyResponse;
 
 public class PropertySelectAllActivity extends AppCompatActivity implements CallbackListener<GetPropertyResponse> {
 
+    // TODO メンバ変数は基本privateにする、ほかも同様
     //データ保持用
     ArrayList<String> mControlNumber;
     ArrayList<String> mProductNumber;
