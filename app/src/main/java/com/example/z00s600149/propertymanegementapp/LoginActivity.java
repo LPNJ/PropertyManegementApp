@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements ResultListener<I
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //IDと対応付け
+        //IDと対応付け//
         mLogin = (Button) findViewById(R.id.login_button_login);
         mNewAccount = (Button) findViewById(R.id.login_button_newaccount);
         mId = (EditText) findViewById(R.id.login_id);
