@@ -1,6 +1,7 @@
 package com.example.z00s600149.propertymanegementapp;
 
 import android.app.AlertDialog;
+// TODO 必要ないimportは消す。他も同様
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -61,12 +62,17 @@ public class LoginActivity extends AppCompatActivity implements ResultListener<I
         mNewAccount.setOnClickListener(this);
     }
 
+    /**
+     * TODO onResultと処理が変わるのはおかしい。
+     */
     CallbackListener<String> listener = new CallbackListener<String>() {
         @Override
         /*サーバー通信結果を受けるメソッド*/
         public void onPostExecute(String result) {
             int resultCode = Integer.parseInt(result);
             if(resultCode == 1){
+                // TODO このメッセージに意味はない。resultCodeが1で返ってくるときの理由を書く。
+                // 例えばサーバーエラーであるならそれがわかるメッセージにする
                 show("RuntimeException");
             }
             else if(resultCode == 21){
@@ -105,6 +111,9 @@ public class LoginActivity extends AppCompatActivity implements ResultListener<I
         }
     }
 
+    /**
+     * TODO モックの結果を受けるとしてもその後の処理が実際にサーバーと接続したときと違うのはおかしい。
+     */
     @Override
     /* MOCK用*/
     public void onResult(Integer result) {

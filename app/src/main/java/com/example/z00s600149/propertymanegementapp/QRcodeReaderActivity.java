@@ -50,6 +50,7 @@ public class QRcodeReaderActivity extends AppCompatActivity implements ZXingScan
         scannerView.stopCamera();
     }
 
+    // TODO 必要ないメソッドは削除。他も同様
     public void displayAlertMessage(String message, DialogInterface.OnClickListener listener)
     {
         new AlertDialog.Builder(QRcodeReaderActivity.this)

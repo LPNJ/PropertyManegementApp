@@ -3,6 +3,8 @@ package task.impl;
 import android.util.Log;
 
 public class URLList {
+    // TODO パブリック変数なのにgetterを用意する意味はない。
+    // あとURLを決めておくだけならstaticクラスにするほうが良いと思う
 
     public final String login = "http://133.139.115.154:8080/assets/api/login";
 

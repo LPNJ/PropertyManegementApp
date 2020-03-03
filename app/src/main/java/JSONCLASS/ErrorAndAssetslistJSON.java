@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import task.response.GetPropertyEntity;
 
+// TODO キャメルケース
 public class ErrorAndAssetslistJSON {
 
     @JsonProperty("error")

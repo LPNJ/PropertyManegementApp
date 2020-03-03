@@ -24,6 +24,8 @@ import task.Request.EditPropertyRequest;
 
 public class EditPropertyTaskImpl extends AsyncTask<EditPropertyRequest, Void, String> {
 
+    // TODO コンストラクタで設定して、その後変更しない変数にはfinalをつける
+    // キャメルケース
     private CallbackListener<String> listener = null;
 
     public EditPropertyTaskImpl(CallbackListener<String> listener) {

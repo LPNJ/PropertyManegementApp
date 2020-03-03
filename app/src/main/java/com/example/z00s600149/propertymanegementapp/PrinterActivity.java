@@ -15,6 +15,8 @@ import service.HandyPrintService;
 import service.PrintService;
 
 public class PrinterActivity extends AppCompatActivity {
+    // TODO タグ名おかしい、このクラスのタグとしては時間計測は適切じゃない。
+    // 時間を計測するためにわかりやすくするために用意しただけ
     private static final String TAG = "時間測定";
 
     private final PrintService mPrinterService;
@@ -25,6 +27,7 @@ public class PrinterActivity extends AppCompatActivity {
     /*Bluetooth使用可否*/
     Button mMenu;
 
+    // TODO 使われていないフィールドは消す。他も同様
     private long mStartTime;
 
     public PrinterActivity() {
@@ -43,6 +46,7 @@ public class PrinterActivity extends AppCompatActivity {
         mPrinterService.print(getIntent().getStringExtra(IntentKey.CONTROL_NUMBER),this);
     }
 
+    // TODO 実装する意味ない
     @Override
     protected void onDestroy() {
         super.onDestroy();

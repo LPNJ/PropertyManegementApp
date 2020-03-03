@@ -1,3 +1,4 @@
+// TODO Requestとserializeパッケージの違いは何？分ける必要はある？
 package task.response;
 
 import java.util.ArrayList;

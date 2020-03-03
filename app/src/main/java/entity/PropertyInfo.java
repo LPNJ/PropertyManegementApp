@@ -59,6 +59,7 @@ public class PropertyInfo {
         return mComplement;
     }
 
+    // TODO 必要ないコードは削除、ほかのクラスも同様
 //    @Override
 //    public String toString() {
 //        return "PropertyInfo{" +

@@ -11,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+/**
+ * TODO どういう役割のクラスか書く。何の画面かを端的に説明する
+ * ほかのクラスも同様
+ */
 public class ControlNumberIssuedActivity extends AppCompatActivity implements View.OnClickListener{
 
     /** 印刷画面遷移用ボタン */
@@ -46,6 +50,8 @@ public class ControlNumberIssuedActivity extends AppCompatActivity implements Vi
         // BackBtnアクション
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(ControlNumberIssuedActivity.this)
+                    // TODO メッセージと”OK”はres/values/strings.xmlに追加して、それを使う
+                    // ここだけじゃなくほかのところも同様
                     .setMessage("印刷ボタンを押下してください")
                     .setNegativeButton("OK",null)
                     .create()
