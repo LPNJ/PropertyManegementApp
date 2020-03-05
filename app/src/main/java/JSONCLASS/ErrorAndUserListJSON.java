@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
+// TODO ファイル名がキャメルケースになってない
 public class ErrorAndUserListJson {
 
     @JsonProperty("error")

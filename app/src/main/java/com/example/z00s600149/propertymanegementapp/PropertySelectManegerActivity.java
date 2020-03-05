@@ -32,6 +32,7 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
     public PropertySelectManegerActivity() {
         super();
         mWebApi = new WebApiImpl();
+        // TODO 命名規則に合わせる最後にactivity付ける
         Log.i("PropertySelectManeger", "PropertySelectManeger activity contstructor");
     }
 
@@ -60,6 +61,7 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
         //JSON文字列にキーを指定して値を取得
         new JsonResolution().toListManager(response , pManager,pName);
 
+        // TODO これ以下のインデント必要ない
             mProductName = new ArrayList<>();
             mControlNumber = new ArrayList<>();
             mProductNumber = new ArrayList<>();

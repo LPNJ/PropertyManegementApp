@@ -27,8 +27,6 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
     /*データ登録用ボタン*/
     private Button mRegister;
     /*ユーザーIDデータ保持用*/
-    // TODO javaは基本キャメルケースで統一する　mIdInfo
-    // ほかの箇所も同様
     private String mIdInfo;
     /*ユーザーパスワードデータ保持用*/
     private String mPassInfo;
@@ -125,6 +123,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(NewAccountActivity.this)
                     .setMessage(R.string.to_login)
+                    // TODO OKもStringに追加
                     .setPositiveButton("OK",new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -132,6 +131,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                             startActivity(intent);
                         }
                     })
+                    // TODO cancelもStringに追加、ほかのクラスも同様
                     .setNegativeButton("Cancel",null)
                     .create()
                     .show();

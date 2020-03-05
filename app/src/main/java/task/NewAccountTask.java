@@ -13,6 +13,7 @@ import task.AsyncTaskListener.CallbackListener;
 
 public class NewAccountTask extends ServerTask<UserInfo,String> {
 
+    // TODO 必要ない消す
     private CallbackListener<String> listener = null;
 
     public NewAccountTask(CallbackListener<String> listener) {

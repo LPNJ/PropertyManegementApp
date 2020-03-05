@@ -15,6 +15,7 @@ public class PropertyInfo {
     /**
      * コンストラクタ
      */
+    // TODO ローカル変数にm付けない
     public PropertyInfo(String mPropertyManager, String mPropertyUser, String mLocation, String mControlNumber, String mProductName, String mPurchaseCategory, String mPropertyCategory, String mComplement) {
         this.mPropertyManager = mPropertyManager;
         this.mPropertyUser = mPropertyUser;
@@ -30,7 +31,6 @@ public class PropertyInfo {
         return mControlNumber;
     }
 
-    // TODO 必要ないコードは削除、ほかのクラスも同様
 
     @Override
     public String toString() {

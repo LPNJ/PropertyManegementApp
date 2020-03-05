@@ -2,6 +2,7 @@ package jsonclass;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+// TODO ファイル名がキャメルケースになってない
 public class PropertyInfoJson {
 
     @JsonProperty("mPropertyManager")

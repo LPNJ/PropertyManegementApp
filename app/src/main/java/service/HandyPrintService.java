@@ -30,9 +30,9 @@ import static jp.co.ricoh.hmp.sdk.image.generator.Qrcode.Ratio.NORMAL;
 public class HandyPrintService implements PrintService {
     ArrayList<HmpImage> mImages = new ArrayList<>();
 
-    // TODO タグ名おかしい
     private static final String TAG = "HandyPrintService";
 
+    // TODO 使わん消す
     private long mStartTime;
 
     private static final HandyPrintService INSTANCE = new HandyPrintService();
@@ -41,6 +41,7 @@ public class HandyPrintService implements PrintService {
         return INSTANCE;
     }
 
+    // TODO privateがない
     /**
      * リクエストコード
      */
@@ -55,6 +56,7 @@ public class HandyPrintService implements PrintService {
     /**
      * 接続タスク
      */
+    // TODO 使わん消す
     ScheduledFuture mConnectFuture = null;
 
     /**
@@ -67,6 +69,7 @@ public class HandyPrintService implements PrintService {
      */
     HmpCommand.DeviceStatus mError = HmpCommand.DeviceStatus.DISCONNECTED;
 
+    // TODO メンバ変数にm付ける
     String number;
     Activity activityHandyPrinter;
 
@@ -192,10 +195,10 @@ public class HandyPrintService implements PrintService {
 
             mPrinter.close();
             Log.i(TAG,"onDestroy");
+            // TODO if分の外に出す cancelDiscoveryは必ずする。
             mAdapter.cancelDiscovery();
 
         }
-        // TODO if分の中に入れる、ここでcloseしたら上でnullチェックしている意味がない
     }
 
 
@@ -357,6 +360,8 @@ public class HandyPrintService implements PrintService {
     }
 
 
+    // TODO　ここもジャバドックの書き方おかしい
+    // TODO 使ってないメソッド消す
     /**
      印刷 *
      @param images 印刷イメージ
@@ -374,6 +379,7 @@ public class HandyPrintService implements PrintService {
         return mPrinter.print(images, settings, copies);
     }
 
+    // TODO メンバ変数m private
     /**
      * 誤り訂正レベル
      */

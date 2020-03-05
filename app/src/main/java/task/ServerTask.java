@@ -17,7 +17,6 @@ import java.net.URL;
 import task.AsyncTaskListener.CallbackListener;
 
 abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
-    // TODO メンバ変数はmで統一する mListener　ほかも同様
     private final CallbackListener<R> mListener;
 
     private final String mMethod;
@@ -64,6 +63,7 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
                 return ooo();
             }
 
+            // TODO parseJsonでnullが返ってくる場合を考慮して実装する
             return parseJson(dataInput(con));
         } catch (MalformedURLException e) {
             Log.e("ServTask", "Illegal url :" + mUrl, e);

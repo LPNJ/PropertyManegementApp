@@ -25,6 +25,7 @@ public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropert
     @Override
     GetReferencePropertyResponse parseJson(String readSd) {
         String returnCode = null;
+        // TODO タイポ
         ArrayList<GetPropertyEntity> preferenseProperty;
         GetReferencePropertyResponse response = null;
 

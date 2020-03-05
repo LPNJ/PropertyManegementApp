@@ -36,8 +36,11 @@ public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse>
             properties = info.mProperties;
             response = new GetPropertyResponse(returnCode,properties);
         } catch (IOException e) {
+            // TODO e.printStackTraceじゃなくてログ出す　ほかも全部
+            // e.printStackTraceで検索
             e.printStackTrace();
         }
+        // TODO IOExceptinoが発生したらnullを返すので問題ない？
         return response;
     }
 }

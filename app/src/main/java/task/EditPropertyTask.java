@@ -10,10 +10,6 @@ import task.AsyncTaskListener.CallbackListener;
 import task.Request.EditPropertyRequest;
 
 public class EditPropertyTask extends ServerTask<EditPropertyRequest, String> {
-
-    // TODO コンストラクタで設定して、その後変更しない変数にはfinalをつける
-    // キャメルケース
-
     public EditPropertyTask(CallbackListener<String> listener) {
         super(listener,"PUT",new Urls().getEdit());
     }

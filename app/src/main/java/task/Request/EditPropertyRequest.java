@@ -24,6 +24,7 @@ public class EditPropertyRequest {
         return mAssetId;
     }
 
+    // TODO mいらん
     public PropertyInfo getmPropertyInfo() {
         return mPropertyInfo;
     }

@@ -15,8 +15,6 @@ import service.HandyPrintService;
 import service.PrintService;
 
 public class PrinterActivity extends AppCompatActivity {
-    // TODO タグ名おかしい、このクラスのタグとしては時間計測は適切じゃない。
-    // 時間を計測するためにわかりやすくするために用意しただけ
     private static final String TAG = "PrinterActivity";
 
     private final PrintService mPrinterService;
@@ -24,10 +22,9 @@ public class PrinterActivity extends AppCompatActivity {
     /*リクエストコード*/
     static final int REQUEST_ENABLE_BT = 1;
 
+    // TODO private
     /*Bluetooth使用可否*/
     Button mMenu;
-
-    // TODO 使われていないフィールドは消す。他も同様
 
     public PrinterActivity() {
         mPrinterService = HandyPrintService.getInstance();
@@ -45,8 +42,7 @@ public class PrinterActivity extends AppCompatActivity {
         mPrinterService.print(getIntent().getStringExtra(IntentKey.CONTROL_NUMBER),this);
     }
 
-    // TODO 実装する意味ない
-
+    // TODO ほかはactivityがOnClickListenerを実装（implements）しているのになんでここだけ？
     class PrinterActivityOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
@@ -79,7 +75,9 @@ public class PrinterActivity extends AppCompatActivity {
         // BackBtnアクション
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(PrinterActivity.this)
+                    // TODO stringsについか
                     .setMessage("メニュー画面に戻りますか？")
+                    // TODO stringsについか
                     .setPositiveButton("OK",new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -87,6 +85,7 @@ public class PrinterActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     })
+                    // TODO stringsについか
                     .setNegativeButton("Cancel",null)
                     .create()
                     .show();

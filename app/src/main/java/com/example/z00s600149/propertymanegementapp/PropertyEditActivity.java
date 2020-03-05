@@ -30,6 +30,8 @@ import task.response.GetNameResponse;
 public class PropertyEditActivity extends AppCompatActivity implements View.OnClickListener{
 
     /*ログインユーザー情報保持用リスト*/
+    // TODO onPostExecuteでしか使ってないからローカル変数にする
+    // TODO キャメルケース
     ArrayAdapter<String> myAdapter_Manager;
     /** 資産情報登録用ボタン */
     private Button mPropertyEdit;
@@ -56,16 +58,21 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
     /*デフォルトコンストラクタ*/
     public PropertyEditActivity() {
         super();
+        // TODO 使わないやつ消す
 //        mEditPropertyTaskImpl = new EditPropertyTask(mCallBackListener_Edit);
 //        mGetNameTaskImpl = new GetNameTask(mCallBackListener);
         mWebApi = new WebApiImpl();
         Log.i("PropertyEdit", "PropertyEdit activity contstructor");
     }
 
+
+    // TODO ローカル変数の最初は小文字
     public PropertyEditActivity(WebApi WebApi) {
         super();
+        // TODO 使わないやつ消す
 //        mEditPropertyTaskImpl = new EditPropertyTask(mCallBackListener_Edit);
-//        mGetNameTaskImpl = new GetNameTask(mCallBackListener);
+//        mGetNameTaskImpl = new GetNameTask(mCallBackListener);・
+        // TODO 引数を設定する
         mWebApi = new WebApiMock();
         Log.i("PropertyEdit", "PropertyEdit activity contstructor");
     }
@@ -125,6 +132,7 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
             }
             else {
                 myAdapter_Manager = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, response.getNames());
+                // TODO 変数キャメルケースにする、elseの中が大体おかしい
                 ArrayAdapter<String> myAdapter_User = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, response.getNames());
                 ArrayAdapter<String> myAdapter_Purchase_Category = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Purchase_Category));
                 ArrayAdapter<String> myAdapter_Property_Category = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Property_Category));
@@ -151,6 +159,8 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
             if (Integer.parseInt(response) == 0) {
                 new AlertDialog.Builder(PropertyEditActivity.this)
                         .setMessage(R.string.edit_success)
+                        // TODO stringsに追加
+                        // TODO 小見山君が自分で"OK"でプロジェクト全体検索して漏れがないか確認する
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

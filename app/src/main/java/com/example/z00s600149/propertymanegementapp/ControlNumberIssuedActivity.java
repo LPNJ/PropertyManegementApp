@@ -14,9 +14,6 @@ import android.widget.TextView;
 import Dialog.ShowDialog;
 
 /**
- * TODO どういう役割のクラスか書く。何の画面かを端的に説明する
- * ほかのクラスも同様
- *
  * 発行された資産番号を表示するクラス
  * また、ハンディプリンタに印刷指示を送るActivityに遷移させる
  */

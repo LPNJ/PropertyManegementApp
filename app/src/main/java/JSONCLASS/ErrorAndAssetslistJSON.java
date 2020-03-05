@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import task.response.GetPropertyEntity;
 
-// TODO キャメルケース
+// TODO ファイル名がキャメルケースになってない
 public class ErrorAndAssetsListJson {
 
     @JsonProperty("error")

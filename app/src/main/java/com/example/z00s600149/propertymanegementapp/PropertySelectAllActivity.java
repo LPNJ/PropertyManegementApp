@@ -21,7 +21,9 @@ public class PropertySelectAllActivity extends AppCompatActivity implements Call
 
     // TODO メンバ変数は基本privateにする、ほかも同様
     //データ保持用
+    // TODO 使わん奴は消す
     private ArrayList<String> mControlNumber;
+    // TODO onPostExecuteでしか使ってないからローカル変数にする
     private ArrayList<String> mProductNumber;
 
     //資産の情報を表示するリストビュー
@@ -29,13 +31,16 @@ public class PropertySelectAllActivity extends AppCompatActivity implements Call
 
     private final WebApi mWebApi;
 
+    // TODO 意味ないコメント
     /*デフォルトコンストラクタ*/
     public PropertySelectAllActivity() {
         super();
         mWebApi = new WebApiImpl();
+        // TODO TAGを定義する、あとほかのactivityクラスのタグはxxxActivityだったのでそれに命名規則に合わせる
         Log.i("Propert", "register activity start");
     }
 
+    // TODO 意味ない、デフォルトじゃない
     /*デフォルトコンストラクタ*/
     public PropertySelectAllActivity(WebApi WebApi) {
         super();
@@ -55,6 +60,8 @@ public class PropertySelectAllActivity extends AppCompatActivity implements Call
         mWebApi.getProperty(this);
     }
 
+    // TODO メンバ変数定義して実装しとるのになんでここだけimplements？
+    // TODO 統一したほうが良いので他に合わせる
     @Override
     public void onPostExecute(GetPropertyResponse response) {
 
@@ -71,6 +78,7 @@ public class PropertySelectAllActivity extends AppCompatActivity implements Call
             }
 
             //Spinnerに情報を登録
+            // TODO キャメルケースにする
             ArrayAdapter<String> myAdapter_Manager = new ArrayAdapter<String>(PropertySelectAllActivity.this, android.R.layout.simple_list_item_1, mProductNumber);
             myAdapter_Manager.setDropDownViewResource(android.R.layout.simple_list_item_1);
             mProperties.setAdapter(myAdapter_Manager);

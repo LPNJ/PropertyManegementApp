@@ -1,5 +1,6 @@
 package com.example.z00s600149.propertymanegementapp;
 
+// TODO import全部見直して、または必要ないimportは自動削除できるようにできるからそれを設定して
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class QRcodeReaderActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
+    // TODO 使ってないから消す
     private static final int REQUEST_CAMERA = 1;
     private ZXingScannerView scannerView;
 
@@ -49,20 +51,20 @@ public class QRcodeReaderActivity extends AppCompatActivity implements ZXingScan
         scannerView.stopCamera();
     }
 
-    // TODO 必要ないメソッドは削除。他も同様
-
-
     @Override
     public void handleResult(Result result) {
         final String scanResult = result.getText();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        // TODO stringsに追加
         builder.setTitle("Scan Result");
+        // TODO stringsに追加
         builder.setPositiveButton("戻る", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 scannerView.resumeCameraPreview(QRcodeReaderActivity.this);
             }
         });
+        // TODO stringsに追追加
         builder.setNeutralButton("資産情報表示", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {

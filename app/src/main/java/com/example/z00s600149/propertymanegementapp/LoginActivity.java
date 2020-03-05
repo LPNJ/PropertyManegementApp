@@ -1,6 +1,5 @@
 package com.example.z00s600149.propertymanegementapp;
 
-// TODO 必要ないimportは消す。他も同様
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,6 +16,8 @@ import webApi.WebApi;
 import webApi.WebApiImpl;
 import validator.UserLoginValidator;
 
+// TODO Javadoc ほかのクラスも書く, 以下のクラスの感じでよい
+/** {@link ControlNumberIssuedActivity}*/
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginAct";
@@ -29,8 +30,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText mId;
     /** ログイン用パスワード */
     private EditText mPass;
+    // TODO private
     /** ログインIDデータ保持用 */
     String mIdInfo;
+    // TODO private
     /** ログイン用パスワードデータ保持用 */
     String mPassInfo;
 
@@ -90,17 +93,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    /**
-     * TODO onResultと処理が変わるのはおかしい。
-     */
     CallbackListener<String> listener = new CallbackListener<String>() {
         @Override
         /*サーバー通信結果を受けるメソッド*/
         public void onPostExecute(String result) {
             int resultCode = Integer.parseInt(result);
             if(resultCode == 1){
-                // TODO このメッセージに意味はない。resultCodeが1で返ってくるときの理由を書く。
-                // 例えばサーバーエラーであるならそれがわかるメッセージにする
                 new ShowDialog(LoginActivity.this).show(R.string.cannot_connect);
             }
             else if(resultCode == 21){

@@ -62,6 +62,7 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
     public PropertyReferenceActivity() {
         super();
         mWebApi = new WebApiImpl();
+        // TODO TAGを定義する
         Log.i("PropertyReference", "PropertyReference activity contstructor");
     }
 
@@ -69,6 +70,7 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
     public PropertyReferenceActivity(WebApi WebApi) {
         super();
         mWebApi = WebApi;
+        // TODO constructorが全部タイポ、ほかのクラスも確認する
         Log.i("PropertyReference", "PropertyReference activity contstructor");
     }
 
@@ -111,6 +113,7 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
             break;
             case R.id.reference_delete: {
                 new AlertDialog.Builder(PropertyReferenceActivity.this)
+                        // TODO stringsに追加、「.setMessage("」とかで検索して漏れないか確認してください
                         .setMessage("削除してもよろしいですか？")
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
@@ -136,6 +139,7 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         @Override
         public void onPostExecute(GetReferencePropertyResponse response) {
 
+            // TODO この処理はGetReferenceInfoTaskのparseJsonで行わる処理
             ObjectMapper mapper = new ObjectMapper();
             try {
                 PropertyInfoJson info = mapper.readValue(response.getInfo(), PropertyInfoJson.class);

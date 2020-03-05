@@ -15,8 +15,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     private static final String TAG = "MenuAct";
 
     /*資産情報画面遷移用ボタン*/
-    // TODO 登録するはregistじゃなくてregister、androidstudioで文字の下に緑の波線がある場合は
-    // タイポしている可能性があるので確認する、ほかのクラスも同様
     private Button mPropertyRegister;
     /*資産情報一覧確認画面遷移用ボタン*/
     private Button mPropertyInfo;

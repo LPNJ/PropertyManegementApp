@@ -44,8 +44,4 @@ public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String
         }
         return returnCode;
     }
-
-    // TODO 同じ処理がいろんなところにあるので共通化する
-
-
 }

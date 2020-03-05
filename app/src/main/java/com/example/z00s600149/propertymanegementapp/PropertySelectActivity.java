@@ -9,12 +9,10 @@ import android.widget.Button;
 
 public class PropertySelectActivity extends AppCompatActivity implements View.OnClickListener{
 
-    // TODO コメントに意味がないからこのコメントであれば書く必要がない
     private Button mManagerButton;
     private Button mUserButton;
     private Button mAllPropertyButton;
 
-    // TODO コメントに意味がないからこのコメントであれば書く必要がない
     public PropertySelectActivity() {
         super();
         Log.i("PropertySelect", "PropertySelect activity contstructor");

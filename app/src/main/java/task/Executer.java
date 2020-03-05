@@ -2,6 +2,7 @@ package task;
 
 import task.AsyncTaskListener.CallbackListener;
 
+// TODO　このクラス必要ないから消す
 public interface Executer<V> {
 
     /**
