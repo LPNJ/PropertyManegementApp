@@ -11,15 +11,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import Dialog.ShowDialog;
+
 /**
  * TODO どういう役割のクラスか書く。何の画面かを端的に説明する
  * ほかのクラスも同様
+ *
+ * 発行された資産番号を表示するクラス
+ * また、ハンディプリンタに印刷指示を送るActivityに遷移させる
  */
-public class ControlNumberIssuedActivity extends AppCompatActivity implements View.OnClickListener{
+public class ControlNumberIssuedActivity extends AppCompatActivity implements View.OnClickListener {
 
-    /** 印刷画面遷移用ボタン */
+    /**
+     * 印刷画面遷移用ボタン
+     */
     private Button mToPrint;
-    /** 資産番号発行用 */
+    /**
+     * 資産番号発行用
+     */
     private TextView mControlNumber;
 
     @Override
@@ -48,16 +57,9 @@ public class ControlNumberIssuedActivity extends AppCompatActivity implements Vi
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // BackBtnアクション
-        if(keyCode==KeyEvent.KEYCODE_BACK){
-            new AlertDialog.Builder(ControlNumberIssuedActivity.this)
-                    // TODO メッセージと”OK”はres/values/strings.xmlに追加して、それを使う
-                    // ここだけじゃなくほかのところも同様
-                    .setMessage("印刷ボタンを押下してください")
-                    .setNegativeButton("OK",null)
-                    .create()
-                    .show();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            new ShowDialog(this).show(R.string.push);
         }
         return true;
     }
-
 }

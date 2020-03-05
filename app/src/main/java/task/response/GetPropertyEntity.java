@@ -13,18 +13,6 @@ public class GetPropertyEntity {
     @JsonProperty("data")
     private String mProperty;
 
-
-//    public GetPropertyEntity(String mUserId, Integer mAssetId, String mProperty) {
-//        this.mUserId = mUserId;
-//        this.mAssetId = mAssetId;
-//        this.mProperty = mProperty;
-//    }
-
-    public GetPropertyEntity(){
-
-    }
-
-
     public String getUserId() {
         return mUserId;
     }

@@ -11,11 +11,11 @@ public class RegisterPropertyResponse {
         this.mControlNumber = mControlNumber;
     }
 
-    public String getmError() {
+    public String getError() {
         return mError;
     }
-
-    public String getmControlNumber() {
+    
+    public String getControlNumber() {
         return mControlNumber;
     }
 

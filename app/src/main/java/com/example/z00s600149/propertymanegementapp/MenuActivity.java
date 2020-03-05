@@ -10,24 +10,18 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.ArrayList;
-
-import entity.LoginNameSingleton;
-import task.LogoutTask;
-import task.ResultListener;
-import task.mock.LogoutTaskMock;
-import task.mock.NewAccountTaskMock;
-
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String TAG = "MenuAct";
 
     /*資産情報画面遷移用ボタン*/
     // TODO 登録するはregistじゃなくてregister、androidstudioで文字の下に緑の波線がある場合は
     // タイポしている可能性があるので確認する、ほかのクラスも同様
-    private Button mPropertyRegist;
+    private Button mPropertyRegister;
     /*資産情報一覧確認画面遷移用ボタン*/
     private Button mPropertyInfo;
     /*資産情報一覧確認遷移用ボタン*/
-    private Button mQRcodeReader;
+    private Button mQRCodeReader;
     /** QRカメラ画面用遷移ボタン */
     private Button mLogout;
 
@@ -36,7 +30,7 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         super();
         // TODO ログのタグは private static final String TAG = "MenuAct"という感じでメンバ変数として宣言する
         // 何度も使うので、ほかのクラスも同様
-        Log.i("MENU", "MENU Activity contstructor");
+        Log.i(TAG, "MENU Activity start");
     }
 
     @Override
@@ -45,15 +39,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_menu);
 
         //IDと対応付け
-        mPropertyRegist = (Button) findViewById(R.id.menu_button_propertyregist);
+        mPropertyRegister = (Button) findViewById(R.id.menu_button_propertyregist);
         mPropertyInfo = (Button) findViewById(R.id.menu_button_propertyinfo);
-        mQRcodeReader = (Button) findViewById(R.id.menu_button_qrcodereader);
+        mQRCodeReader = (Button) findViewById(R.id.menu_button_qrcodereader);
         mLogout = (Button) findViewById(R.id.menu_button_logout);
 
         //ボタン押下の動作
-        mPropertyRegist.setOnClickListener(this);
+        mPropertyRegister.setOnClickListener(this);
         mPropertyInfo.setOnClickListener(this);
-        mQRcodeReader.setOnClickListener(this);
+        mQRCodeReader.setOnClickListener(this);
         mLogout.setOnClickListener(this);
 
     }

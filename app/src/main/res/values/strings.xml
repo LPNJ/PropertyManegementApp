@@ -14,4 +14,20 @@
         <item>USB・SD</item>
     </string-array>
 
+    <string name="cannot_connect">サーバーの通信に異常がありました</string>
+    <string name="not_input">"入力されていない項目があります"</string>
+    <string name="already_register">"すでにユーザーが登録されています"</string>
+    <string name="not_permit_character">"すでにユーザーが登録されています"</string>
+    <string name="to_login">"ログイン画面に戻りますか？"</string>
+    <string name="register_permit">"登録してもよろしいですか？"</string>
+    <string name="cancel">"Cancel"</string>
+    <string name="error">"不明なエラー"</string>
+    <string name="cannot_find_user">"指定したユーザーが見つかりません"</string>
+    <string name="cannot_find_property">"指定した資産が見つかりません"</string>
+    <string name="edit_success">"編集が完了しました"</string>
+    <string name="limit">"資産登録上限に達しています"</string>
+    <string name="to_menu">"メニュー画面に戻りますか？"</string>
+    <string name="push">"印刷ボタンを押下してください"</string>
+
+
 </resources>

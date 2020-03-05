@@ -5,17 +5,17 @@ import entity.PropertyInfo;
 public class EditPropertyRequest {
 
     private final String mUserId;
-
+    
     private final int mAssetId;
 
     private final PropertyInfo mPropertyInfo;
-
-    public EditPropertyRequest(String mUserId, int mAssetId, PropertyInfo mPropertyInfo) {
-        this.mUserId = mUserId;
-        this.mAssetId = mAssetId;
-        this.mPropertyInfo = mPropertyInfo;
+    
+    public EditPropertyRequest(String userId, int assetId, PropertyInfo propertyInfo) {
+        mUserId = userId;
+        mAssetId = assetId;
+        mPropertyInfo = propertyInfo;
     }
-
+    
     public String getUserId() {
         return mUserId;
     }

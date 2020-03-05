@@ -1,8 +1,8 @@
-package JSONCLASS;
+package jsonclass;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ErrorJSON {
+public class ErrorJson {
 
     @JsonProperty("error")
     // TODO キャメルケース

@@ -1,4 +1,4 @@
-package task.serialize;
+package task.response;
 
 import entity.PropertyInfo;
 

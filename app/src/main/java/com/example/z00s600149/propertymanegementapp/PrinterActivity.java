@@ -17,7 +17,7 @@ import service.PrintService;
 public class PrinterActivity extends AppCompatActivity {
     // TODO タグ名おかしい、このクラスのタグとしては時間計測は適切じゃない。
     // 時間を計測するためにわかりやすくするために用意しただけ
-    private static final String TAG = "時間測定";
+    private static final String TAG = "PrinterActivity";
 
     private final PrintService mPrinterService;
 
@@ -28,7 +28,6 @@ public class PrinterActivity extends AppCompatActivity {
     Button mMenu;
 
     // TODO 使われていないフィールドは消す。他も同様
-    private long mStartTime;
 
     public PrinterActivity() {
         mPrinterService = HandyPrintService.getInstance();
@@ -47,10 +46,6 @@ public class PrinterActivity extends AppCompatActivity {
     }
 
     // TODO 実装する意味ない
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 
     class PrinterActivityOnClickListener implements View.OnClickListener {
         @Override

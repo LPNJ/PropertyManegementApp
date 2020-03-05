@@ -17,7 +17,7 @@ public class GetReferencePropertyResponse {
         return mError;
     }
 
-    public String getInfos() {
+    public String getInfo() {
         return mInfo;
     }
 

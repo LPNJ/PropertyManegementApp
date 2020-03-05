@@ -12,7 +12,6 @@ public class PropertyInfo {
     private final String mPropertyCategory;
     private final String mComplement;
 
-
     /**
      * コンストラクタ
      */
@@ -27,52 +26,11 @@ public class PropertyInfo {
         this.mComplement = mComplement;
     }
 
-    public String getPropertyManager() {
-        return mPropertyManager;
-    }
-
-    public String getPropertyUser() {
-        return mPropertyUser;
-    }
-
-    public String getLocation() {
-        return mLocation;
-    }
-
     public String getControlNumber() {
         return mControlNumber;
     }
 
-    public String getProductName() {
-        return mProductName;
-    }
-
-    public String getPurchaseCategory() {
-        return mPurchaseCategory;
-    }
-
-    public String getPropertyCategory() {
-        return mPropertyCategory;
-    }
-
-    public String getComplement() {
-        return mComplement;
-    }
-
     // TODO 必要ないコードは削除、ほかのクラスも同様
-//    @Override
-//    public String toString() {
-//        return "PropertyInfo{" +
-//                "mPropertyManager='" + mPropertyManager + '\'' +
-//                ", mPropertyUser='" + mPropertyUser + '\'' +
-//                ", mLocation='" + mLocation + '\'' +
-//                ", mControlNumber='" + mControlNumber + '\'' +
-//                ", mProductName='" + mProductName + '\'' +
-//                ", mPurchaseCategory='" + mPurchaseCategory + '\'' +
-//                ", mPropertyCategory='" + mPropertyCategory + '\'' +
-//                ", mComplement='" + mComplement + '\'' +
-//                '}';
-//    }
 
     @Override
     public String toString() {

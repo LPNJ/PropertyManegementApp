@@ -1,40 +1,20 @@
 package com.example.z00s600149.propertymanegementapp;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
-
-import java.util.ArrayList;
-
-import entity.PropertyInfo;
-import task.GetTargetNamePropertyInfoTask;
-import task.PropertyInfoTask;
-import task.ResultListener;
-import task.mock.GetNameTaskMock;
-import task.mock.GetTargetNamePropertyInfoTaskMock;
-import task.mock.PropertyInfoTaskMock;
-import task.serialize.PropertyRegistResponse;
 
 public class PropertySelectActivity extends AppCompatActivity implements View.OnClickListener{
 
     // TODO コメントに意味がないからこのコメントであれば書く必要がない
-    /*ボタン*/
     private Button mManagerButton;
-    /*ボタン*/
     private Button mUserButton;
-    /*ボタン*/
     private Button mAllPropertyButton;
 
     // TODO コメントに意味がないからこのコメントであれば書く必要がない
-    /*デフォルトコンストラクタ*/
     public PropertySelectActivity() {
         super();
         Log.i("PropertySelect", "PropertySelect activity contstructor");

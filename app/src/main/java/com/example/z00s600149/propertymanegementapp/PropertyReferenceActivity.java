@@ -3,7 +3,6 @@ package com.example.z00s600149.propertymanegementapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,31 +11,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
-import JSONCLASS.PropertyInfoJSON;
-import entity.LoginNameSingleton;
-import entity.UserInfo;
+import jsonclass.PropertyInfoJson;
+import entity.LoginUserNameHolder;
 import task.AsyncTaskListener.CallbackListener;
-import task.DeletePropertyInfoTask;
-import task.GetPropertyInfoTask;
 import task.Request.DeletePropertyRequest;
-import task.ResultListener;
-import task.impl.DeletePropertyTaskImpl;
-import task.impl.GetReferenceInfoTaskImpl;
+import task.DeletePropertyTask;
+import task.GetReferenceInfoTask;
+import webApi.WebApi;
+import webApi.WebApiImpl;
 import task.mock.DeletePropertyInfoTaskMock;
-import task.mock.GetNameTaskMock;
-import task.mock.GetPropertyInfoTaskMock;
-import task.response.GetPropertyResponse;
+import task.mock.GetReferenceInfoTaskMock;
 import task.response.GetReferencePropertyResponse;
-import task.serialize.PropertyDeleteRequest;
-import task.serialize.PropertyInfoRequest;
-import task.serialize.PropertyInfoResponse;
 
 public class PropertyReferenceActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -65,23 +56,19 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
     /*印刷画面遷移用ボタン*/
     private Button mPrinterButton;
 
-    /* MOCK */
-    private GetPropertyInfoTask mGetPropertyInfoTask;
-
-    /* BOCK*/
-    private DeletePropertyInfoTask mDeletePropertyInfoTask;
-
-    /* サーバー通信（ユーザー名取得）*/
-    private GetReferenceInfoTaskImpl mGetReferenceTaskImpl;
-
-    /*サーバー通信（データ削除）*/
-    private DeletePropertyTaskImpl mDeleteTaskImpl;
+    private final WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
     public PropertyReferenceActivity() {
         super();
-        mGetReferenceTaskImpl = new GetReferenceInfoTaskImpl(mGetProperty);
-        mDeleteTaskImpl = new DeletePropertyTaskImpl(mDeleteProperty);
+        mWebApi = new WebApiImpl();
+        Log.i("PropertyReference", "PropertyReference activity contstructor");
+    }
+
+    /*デフォルトコンストラクタ*/
+    public PropertyReferenceActivity(WebApi WebApi) {
+        super();
+        mWebApi = WebApi;
         Log.i("PropertyReference", "PropertyReference activity contstructor");
     }
 
@@ -104,7 +91,7 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         mPrinterButton = (Button) findViewById(R.id.reference_print);
 
         //サーバー接続（名前取得）
-        mGetReferenceTaskImpl.execute(getIntent().getStringExtra(IntentKey.NUMBER));
+        mWebApi.getReferenceProperty(mGetProperty , getIntent().getStringExtra(IntentKey.NUMBER));
 
         //ボタン押下
         mEditButton.setOnClickListener(this);
@@ -112,22 +99,6 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         mPrinterButton.setOnClickListener(this);
 
     }
-
-    //MOCK
-    private ResultListener<PropertyInfoResponse> mResultListener = new ResultListener<PropertyInfoResponse>() {
-
-        @Override
-        public void onResult(PropertyInfoResponse propertyInfoResponse) {
-            mManager.setText(propertyInfoResponse.getPropertyInfo().getPropertyManager());
-            mUser.setText(propertyInfoResponse.getPropertyInfo().getPropertyUser());
-            mPlace.setText(propertyInfoResponse.getPropertyInfo().getLocation());
-            mControlNumber.setText(propertyInfoResponse.getPropertyInfo().getControlNumber());
-            mProduct.setText(propertyInfoResponse.getPropertyInfo().getProductName());
-            mPurchase.setText(propertyInfoResponse.getPropertyInfo().getPurchaseCategory());
-            mAssets.setText(propertyInfoResponse.getPropertyInfo().getPropertyCategory());
-            mRemark.setText(propertyInfoResponse.getPropertyInfo().getComplement());
-        }
-    };
 
     @Override
     public void onClick(View v) {
@@ -144,7 +115,7 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mDeleteTaskImpl.execute(new DeletePropertyRequest(LoginNameSingleton.getInstanse().getName(),Integer.parseInt(getIntent().getStringExtra(IntentKey.NUMBER))));
+                                mWebApi.deleteProperty(new DeletePropertyRequest(LoginUserNameHolder.getInstanse().getName(),Integer.parseInt(getIntent().getStringExtra(IntentKey.NUMBER))),mDeleteProperty);
                             }
                         })
                         .setNegativeButton("Cancel", null)
@@ -160,27 +131,6 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         }
     }
 
-    //MOCK
-    private ResultListener<Integer> mResultListenerDelete = new ResultListener<Integer>() {
-
-        @Override
-        public void onResult(Integer result) {
-
-            if (result != 0) {
-                new AlertDialog.Builder(PropertyReferenceActivity.this)
-                        .setMessage("削除できませんでした")
-                        .setPositiveButton("OK", null)
-                        .create()
-                        .show();
-                return;
-            } else if (result == 0) {
-                Intent intent = new Intent(PropertyReferenceActivity.this, MenuActivity.class);
-                startActivity(intent);
-            }
-
-        }
-    };
-
     //サーバー通信結果
     private CallbackListener<GetReferencePropertyResponse> mGetProperty = new CallbackListener<GetReferencePropertyResponse>() {
         @Override
@@ -188,7 +138,7 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
 
             ObjectMapper mapper = new ObjectMapper();
             try {
-                PropertyInfoJSON info = mapper.readValue(response.getInfos(), PropertyInfoJSON.class);
+                PropertyInfoJson info = mapper.readValue(response.getInfo(), PropertyInfoJson.class);
 
                 mManager.setText(info.mPropertyManager);
                 mUser.setText(info.mPropertyUser);

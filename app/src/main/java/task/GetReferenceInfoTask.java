@@ -1,21 +1,20 @@
 package task;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import jsonclass.ErrorAndAssetsListJson;
 import task.AsyncTaskListener.CallbackListener;
 import task.response.GetPropertyEntity;
-import task.response.GetPropertyResponse;
+import task.response.GetReferencePropertyResponse;
 
-public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse> {
+public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropertyResponse> {
 
-    public GetPropertyInfoTask(CallbackListener<GetPropertyResponse> listener) {
-        super(listener,"GET",new Urls().getPropertyInfo());
+    private CallbackListener<GetReferencePropertyResponse> listener = null;
+
+    public GetReferenceInfoTask(CallbackListener<GetReferencePropertyResponse> listener , String assetId) {
+        super(listener,"GET",new Urls().getReference(assetId));
     }
 
     @Override
@@ -24,20 +23,21 @@ public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse>
     }
 
     @Override
-    GetPropertyResponse parseJson(String readSd) {
-        GetPropertyResponse response = null;
+    GetReferencePropertyResponse parseJson(String readSd) {
         String returnCode = null;
-        ArrayList<GetPropertyEntity> properties = null;
+        ArrayList<GetPropertyEntity> preferenseProperty;
+        GetReferencePropertyResponse response = null;
 
         ObjectMapper mapper = new ObjectMapper();
         try {
             ErrorAndAssetsListJson info = mapper.readValue(readSd, ErrorAndAssetsListJson.class);
             returnCode = info.mError;
-            properties = info.mProperties;
-            response = new GetPropertyResponse(returnCode,properties);
+            preferenseProperty = info.mProperties;
+            response = new GetReferencePropertyResponse(returnCode,preferenseProperty.get(0).getProperty());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return response;
     }
+
 }

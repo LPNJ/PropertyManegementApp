@@ -25,7 +25,6 @@ public class QRcodeReaderActivity extends AppCompatActivity implements ZXingScan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode_reader);
-
     }
 
     @Override
@@ -51,15 +50,7 @@ public class QRcodeReaderActivity extends AppCompatActivity implements ZXingScan
     }
 
     // TODO 必要ないメソッドは削除。他も同様
-    public void displayAlertMessage(String message, DialogInterface.OnClickListener listener)
-    {
-        new AlertDialog.Builder(QRcodeReaderActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK",listener)
-                .setNegativeButton("Cancel",null)
-                .create()
-                .show();
-    }
+
 
     @Override
     public void handleResult(Result result) {

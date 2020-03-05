@@ -2,19 +2,32 @@ package task.mock;
 
 import java.util.ArrayList;
 
-import task.GetNameTask;
-import task.ResultListener;
+import task.AsyncTaskListener.CallbackListener;
+import task.Executer;
+import task.response.GetNameResponse;
 
-public class GetNameTaskMock implements GetNameTask {
+public class GetNameTaskMock{
 
-    @Override
-    public void execute(ArrayList<String> names, ResultListener resultListener) {
+    CallbackListener<GetNameResponse> listener;
+
+    public GetNameTaskMock(CallbackListener<GetNameResponse> listener) {
+        this.listener = listener;
+    }
+
+    public void execute() {
+
+        GetNameResponse response = null;
+
+        ArrayList<String> names = null;
+        String error = "0";
 
         names.add("komiyama");
         names.add("maeda");
         names.add("kimura");
 
-        resultListener.onResult(names);
+        response = new GetNameResponse(error,names);
+
+        listener.onPostExecute(response);
 
     }
 }

@@ -13,26 +13,19 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
-import entity.LoginNameSingleton;
+import Dialog.ShowDialog;
+import entity.LoginUserNameHolder;
 import entity.PropertyInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.GetNameTask;
-import task.GetPropertyInfoTask;
-import task.PropertyInfoTask;
 import task.Request.EditPropertyRequest;
-import task.ResultListener;
-import task.impl.EditPropertyTaskImpl;
-import task.impl.GetNameTaskImpl;
+import task.EditPropertyTask;
+import task.GetNameTask;
+import webApi.WebApi;
+import webApi.WebApiImpl;
+import webApi.WebApiMock;
 import task.mock.GetNameTaskMock;
-import task.mock.GetPropertyInfoTaskMock;
-import task.mock.PropertyInfoTaskMock;
+import task.mock.GetReferenceInfoTaskMock;
 import task.response.GetNameResponse;
-import task.serialize.PropertyInfoRequest;
-import task.serialize.PropertyInfoResponse;
-import task.serialize.PropertyRegistRequest;
-import task.serialize.PropertyRegistResponse;
 
 public class PropertyEditActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -58,26 +51,22 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
 
     private TextView mControlNumber;
 
-    /* MOCK */
-    private GetNameTask mGetNameTask;
-
-    /* MOCK */
-    private GetPropertyInfoTask mGetPropertyInfoTask;
-
-    /* MOCK */
-    private PropertyInfoTask mPropertyInfoTask;
-
-    /* サーバー接続用（資産番号と、エラーコード） */
-    private EditPropertyTaskImpl mEditPropertyTaskImpl;
-
-    /* サーバー接続用（ログインユーザー情報取得) */
-    private GetNameTaskImpl mGetNameTaskImpl;
+    private final WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
     public PropertyEditActivity() {
         super();
-        mEditPropertyTaskImpl = new EditPropertyTaskImpl(mCallBackListener_Edit);
-        mGetNameTaskImpl = new GetNameTaskImpl(mCallBackListener);
+//        mEditPropertyTaskImpl = new EditPropertyTask(mCallBackListener_Edit);
+//        mGetNameTaskImpl = new GetNameTask(mCallBackListener);
+        mWebApi = new WebApiImpl();
+        Log.i("PropertyEdit", "PropertyEdit activity contstructor");
+    }
+
+    public PropertyEditActivity(WebApi WebApi) {
+        super();
+//        mEditPropertyTaskImpl = new EditPropertyTask(mCallBackListener_Edit);
+//        mGetNameTaskImpl = new GetNameTask(mCallBackListener);
+        mWebApi = new WebApiMock();
         Log.i("PropertyEdit", "PropertyEdit activity contstructor");
     }
 
@@ -99,7 +88,8 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
         mPropertyEdit = (Button) findViewById(R.id.edit_button_edit);
 
         //ログイン名一覧取得
-        mGetNameTaskImpl.execute();
+//        mGetNameTaskImpl.execute();
+        mWebApi.getName(mCallBackListener);
 
         //ボタン押下の動作
         mPropertyEdit.setOnClickListener(this);
@@ -109,68 +99,29 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.edit_button_edit: {
-                mEditPropertyTaskImpl.execute(
-                        new EditPropertyRequest(
-                                LoginNameSingleton.getInstanse().getName(),
-                                Integer.parseInt(getIntent().getStringExtra(IntentKey.CONTROL_NUMBER)),
-                                new PropertyInfo((String) mManager.getSelectedItem(),
-                                        (String)mPropertyUser.getSelectedItem(),
-                                        mLocation.getText().toString(),
-                                        "",
-                                        mProductName.getText().toString(),
-                                        (String)mPurchase_Category_Spinner.getSelectedItem(),
-                                        (String)mProperty_Category_Spinner.getSelectedItem(),
-                                        mRemarks.getText().toString()))
-                );
+
+                mWebApi.editProperty(new EditPropertyRequest(
+                        LoginUserNameHolder.getInstanse().getName(),
+                        Integer.parseInt(getIntent().getStringExtra(IntentKey.CONTROL_NUMBER)),
+                        new PropertyInfo((String) mManager.getSelectedItem(),
+                                (String)mPropertyUser.getSelectedItem(),
+                                mLocation.getText().toString(),
+                                "",
+                                mProductName.getText().toString(),
+                                (String)mPurchase_Category_Spinner.getSelectedItem(),
+                                (String)mProperty_Category_Spinner.getSelectedItem(),
+                                mRemarks.getText().toString())),mCallBackListenerEdit);
             }
             break;
         }
     }
-
-    //MOCK
-    private ResultListener<PropertyRegistResponse> mResponseListener = new ResultListener<PropertyRegistResponse>() {
-
-        @Override
-        public void onResult(PropertyRegistResponse result) {
-            if (result == null) {
-                throw new IllegalArgumentException("result is null");
-            }
-            if (result.getError() == 0) {
-                Intent intent = new Intent(PropertyEditActivity.this, ControlNumberIssuedActivity.class);
-                intent.putExtra(IntentKey.CONTROL_NUMBER, result.getControlNumber());
-                Log.i("CONTROLNUMBER",result.getControlNumber());
-                startActivity(intent);
-            }
-        }
-    };
-
-    //MOCK
-    private ResultListener<ArrayList<String>> mResultListener = new ResultListener<ArrayList<String>>() {
-        @Override
-        public void onResult(ArrayList<String> names) {
-            ArrayAdapter<String> myAdapter_Manager = new ArrayAdapter<String>(PropertyEditActivity.this ,android.R.layout.simple_list_item_1, names);
-            ArrayAdapter<String> myAdapter_User = new ArrayAdapter<String>(PropertyEditActivity.this ,android.R.layout.simple_list_item_1, names);
-            ArrayAdapter<String> myAdapter_Purchase_Category = new ArrayAdapter<String>(PropertyEditActivity.this ,android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Purchase_Category));
-            ArrayAdapter<String> myAdapter_Property_Category = new ArrayAdapter<String>(PropertyEditActivity.this ,android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Property_Category));
-
-            myAdapter_Manager.setDropDownViewResource(android.R.layout.simple_list_item_1);
-            myAdapter_User.setDropDownViewResource(android.R.layout.simple_list_item_1);
-            myAdapter_Purchase_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
-            myAdapter_Property_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
-
-            mManager.setAdapter(myAdapter_Manager);
-            mPropertyUser.setAdapter(myAdapter_User);
-            mPurchase_Category_Spinner.setAdapter(myAdapter_Purchase_Category);
-            mProperty_Category_Spinner.setAdapter(myAdapter_Property_Category);
-        }
-    };
 
     // サーバー接続結果  ログイン名取得用
     private CallbackListener<GetNameResponse> mCallBackListener = new CallbackListener<GetNameResponse>() {
         @Override
         public void onPostExecute(GetNameResponse response) {
             if(Integer.parseInt(response.getError()) == 1){
-                show("不明なエラー");
+                new ShowDialog(PropertyEditActivity.this).show(R.string.error);
             }
             else {
                 myAdapter_Manager = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, response.getNames());
@@ -194,12 +145,12 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
     };
 
     //サーバ接続結果　編集できるかどうか
-    private CallbackListener<String> mCallBackListener_Edit = new CallbackListener<String>() {
+    private CallbackListener<String> mCallBackListenerEdit = new CallbackListener<String>() {
         @Override
         public void onPostExecute(String response) {
             if (Integer.parseInt(response) == 0) {
                 new AlertDialog.Builder(PropertyEditActivity.this)
-                        .setMessage("編集が完了しました")
+                        .setMessage(R.string.edit_success)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -210,26 +161,17 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
                         .show();
             }
             else if(Integer.parseInt(response) == 1){
-                show("RuntimeException");
+                new ShowDialog(PropertyEditActivity.this).show(R.string.cannot_connect);
             }
             else if(Integer.parseInt(response) == 2){
-                show("不正なパラメータ");
+                new ShowDialog(PropertyEditActivity.this).show(R.string.not_permit_character);
             }
             else if(Integer.parseInt(response) == 12){
-                show("指定ユーザーが見つかりません");
+                new ShowDialog(PropertyEditActivity.this).show(R.string.cannot_find_user);
             }
             else if(Integer.parseInt(response) == 31){
-                show("指定資産が見つかりません");
+                new ShowDialog(PropertyEditActivity.this).show(R.string.cannot_find_property);
             }
         }
     };
-
-    void show(String msg){
-        new AlertDialog.Builder(PropertyEditActivity.this)
-                .setMessage(msg)
-                .setPositiveButton("OK", null)
-                .create()
-                .show();
-    }
-
 }

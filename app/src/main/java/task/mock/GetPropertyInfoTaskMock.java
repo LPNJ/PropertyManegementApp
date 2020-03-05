@@ -3,31 +3,29 @@ package task.mock;
 import java.util.ArrayList;
 
 import entity.PropertyInfo;
-import task.GetPropertyInfoTask;
-import task.ResultListener;
-import task.serialize.PropertyInfoRequest;
-import task.serialize.PropertyInfoResponse;
+import task.AsyncTaskListener.CallbackListener;
+import task.Executer;
+import task.response.GetPropertyResponse;
 
-public class GetPropertyInfoTaskMock implements GetPropertyInfoTask {
+public class GetPropertyInfoTaskMock implements Executer<String> {
 
-    ArrayList<PropertyInfo> mPropertyInfo = new ArrayList<>();
-    int mNumber = 0;
+    private CallbackListener<GetPropertyResponse> listener = null;
+
+    public GetPropertyInfoTaskMock(CallbackListener<GetPropertyResponse> listener) {
+        this.listener = listener;
+    }
+
+    ArrayList<PropertyInfo> propertyInfos = new ArrayList<>();
 
     @Override
-    public void execute(String propertyInfoRequest, ResultListener resultListener) {
+    public void execute(String s) {
 
+        GetPropertyResponse response = null;
 
-        mPropertyInfo.add(new PropertyInfo("komiyama","maeda","新横浜","10001","ディスプレイ","レンタル","ディスプレイ",""));
-        mPropertyInfo.add(new PropertyInfo("maeda","kimura","海老名","10002","マウス","レンタル","周辺機器",""));
-        mPropertyInfo.add(new PropertyInfo("kimura","komiyama","大森","10003","SDカード","レンタル","USB・SD",""));
+        propertyInfos.add(new PropertyInfo("komiyama","maeda","新横浜","10001","ディスプレイ","レンタル","ディスプレイ",""));
+        propertyInfos.add(new PropertyInfo("maeda","kimura","海老名","10002","マウス","レンタル","周辺機器",""));
+        propertyInfos.add(new PropertyInfo("kimura","komiyama","大森","10003","SDカード","レンタル","USB・SD",""));
 
-        for(int i=0;i<mPropertyInfo.size();i++){
-            if(propertyInfoRequest.equals(mPropertyInfo.get(i).getControlNumber())){
-                mNumber = i;
-            }
-        }
-
-        resultListener.onResult(new PropertyInfoResponse(mPropertyInfo.get(mNumber)));
-
+        listener.onPostExecute(response);
     }
 }

@@ -1,8 +1,8 @@
-package JSONCLASS;
+package jsonclass;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class PropertyInfoJSON {
+public class PropertyInfoJson {
 
     @JsonProperty("mPropertyManager")
     public String mPropertyManager;

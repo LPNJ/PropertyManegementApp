@@ -1,31 +1,29 @@
 package task;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 
 import jsonclass.ErrorJson;
-import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
+import task.Request.DeletePropertyRequest;
 
-public class NewAccountTask extends ServerTask<UserInfo,String> {
+public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String> {
 
     private CallbackListener<String> listener = null;
 
-    public NewAccountTask(CallbackListener<String> listener) {
-        super(listener,"POST",new Urls().getNewAccount());
+    public DeletePropertyTask(CallbackListener<String> listener) {
+        super(listener,"DELETE",new Urls().getDelete());
         this.listener = listener;
     }
 
     @Override
-    JSONObject createJson(UserInfo userInfo) {
-        JSONObject json = new org.json.JSONObject();
+    JSONObject createJson(DeletePropertyRequest deletePropertyRequest) {
+        org.json.JSONObject json = new org.json.JSONObject();
         try {
-            json.put("userId", userInfo.getUserId());
-            json.put("password", userInfo.getPassword());
+            json.put("userId",deletePropertyRequest.getUserId());
+            json.put("assetId",deletePropertyRequest.getAssetId());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -36,6 +34,7 @@ public class NewAccountTask extends ServerTask<UserInfo,String> {
     @Override
     String parseJson(String readSd) {
         String returnCode = null;
+
         ObjectMapper mapper = new ObjectMapper();
         try {
             ErrorJson info = mapper.readValue(readSd, ErrorJson.class);
@@ -45,5 +44,8 @@ public class NewAccountTask extends ServerTask<UserInfo,String> {
         }
         return returnCode;
     }
+
+    // TODO 同じ処理がいろんなところにあるので共通化する
+
 
 }

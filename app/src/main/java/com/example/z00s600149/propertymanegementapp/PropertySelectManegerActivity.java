@@ -9,24 +9,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
 import java.util.ArrayList;
 
-import JSONCLASS.PropertyInfoJSON;
-import entity.LoginNameSingleton;
-import entity.PropertyInfo;
+import jsonResolution.JsonResolution;
+import entity.LoginUserNameHolder;
 import task.AsyncTaskListener.CallbackListener;
-import task.GetTargetNamePropertyInfoTask;
-import task.ResultListener;
-import task.impl.GetPropertyInfoTaskImpl;
-import task.mock.GetTargetNamePropertyInfoTaskMock;
+import task.GetPropertyInfoTask;
+import webApi.WebApi;
+import webApi.WebApiImpl;
+import task.mock.GetPropertyInfoTaskMock;
 import task.response.GetPropertyResponse;
-import task.response.RegisterPropertyResponse;
 
 public class PropertySelectManegerActivity extends AppCompatActivity implements CallbackListener<GetPropertyResponse> {
 
@@ -34,66 +26,28 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
     ArrayList<String> mControlNumber;
     ArrayList<String> mProductNumber;
 
-    /**/
-    private GetTargetNamePropertyInfoTask mPropertyInfosTask;
-
-    /**/
-    private GetPropertyInfoTaskImpl mGetPropertyInfoTaskImpl;
+    private final WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
     public PropertySelectManegerActivity() {
         super();
-        mGetPropertyInfoTaskImpl = new GetPropertyInfoTaskImpl(this);
+        mWebApi = new WebApiImpl();
         Log.i("PropertySelectManeger", "PropertySelectManeger activity contstructor");
     }
 
+    /*デフォルトコンストラクタ*/
+    public PropertySelectManegerActivity(WebApi WebApi) {
+        super();
+        mWebApi = WebApi;
+        Log.i("PropertySelectManeger", "PropertySelectManeger activity contstructor");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property_select_maneger);
-
-        mGetPropertyInfoTaskImpl.execute();
+        mWebApi.getProperty(this);
     }
-
-
-    ResultListener<ArrayList<PropertyInfo>> responseListener = new ResultListener<ArrayList<PropertyInfo>>() {
-
-        @Override
-        public void onResult(ArrayList<PropertyInfo> propertyInfos) {
-
-            mProductName = new ArrayList<>();
-            mControlNumber = new ArrayList<>();
-            mProductNumber = new ArrayList<>();
-
-            for (int i = 0; i < propertyInfos.size(); i++) {
-                if (LoginNameSingleton.getInstanse().getName().equals(propertyInfos.get(i).getPropertyManager())) {
-                    mProductName.add(propertyInfos.get(i).getProductName());
-                    mControlNumber.add(propertyInfos.get(i).getControlNumber());
-                    String ProductNumber = propertyInfos.get(i).getProductName() + propertyInfos.get(i).getControlNumber();
-                    mProductNumber.add(ProductNumber);
-                }
-            }
-
-            ListView properties = (ListView) findViewById(R.id.listview_maneger);
-
-            ArrayAdapter<String> myAdapter_Manager = new ArrayAdapter<String>(PropertySelectManegerActivity.this, android.R.layout.simple_list_item_1, mProductNumber);
-            myAdapter_Manager.setDropDownViewResource(android.R.layout.simple_list_item_1);
-            properties.setAdapter(myAdapter_Manager);
-
-            properties.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    Intent i = new Intent(PropertySelectManegerActivity.this, PropertyReferenceActivity.class);
-                    i.putExtra(IntentKey.CONTROL_NUMBER, mControlNumber.get(position));
-                    startActivity(i);
-
-                }
-
-            });
-        }
-    };
 
     @Override
     public void onPostExecute(GetPropertyResponse response) {
@@ -103,20 +57,15 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
 
         ArrayList<String> SendNumber = new ArrayList<>();
 
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            for (int i = 0; response.getInfos().size() > i; i++) {
-                PropertyInfoJSON info = mapper.readValue(response.getInfos().get(i).getProperty(), PropertyInfoJSON.class);
-                pManager.add(info.mPropertyManager);
-                pName.add(info.mProductName);
-            }
+        //JSON文字列にキーを指定して値を取得
+        new JsonResolution().toListManager(response , pManager,pName);
 
             mProductName = new ArrayList<>();
             mControlNumber = new ArrayList<>();
             mProductNumber = new ArrayList<>();
 
             for (int i = 0; i < response.getInfos().size(); i++) {
-                if(pManager.get(i).equals(LoginNameSingleton.getInstanse().getName())) {
+                if(pManager.get(i).equals(LoginUserNameHolder.getInstanse().getName())) {
                     mProductName.add(response.getInfos().get(i).getProperty());
                     mControlNumber.add(response.getInfos().get(i).getProperty());
                     mProductNumber.add(response.getInfos().get(i).getAssetId().toString() + " " + pName.get(i));
@@ -133,21 +82,11 @@ public class PropertySelectManegerActivity extends AppCompatActivity implements 
             properties.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
                     Intent i = new Intent(PropertySelectManegerActivity.this, PropertyReferenceActivity.class);
                     i.putExtra(IntentKey.NUMBER, SendNumber.get(position));
                     startActivity(i);
-
                 }
 
             });
-
-        } catch (JsonParseException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

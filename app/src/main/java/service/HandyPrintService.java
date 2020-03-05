@@ -31,7 +31,7 @@ public class HandyPrintService implements PrintService {
     ArrayList<HmpImage> mImages = new ArrayList<>();
 
     // TODO タグ名おかしい
-    private static final String TAG = "時間測定";
+    private static final String TAG = "HandyPrintService";
 
     private long mStartTime;
 
@@ -42,15 +42,9 @@ public class HandyPrintService implements PrintService {
     }
 
     /**
-     * タグ
-     */
-    //private static final String TAG = PrinterManager.class.getSimpleName();
-
-    /**
      * リクエストコード
      */
     static final int REQUEST_ENABLE_BT = 1;
-
 
 
     /**
@@ -195,15 +189,14 @@ public class HandyPrintService implements PrintService {
             Log.i(TAG, "close()- info HMPSDK : APP->SDK:  Clear Listener by clearListener().");
             mPrinter.clearListener();
             Log.i(TAG,"startScan() - info : HMPSDK : APP->SDK: Close device by close().");
-//            mPrinter.close();
-            Log.i(TAG,"BBBBB");
+
+            mPrinter.close();
+            Log.i(TAG,"onDestroy");
+            mAdapter.cancelDiscovery();
+
         }
         // TODO if分の中に入れる、ここでcloseしたら上でnullチェックしている意味がない
-        mPrinter.close();
-        Log.i(TAG,"onDestroy");
-        mAdapter.cancelDiscovery();
     }
-
 
 
     /////////////////////////////
@@ -316,26 +309,20 @@ public class HandyPrintService implements PrintService {
 
         if (mPrinter != null) {
             /* リスナをクリア */
-            //Logger.i(TAG, "open()- info HMPSDK : APP->SDK:  Clear listener by clearListener().");
             Log.i(TAG, "open()- info HMPSDK : APP->SDK:  Clear listener by clearListener().");
             mPrinter.clearListener();
             /* リスナをクリア */
-            //Logger.i(TAG, "open()- info HMPSDK : APP->SDK:  Close device by close().");
             Log.i(TAG, "open()- info HMPSDK : APP->SDK:  Close device by close().");
             mPrinter.close();
         }
         mPrinter = printer;
         /* リスナをレジスト */
-        //Logger.i(TAG, "open()- info HMPSDK : APP->SDK:  Register Listener to listen to printer by setListener().");
         Log.i(TAG, "open()- info HMPSDK : APP->SDK:  Register Listener to listen to printer by setListener().");
         mPrinter.setListener(mPrinterListener);
         /* プリントを接続 */
-        //Logger.i(TAG, "open()- info HMPSDK : APP->SDK:  Connect Printer by open().");
         Log.i(TAG, "open()- info HMPSDK : APP->SDK:  Connect Printer by open().");
         mPrinter.open();
     }
-
-    /////////////////////////////
 
     /**
      * プリント状態通知
@@ -369,7 +356,6 @@ public class HandyPrintService implements PrintService {
         }
     }
 
-    ////////////////////////////
 
     /**
      印刷 *
@@ -380,29 +366,13 @@ public class HandyPrintService implements PrintService {
      */
     public synchronized boolean print(ArrayList<HmpImage> images, HmpSettings settings, int copies) {
         if (mPrinter == null || images == null || settings == null || copies <= 0 || copies > 999) {
-            //Logger.e(TAG, "print() - error : parameter is invalid");
             Log.e(TAG, "print() - error : parameter is invalid");
             return false;
         }
         /* 印刷 */
-        //Logger.i(TAG, "print()- info HMPSDK : APP->SDK: Print data by print().");
         Log.i(TAG, "print()- info HMPSDK : APP->SDK: Print data by print().");
         return mPrinter.print(images, settings, copies);
     }
-
-
-    //////////////////////////////////////////////////
-    //////////////////////////////////////////////////
-
-    /**
-     * タグ
-     */
-    //private static final String TAG2 = QRCodeFragment.class.getSimpleName();
-
-    /**
-     * プリンタデバイス管理
-     */
-    //final PrinterManager mPrinterManager = PrinterManager.getInstance();
 
     /**
      * 誤り訂正レベル
@@ -421,8 +391,6 @@ public class HandyPrintService implements PrintService {
 
     Bitmap mBitmap = null;
 
-
-
     /**
      QRコードを生成
      */
@@ -430,20 +398,6 @@ public class HandyPrintService implements PrintService {
         Log.i(TAG,"generateQRCode() time = " + (System.currentTimeMillis() - mStartTime));
         mImages.clear();
         mBitmap = null;
-//        if (mErrorCorrection.getText().toString().equals("") || Integer.valueOf(mErrorCorrection.getText().toString()) > 3 || Integer.valueOf(mErrorCorrection.getText().toString()) < 0) {
-//            Toast.makeText(getApplicationContext(),getResources().getString(R.string.message_value_invalid),Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        if (mCellSize.getText().toString().equals("") || Integer.valueOf(mCellSize.getText().toString()) > 2 || Integer.valueOf(mCellSize.getText().toString()) < 0) {
-//            Toast.makeText(getApplicationContext(),getResources().getString(R.string.message_value_invalid),Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//
-//        if (mBodyEdit.getText().toString().equals("")) {
-//            Toast.makeText(getApplicationContext(),getResources().getString(R.string.qrcode_body_empty),Toast.LENGTH_SHORT).show();
-//            return;
-//        }
 
         /* qrコード生成 */
         Log.i(TAG, "generateQRCode()- info HMPSDK : APP->SDK: Generate qrcode by generateQrcode().");
@@ -451,15 +405,12 @@ public class HandyPrintService implements PrintService {
         HmpImage image = HmpImageFactory.generateQrcode(propertyNumber, mLevel, mRatio, null);
         if ((image.getHeight() == 0) || (image.getWidth() == 0))
         {
-            //Toast.makeText(getApplicationContext(),getResources().getString(R.string.message_unvalid),Toast.LENGTH_SHORT).show();
             Toast.makeText(activity.getApplicationContext(),activity.getResources().getString(R.string.app_name),Toast.LENGTH_SHORT).show();
             return;
         }
 
         mImages.add(image);
-        //Logger.i(TAG, "generateQRCode()- info HMPSDK : APP->SDK: Get qrcode bitmap by getBitmap().");
         Log.i(TAG, "generateQRCode()- info HMPSDK : APP->SDK: Get qrcode bitmap by getBitmap().");
         mBitmap = image.getBitmap();
-        //mBodyView.setImageBitmap(mBitmap);
     }
 }

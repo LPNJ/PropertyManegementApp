@@ -1,10 +1,10 @@
-package JSONCLASS;
+package jsonclass;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 
-public class ErrorAndUserListJSON {
+public class ErrorAndUserListJson {
 
     @JsonProperty("error")
     public String mError;

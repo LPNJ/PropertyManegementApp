@@ -1,14 +1,20 @@
 package task.mock;
 
-import task.DeletePropertyInfoTask;
-import task.ResultListener;
-import task.serialize.PropertyDeleteRequest;
-import task.serialize.PropertyInfoRequest;
+import task.AsyncTaskListener.CallbackListener;
+import task.Executer;
+import task.Request.DeletePropertyRequest;
 
-public class DeletePropertyInfoTaskMock implements DeletePropertyInfoTask {
+public class DeletePropertyInfoTaskMock implements Executer<DeletePropertyRequest> {
+
+    private CallbackListener<String> listener;
+
+    DeletePropertyInfoTaskMock(CallbackListener<String> listener){
+        listener = listener;
+    }
 
     @Override
-    public void execute(PropertyDeleteRequest propertyDeleteRequest, ResultListener listener) {
-        listener.onResult(0);
+    public void execute(DeletePropertyRequest propertyDeleteRequest) {
+        listener.onPostExecute("0");
     }
+
 }
