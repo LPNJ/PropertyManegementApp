@@ -1,16 +1,16 @@
 // TODO 他と同様パッケージは小文字で始める
-package Dialog;
+package dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 
-// TODO 削除する
-import com.example.z00s600149.propertymanegementapp.NewAccountActivity;
+import com.example.z00s600149.propertymanegementapp.R;
 
+// TODO 削除する
 public class ShowDialog {
 
     // TODO final
-    private Activity mActivity;
+    private final Activity mActivity;
 
     public ShowDialog(Activity activity){
         this.mActivity = activity;
@@ -20,7 +20,7 @@ public class ShowDialog {
     public void show(int msg) {
         new AlertDialog.Builder(mActivity)
                 .setMessage(msg)
-                .setPositiveButton("OK", null)
+                .setPositiveButton(R.string.ok, null)
                 .create()
                 .show();
     }

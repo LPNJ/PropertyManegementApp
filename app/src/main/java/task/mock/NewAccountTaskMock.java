@@ -2,9 +2,8 @@ package task.mock;
 
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.Executer;
 
-public class NewAccountTaskMock implements Executer<UserInfo> {
+public class NewAccountTaskMock{
 
     CallbackListener<String> resultListener;
 
@@ -12,8 +11,6 @@ public class NewAccountTaskMock implements Executer<UserInfo> {
         resultListener = resultListener;
     }
 
-
-    @Override
     public void execute(UserInfo userInfo) {
 
         if("failure".equals(userInfo.getUserId())) {

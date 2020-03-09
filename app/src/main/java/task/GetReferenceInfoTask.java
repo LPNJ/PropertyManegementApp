@@ -1,20 +1,22 @@
 package task;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
-import jsonclass.ErrorAndAssetsListJson;
+import json.ErrorAndAssetsListJson;
 import task.AsyncTaskListener.CallbackListener;
 import task.response.GetPropertyEntity;
 import task.response.GetReferencePropertyResponse;
 
 public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropertyResponse> {
 
-    private CallbackListener<GetReferencePropertyResponse> listener = null;
+    private static final String TAG = "GetReferenceInfoTask";
 
     public GetReferenceInfoTask(CallbackListener<GetReferencePropertyResponse> listener , String assetId) {
-        super(listener,"GET",new Urls().getReference(assetId));
+        super(listener, RequestType.GET_REFERENCE.getMethod(), RequestType.GET_REFERENCE.getUrl() + "/" + assetId);
     }
 
     @Override
@@ -26,18 +28,26 @@ public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropert
     GetReferencePropertyResponse parseJson(String readSd) {
         String returnCode = null;
         // TODO タイポ
-        ArrayList<GetPropertyEntity> preferenseProperty;
+        ArrayList<GetPropertyEntity> preferenceProperty = null;
         GetReferencePropertyResponse response = null;
 
         ObjectMapper mapper = new ObjectMapper();
         try {
             ErrorAndAssetsListJson info = mapper.readValue(readSd, ErrorAndAssetsListJson.class);
             returnCode = info.mError;
-            preferenseProperty = info.mProperties;
-            response = new GetReferencePropertyResponse(returnCode,preferenseProperty.get(0).getProperty());
+            preferenceProperty = info.mProperties;
+            response = new GetReferencePropertyResponse(returnCode,preferenceProperty.get(0).getProperty());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException occurred." , e);
+            response = new GetReferencePropertyResponse("1",preferenceProperty.get(0).getProperty());
+            return response;
         }
+        return response;
+    }
+
+    @Override
+    GetReferencePropertyResponse returnErrorCode() {
+        GetReferencePropertyResponse response = new GetReferencePropertyResponse("1","NoData");
         return response;
     }
 

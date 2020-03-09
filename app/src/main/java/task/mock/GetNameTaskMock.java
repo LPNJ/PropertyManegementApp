@@ -3,7 +3,6 @@ package task.mock;
 import java.util.ArrayList;
 
 import task.AsyncTaskListener.CallbackListener;
-import task.Executer;
 import task.response.GetNameResponse;
 
 public class GetNameTaskMock{

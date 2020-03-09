@@ -13,46 +13,47 @@ import webApi.WebApi;
 import webApi.WebApiImpl;
 
 /**
- * 資産利用者がログイン名と一致していた場合のみ結果を表示させるActivity
+ * 資産管理者がログイン名と一致していた場合のみ結果を表示させるActivity
  */
-public class PropertySelectUserActivity extends AppCompatActivity{
+public class PropertySelectManagerActivity extends AppCompatActivity{
 
-    private static final String TAG = "PropertySelectUserAct";
+    private static final String TAG = "PropertySelectMAct";
 
-    private ArrayList<String> mProductNumber;
-    private final WebApi mWebApi;
+    ArrayList<String> mProductNumber;
+
     ListView properties;
 
+    private final WebApi mWebApi;
+
     /*デフォルトコンストラクタ*/
-    public PropertySelectUserActivity() {
+    public PropertySelectManagerActivity() {
         super();
         mWebApi = new WebApiImpl();
-        Log.i(TAG, "PropertySelectUser activity start");
+        // TODO 命名規則に合わせる最後にactivity付ける
+        Log.i(TAG, "PropertySelectManager activity start");
     }
 
     /*デフォルトコンストラクタ*/
-    public PropertySelectUserActivity(WebApi WebApi) {
+    public PropertySelectManagerActivity(WebApi WebApi) {
         super();
         mWebApi = WebApi;
-        Log.i(TAG, "PropertySelectUser activity start");
+        Log.i(TAG, "PropertySelectManager activity start");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_property_select_user);
-
-        properties = (ListView) findViewById(R.id.listview_user);
-
+        setContentView(R.layout.activity_property_select_maneger);
         mWebApi.getProperty(listener);
+
+        properties = (ListView) findViewById(R.id.listview_maneger);
     }
 
-    // TODO PRopertySElectMangerActivytと共通なら共通化
     CallbackListener<GetPropertyResponse> listener = new CallbackListener<GetPropertyResponse>() {
-        final String roleUser = "USER";
+        final String roleManager = "MANAGER";
         @Override
         public void onPostExecute(GetPropertyResponse response) {
-            new SelectProperties(PropertySelectUserActivity.this).getProperties(roleUser,response);
+            new SelectProperties(PropertySelectManagerActivity.this).getProperties(roleManager,response);
         }
     };
 }

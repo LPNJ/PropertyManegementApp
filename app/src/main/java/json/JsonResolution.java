@@ -1,11 +1,8 @@
-package jsonResolution;
+package json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
-import jsonclass.PropertyInfoJson;
 import task.response.GetPropertyResponse;
 
 public class JsonResolution {
@@ -19,7 +16,6 @@ public class JsonResolution {
                 pManager.add(info.mPropertyManager);
                 pName.add(info.mProductName);
             }
-
         }catch (IOException e){
         }
     }
@@ -30,18 +26,14 @@ public class JsonResolution {
         try {
             for (int i = 0; response.getInfos().size() > i; i++) {
                 PropertyInfoJson info = mapper.readValue(response.getInfos().get(i).getProperty(), PropertyInfoJson.class);
-                pManager.add(info.mPropertyManager);
+                pManager.add(info.mPropertyUser);
                 pName.add(info.mProductName);
             }
-
         }catch (IOException e){
-
         }
-
     }
 
-
-    public void toListAll(GetPropertyResponse response, ArrayList<String> productName) {
+    public void toListAll(GetPropertyResponse response , ArrayList<String> productName) {
 
         //JSON文字列にキーを指定して値を取得
         ObjectMapper mapper = new ObjectMapper();
@@ -50,10 +42,7 @@ public class JsonResolution {
                 PropertyInfoJson info = mapper.readValue(response.getInfos().get(i).getProperty(), PropertyInfoJson.class);
                 productName.add(info.mProductName);
             }
-
         }catch (IOException e){
-
         }
     }
-
 }

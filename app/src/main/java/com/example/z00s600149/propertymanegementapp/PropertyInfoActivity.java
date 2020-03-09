@@ -12,21 +12,22 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import Dialog.ShowDialog;
+import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.PropertyInfo;
 import task.AsyncTaskListener.CallbackListener;
 import task.Request.RegisterPropertyRequest;
-import task.GetNameTask;
-import task.RegisterPropertyInfoTask;
 import webApi.WebApi;
 import webApi.WebApiImpl;
-import task.mock.GetNameTaskMock;
-import task.mock.RegisterPropertyInfoTaskMock;
 import task.response.GetNameResponse;
 import task.response.RegisterPropertyResponse;
 
+/**
+ * 資産情報を登録させるActivity
+ */
 public class PropertyInfoActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String TAG = "PropertyAct";
 
     /*ログインユーザー情報保持用リスト*/
     ArrayAdapter<String> myAdapter_Manager;
@@ -54,13 +55,13 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
     public PropertyInfoActivity() {
         super();
         mWebApi = new WebApiImpl();
-        Log.i("Property", "Property activity contstructor");
+        Log.i(TAG, "Property activity start");
     }
 
     public PropertyInfoActivity(WebApi WebApi) {
         super();
         mWebApi = WebApi;
-        Log.i("Property", "Property activity contstructor");
+        Log.i(TAG, "Property activity start");
     }
 
     @Override
@@ -91,8 +92,8 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.property_button_regist: {
-                mWebApi.propertyRegister(new RegisterPropertyRequest(
-                        LoginUserNameHolder.getInstanse().getName(),
+                mWebApi.registerProperty(new RegisterPropertyRequest(
+                        LoginUserNameHolder.getInstance().getName(),
                         new PropertyInfo((String) mManager.getSelectedItem(),
                                 (String)mPropertyUser.getSelectedItem(),
                                 mLocation.getText().toString(),
@@ -101,7 +102,6 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
                                 (String)mPurchase_Category_Spinner.getSelectedItem(),
                                 (String)mProperty_Category_Spinner.getSelectedItem(),
                                 mRemarks.getText().toString())),mCallBackListenerAssetId);
-
             }
             break;
         }
@@ -112,29 +112,11 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
     private CallbackListener<GetNameResponse> mCallBackListener = new CallbackListener<GetNameResponse>() {
         @Override
         public void onPostExecute(GetNameResponse response) {
-            if(Integer.parseInt(response.getError()) == 1){
-                new ShowDialog(PropertyInfoActivity.this).show(R.string.error);
-            }
-            else {
-                myAdapter_Manager = new ArrayAdapter<String>(PropertyInfoActivity.this, android.R.layout.simple_list_item_1, response.getNames());
-                ArrayAdapter<String> myAdapter_User = new ArrayAdapter<String>(PropertyInfoActivity.this, android.R.layout.simple_list_item_1, response.getNames());
-                ArrayAdapter<String> myAdapter_Purchase_Category = new ArrayAdapter<String>(PropertyInfoActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Purchase_Category));
-                ArrayAdapter<String> myAdapter_Property_Category = new ArrayAdapter<String>(PropertyInfoActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Property_Category));
-
-                myAdapter_Manager.setDropDownViewResource(android.R.layout.simple_list_item_1);
-                myAdapter_User.setDropDownViewResource(android.R.layout.simple_list_item_1);
-                myAdapter_Purchase_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
-                myAdapter_Property_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
-
-                mManager.setAdapter(myAdapter_Manager);
-                mPropertyUser.setAdapter(myAdapter_User);
-                mPurchase_Category_Spinner.setAdapter(myAdapter_Purchase_Category);
-                mProperty_Category_Spinner.setAdapter(myAdapter_Property_Category);
-            }
+            final String role = "INFO";
+            new GetNames(PropertyInfoActivity.this).getLoginName(role,response);
         }
     };
 
-    // TODO PropertyInfoActivtyと全く一緒なら共通化
     //RegisterPropertyTask実行時の結果
     private CallbackListener<RegisterPropertyResponse> mCallBackListenerAssetId = new CallbackListener<RegisterPropertyResponse>() {
         @Override
@@ -172,7 +154,7 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(PropertyInfoActivity.this)
                     .setMessage(R.string.to_menu)
-                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(PropertyInfoActivity.this, MenuActivity.class);

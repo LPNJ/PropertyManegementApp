@@ -1,10 +1,9 @@
 package task.mock;
 
 import task.AsyncTaskListener.CallbackListener;
-import task.Executer;
 import task.Request.DeletePropertyRequest;
 
-public class DeletePropertyInfoTaskMock implements Executer<DeletePropertyRequest> {
+public class DeletePropertyInfoTaskMock{
 
     private CallbackListener<String> listener;
 
@@ -12,7 +11,6 @@ public class DeletePropertyInfoTaskMock implements Executer<DeletePropertyReques
         listener = listener;
     }
 
-    @Override
     public void execute(DeletePropertyRequest propertyDeleteRequest) {
         listener.onPostExecute("0");
     }

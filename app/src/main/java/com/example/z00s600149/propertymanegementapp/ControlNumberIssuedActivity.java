@@ -1,17 +1,13 @@
 package com.example.z00s600149.propertymanegementapp;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import Dialog.ShowDialog;
+import dialog.ShowDialog;
 
 /**
  * 発行された資産番号を表示するクラス

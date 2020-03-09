@@ -4,10 +4,9 @@ import java.util.ArrayList;
 
 import entity.PropertyInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.Executer;
 import task.response.GetPropertyResponse;
 
-public class GetReferenceInfoTaskMock implements Executer<String> {
+public class GetReferenceInfoTaskMock{
 
     private CallbackListener<GetPropertyResponse> listener = null;
 
@@ -18,7 +17,6 @@ public class GetReferenceInfoTaskMock implements Executer<String> {
     ArrayList<PropertyInfo> mPropertyInfo = new ArrayList<>();
     int mNumber = 0;
 
-    @Override
     public void execute(String propertyInfoRequest) {
 
         GetPropertyResponse response = null;

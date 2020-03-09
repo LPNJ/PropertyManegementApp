@@ -10,26 +10,25 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
-
-import jsonclass.PropertyInfoJson;
+import json.PropertyInfoJson;
 import entity.LoginUserNameHolder;
 import task.AsyncTaskListener.CallbackListener;
 import task.Request.DeletePropertyRequest;
-import task.DeletePropertyTask;
-import task.GetReferenceInfoTask;
 import webApi.WebApi;
 import webApi.WebApiImpl;
-import task.mock.DeletePropertyInfoTaskMock;
-import task.mock.GetReferenceInfoTaskMock;
 import task.response.GetReferencePropertyResponse;
 
+/**
+ * 選択した資産情報を表示させるActivity
+ * 削除の操作もできる
+ */
 public class PropertyReferenceActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String TAG = "PropertyReferenceAct";
 
     /*資産管理者用ID*/
     private TextView mManager;
@@ -47,10 +46,8 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
     private TextView mAssets;
     /*補足用ID*/
     private TextView mRemark;
-
     /*編集画面遷移用ボタン*/
     private Button mEditButton;
-
     /*削除用ボタン*/
     private Button mDeleteButton;
     /*印刷画面遷移用ボタン*/
@@ -63,15 +60,15 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         super();
         mWebApi = new WebApiImpl();
         // TODO TAGを定義する
-        Log.i("PropertyReference", "PropertyReference activity contstructor");
+        Log.i(TAG, "PropertyReference activity start");
     }
 
     /*デフォルトコンストラクタ*/
-    public PropertyReferenceActivity(WebApi WebApi) {
+    public PropertyReferenceActivity(WebApi webApi) {
         super();
-        mWebApi = WebApi;
+        mWebApi = webApi;
         // TODO constructorが全部タイポ、ほかのクラスも確認する
-        Log.i("PropertyReference", "PropertyReference activity contstructor");
+        Log.i(TAG, "PropertyReference activity start");
     }
 
     @Override
@@ -114,14 +111,14 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
             case R.id.reference_delete: {
                 new AlertDialog.Builder(PropertyReferenceActivity.this)
                         // TODO stringsに追加、「.setMessage("」とかで検索して漏れないか確認してください
-                        .setMessage("削除してもよろしいですか？")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setMessage(R.string.delete)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mWebApi.deleteProperty(new DeletePropertyRequest(LoginUserNameHolder.getInstanse().getName(),Integer.parseInt(getIntent().getStringExtra(IntentKey.NUMBER))),mDeleteProperty);
+                                mWebApi.deleteProperty(new DeletePropertyRequest(LoginUserNameHolder.getInstance().getName(),Integer.parseInt(getIntent().getStringExtra(IntentKey.NUMBER))),mDeleteProperty);
                             }
                         })
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(R.string.cancel, null)
                         .show();
             }
             break;
@@ -171,8 +168,8 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         public void onPostExecute(String response) {
 
             new AlertDialog.Builder(PropertyReferenceActivity.this)
-                    .setMessage("削除が完了しました")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.delete_complete)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(PropertyReferenceActivity.this, MenuActivity.class);
@@ -188,15 +185,15 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         // BackBtnアクション
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(PropertyReferenceActivity.this)
-                    .setMessage("メニュー画面に戻りますか？")
-                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.to_menu)
+                    .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(PropertyReferenceActivity.this, MenuActivity.class);
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton(R.string.cancel,null)
                     .create()
                     .show();
         }

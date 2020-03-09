@@ -1,21 +1,23 @@
 package task;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
-
-import jsonclass.ErrorAndAssetidJSON;
+import json.ErrorAndAssetIdJson;
 import task.AsyncTaskListener.CallbackListener;
 import task.Request.RegisterPropertyRequest;
 import task.response.RegisterPropertyResponse;
 
 public class RegisterPropertyInfoTask extends ServerTask<RegisterPropertyRequest, RegisterPropertyResponse> {
 
+    private static final String TAG = "RegisterInfoTask";
+
     public RegisterPropertyInfoTask(CallbackListener<RegisterPropertyResponse> listener) {
-        super(listener,"POST",new Urls().getRegist());
+        super(listener,RequestType.REGISTER);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class RegisterPropertyInfoTask extends ServerTask<RegisterPropertyRequest
             json.put("data",registerPropertyRequest.getInfos().toString());
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, "JSONException occurred." , e);
         }
         return json;
     }
@@ -39,13 +41,21 @@ public class RegisterPropertyInfoTask extends ServerTask<RegisterPropertyRequest
 
         ObjectMapper mapper = new ObjectMapper();
         try {
-            ErrorAndAssetidJSON info = mapper.readValue(readSd,ErrorAndAssetidJSON.class);
+            ErrorAndAssetIdJson info = mapper.readValue(readSd, ErrorAndAssetIdJson.class);
             returnCode = info.mError;
             assetId = info.mControlNumber;
             response = new RegisterPropertyResponse(returnCode,assetId);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException occurred." , e);
+            response = new RegisterPropertyResponse("1",assetId);
+            return response;
         }
+        return response;
+    }
+
+    @Override
+    RegisterPropertyResponse returnErrorCode() {
+        RegisterPropertyResponse response = new RegisterPropertyResponse("1","00000");;
         return response;
     }
 

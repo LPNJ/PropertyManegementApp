@@ -15,7 +15,7 @@ public interface WebApi {
     void newAccount(UserInfo userInfo, CallbackListener<String>  listener);
     void getName(CallbackListener<GetNameResponse> listener);
     // TODO 動詞から始める registerProperty
-    void propertyRegister(RegisterPropertyRequest request, CallbackListener<RegisterPropertyResponse>  listener);
+    void registerProperty(RegisterPropertyRequest request, CallbackListener<RegisterPropertyResponse>  listener);
     void getProperty(CallbackListener<GetPropertyResponse> listener);
     void getReferenceProperty(CallbackListener<GetReferencePropertyResponse> listener, String assetId);
     void editProperty(EditPropertyRequest request , CallbackListener<String> listener);

@@ -8,7 +8,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import Dialog.ShowDialog;
+import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
@@ -17,7 +17,10 @@ import webApi.WebApiImpl;
 import validator.UserLoginValidator;
 
 // TODO Javadoc ほかのクラスも書く, 以下のクラスの感じでよい
-/** {@link ControlNumberIssuedActivity}*/
+/**
+ * ログインするためのActivity
+ *
+ */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String TAG = "LoginAct";
@@ -32,10 +35,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText mPass;
     // TODO private
     /** ログインIDデータ保持用 */
-    String mIdInfo;
+    private String mIdInfo;
     // TODO private
     /** ログイン用パスワードデータ保持用 */
-    String mPassInfo;
+    private String mPassInfo;
 
     private final WebApi mWebApi;
 
@@ -79,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         new ShowDialog(LoginActivity.this).show(R.string.not_input);
                     }
                     else {
-                        LoginUserNameHolder name = LoginUserNameHolder.getInstanse();
+                        LoginUserNameHolder name = LoginUserNameHolder.getInstance();
                         name.setName(mIdInfo);
                         mWebApi.login(new UserInfo(mIdInfo,mPassInfo), listener);
                     }

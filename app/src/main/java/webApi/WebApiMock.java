@@ -17,7 +17,6 @@ import task.response.GetNameResponse;
 import task.response.GetPropertyResponse;
 import task.response.GetReferencePropertyResponse;
 import task.response.RegisterPropertyResponse;
-import webApi.WebApi;
 
 public class WebApiMock implements WebApi {
     @Override
@@ -36,7 +35,7 @@ public class WebApiMock implements WebApi {
     }
 
     @Override
-    public void propertyRegister(RegisterPropertyRequest request, CallbackListener<RegisterPropertyResponse> listener) {
+    public void registerProperty(RegisterPropertyRequest request, CallbackListener<RegisterPropertyResponse> listener) {
         new RegisterPropertyInfoTask(listener).execute(request);
     }
 

@@ -1,21 +1,21 @@
 package task;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
-
-import jsonclass.ErrorJson;
+import json.ErrorJson;
 import task.AsyncTaskListener.CallbackListener;
 import task.Request.DeletePropertyRequest;
 
 public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String> {
 
-    private CallbackListener<String> listener = null;
+    private static final String TAG = "DeleteTask";
 
     public DeletePropertyTask(CallbackListener<String> listener) {
-        super(listener,"DELETE",new Urls().getDelete());
-        this.listener = listener;
+        super(listener,RequestType.DELETE);
     }
 
     @Override
@@ -24,9 +24,8 @@ public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String
         try {
             json.put("userId",deletePropertyRequest.getUserId());
             json.put("assetId",deletePropertyRequest.getAssetId());
-
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, "JSONException occurred.", e);
         }
         return json;
     }
@@ -38,10 +37,18 @@ public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String
         ObjectMapper mapper = new ObjectMapper();
         try {
             ErrorJson info = mapper.readValue(readSd, ErrorJson.class);
-            returnCode = info.error;
+            returnCode = info.mError;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException occurred.", e);
+            returnCode = "1";
+            return returnCode;
         }
+        return returnCode;
+    }
+
+    @Override
+    String returnErrorCode() {
+        String returnCode = "1";
         return returnCode;
     }
 }

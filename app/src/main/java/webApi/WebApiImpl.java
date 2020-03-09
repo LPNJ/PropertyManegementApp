@@ -17,10 +17,8 @@ import task.response.GetNameResponse;
 import task.response.GetPropertyResponse;
 import task.response.GetReferencePropertyResponse;
 import task.response.RegisterPropertyResponse;
-import webApi.WebApi;
 
 public class WebApiImpl implements WebApi {
-
 
     @Override
     public void login(UserInfo userInfo, CallbackListener<String> listener) {
@@ -38,7 +36,7 @@ public class WebApiImpl implements WebApi {
     }
 
     @Override
-    public void propertyRegister(RegisterPropertyRequest request, CallbackListener<RegisterPropertyResponse> listener) {
+    public void registerProperty(RegisterPropertyRequest request, CallbackListener<RegisterPropertyResponse> listener) {
         new RegisterPropertyInfoTask(listener).execute(request);
     }
 
@@ -56,7 +54,6 @@ public class WebApiImpl implements WebApi {
     public void editProperty(EditPropertyRequest request, CallbackListener<String> listener) {
         new EditPropertyTask(listener).execute(request);
     }
-
 
     @Override
     public void deleteProperty(DeletePropertyRequest request, CallbackListener<String> listener) {

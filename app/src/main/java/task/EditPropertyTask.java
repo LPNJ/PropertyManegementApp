@@ -1,17 +1,21 @@
 package task;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
-
-import jsonclass.ErrorJson;
+import json.ErrorJson;
 import task.AsyncTaskListener.CallbackListener;
 import task.Request.EditPropertyRequest;
 
 public class EditPropertyTask extends ServerTask<EditPropertyRequest, String> {
+
+    private static final String TAG = "EditPropertyTask";
+
     public EditPropertyTask(CallbackListener<String> listener) {
-        super(listener,"PUT",new Urls().getEdit());
+        super(listener,RequestType.EDIT);
     }
 
     @Override
@@ -20,10 +24,9 @@ public class EditPropertyTask extends ServerTask<EditPropertyRequest, String> {
         try {
             json.put("userId",editPropertyRequest.getUserId());
             json.put("assetId",editPropertyRequest.getAssetId());
-            json.put("data",editPropertyRequest.getmPropertyInfo().toString());
-
+            json.put("data",editPropertyRequest.getPropertyInfo().toString());
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, "JSONException occurred.", e);
         }
         return json;
     }
@@ -34,10 +37,18 @@ public class EditPropertyTask extends ServerTask<EditPropertyRequest, String> {
         ObjectMapper mapper = new ObjectMapper();
         try {
             ErrorJson info = mapper.readValue(readSd, ErrorJson.class);
-            returnCode = info.error;
+            returnCode = info.mError;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException occurred.", e);
+            returnCode = "1";
+            return returnCode;
         }
+        return returnCode;
+    }
+
+    @Override
+    String returnErrorCode() {
+        String returnCode = "1";
         return returnCode;
     }
 

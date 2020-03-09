@@ -3,28 +3,28 @@ package entity;
 public class LoginUserNameHolder {
 
     // TODO メンバ変数はm
-    private static LoginUserNameHolder name = null;
+    private static LoginUserNameHolder mName = null;
     // TODO メンバ変数はm
-    private String loginName;
-
+    private String mLoginName;
+    
     public LoginUserNameHolder() {
     }
 
     // TODO タイポ
-    public static LoginUserNameHolder getInstanse(){
+    public static LoginUserNameHolder getInstance(){
 
-        if (name == null) {
-            name = new LoginUserNameHolder();
+        if (mName == null) {
+            mName = new LoginUserNameHolder();
         }
-        return name;
+        return mName;
     }
 
     public void setName(String name){
-        loginName = name;
+        mLoginName = name;
     }
 
     public String getName(){
-        return loginName;
+        return mLoginName;
     }
 
 }

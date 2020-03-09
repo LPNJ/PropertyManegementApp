@@ -2,7 +2,13 @@ package task;
 
 public enum RequestType {
     LOGIN("login", "POST"),
-    NEW_ACCOUNT("user", "POST");
+    NEW_ACCOUNT("user", "POST"),
+    REGISTER("asset","POST"),
+    EDIT("asset","PUT"),
+    DELETE("asset","DELETE"),
+    GET_REFERENCE("asset","GET"),
+    GET_PROPERTIES("assetlist","GET"),
+    GET_NAMES("userlist","GET");
 
     private final String mUrl;
     private final String mMethod;

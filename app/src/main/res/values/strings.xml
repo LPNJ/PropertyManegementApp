@@ -28,6 +28,14 @@
     <string name="limit">"資産登録上限に達しています"</string>
     <string name="to_menu">"メニュー画面に戻りますか？"</string>
     <string name="push">"印刷ボタンを押下してください"</string>
-
+    <string name="ok">"OK"</string>
+    <string name="delete">"削除してもよろしいですか？"</string>
+    <string name="delete_complete">"削除が完了しました"</string>
+    <string name="scan_result">"Scan Result"</string>
+    <string name="back">"戻る"</string>
+    <string name="view_property_info">"戻る"</string>
+    <string name="logout">"ログアウトしますか？"</string>
+    <string name="role_m">"MANAGER"</string>
+    <string name="role_u">"USER"</string>
 
 </resources>

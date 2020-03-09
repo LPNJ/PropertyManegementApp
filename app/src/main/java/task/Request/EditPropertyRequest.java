@@ -25,7 +25,7 @@ public class EditPropertyRequest {
     }
 
     // TODO mいらん
-    public PropertyInfo getmPropertyInfo() {
+    public PropertyInfo getPropertyInfo() {
         return mPropertyInfo;
     }
 

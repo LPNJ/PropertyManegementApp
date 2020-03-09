@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-
 import service.HandyPrintService;
 import service.PrintService;
 
-public class PrinterActivity extends AppCompatActivity {
-    private static final String TAG = "PrinterActivity";
+/**
+ * 印刷指示を送るためのActivity
+ */
+public class PrinterActivity extends AppCompatActivity implements View.OnClickListener{
+    private static final String TAG = "PrinterAct";
 
     private final PrintService mPrinterService;
 
@@ -24,7 +26,7 @@ public class PrinterActivity extends AppCompatActivity {
 
     // TODO private
     /*Bluetooth使用可否*/
-    Button mMenu;
+    private Button mMenu;
 
     public PrinterActivity() {
         mPrinterService = HandyPrintService.getInstance();
@@ -36,24 +38,20 @@ public class PrinterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_printer);
 
         mMenu = (Button) findViewById(R.id.printer_buttton_menu);
-        PrinterActivityOnClickListener listener = new PrinterActivityOnClickListener();
-        mMenu.setOnClickListener(listener);
+        mMenu.setOnClickListener(this);
 
         mPrinterService.print(getIntent().getStringExtra(IntentKey.CONTROL_NUMBER),this);
     }
 
-    // TODO ほかはactivityがOnClickListenerを実装（implements）しているのになんでここだけ？
-    class PrinterActivityOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.printer_buttton_menu: {
-                    mPrinterService.terminate();
-                    Intent intent = new Intent(PrinterActivity.this, MenuActivity.class);
-                    startActivity(intent);
-                }
-                break;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.printer_buttton_menu: {
+                mPrinterService.terminate();
+                Intent intent = new Intent(PrinterActivity.this, MenuActivity.class);
+                startActivity(intent);
             }
+            break;
         }
     }
 
@@ -76,9 +74,9 @@ public class PrinterActivity extends AppCompatActivity {
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(PrinterActivity.this)
                     // TODO stringsについか
-                    .setMessage("メニュー画面に戻りますか？")
+                    .setMessage(R.string.to_menu)
                     // TODO stringsについか
-                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(PrinterActivity.this, MenuActivity.class);
@@ -86,7 +84,7 @@ public class PrinterActivity extends AppCompatActivity {
                         }
                     })
                     // TODO stringsについか
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton(R.string.cancel,null)
                     .create()
                     .show();
         }

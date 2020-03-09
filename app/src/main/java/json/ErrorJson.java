@@ -1,16 +1,12 @@
-package jsonclass;
+package json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-
 // TODO ファイル名がキャメルケースになってない
-public class ErrorAndUserListJson {
+public class ErrorJson {
 
     @JsonProperty("error")
+    // TODO キャメルケース
     public String mError;
-
-    @JsonProperty("userList")
-    public ArrayList<String> mNames;
 
 }

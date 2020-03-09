@@ -6,15 +6,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.example.z00s600149.propertymanegementapp.IntentKey;
 import com.example.z00s600149.propertymanegementapp.R;
-
 import org.greenrobot.eventbus.EventBus;
-
 import java.util.ArrayList;
-import java.util.concurrent.ScheduledFuture;
-
 import jp.co.ricoh.hmp.sdk.HmpService;
 import jp.co.ricoh.hmp.sdk.image.HmpImage;
 import jp.co.ricoh.hmp.sdk.image.HmpImageFactory;
@@ -23,7 +17,6 @@ import jp.co.ricoh.hmp.sdk.printer.HmpAdapter;
 import jp.co.ricoh.hmp.sdk.printer.HmpCommand;
 import jp.co.ricoh.hmp.sdk.printer.HmpPrinter;
 import jp.co.ricoh.hmp.sdk.printer.HmpSettings;
-
 import static jp.co.ricoh.hmp.sdk.image.generator.Qrcode.Level.M;
 import static jp.co.ricoh.hmp.sdk.image.generator.Qrcode.Ratio.NORMAL;
 
@@ -33,7 +26,6 @@ public class HandyPrintService implements PrintService {
     private static final String TAG = "HandyPrintService";
 
     // TODO 使わん消す
-    private long mStartTime;
 
     private static final HandyPrintService INSTANCE = new HandyPrintService();
 
@@ -45,7 +37,7 @@ public class HandyPrintService implements PrintService {
     /**
      * リクエストコード
      */
-    static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_ENABLE_BT = 1;
 
 
     /**
@@ -57,7 +49,6 @@ public class HandyPrintService implements PrintService {
      * 接続タスク
      */
     // TODO 使わん消す
-    ScheduledFuture mConnectFuture = null;
 
     /**
      * 選択したプリンタデバイス
@@ -70,14 +61,14 @@ public class HandyPrintService implements PrintService {
     HmpCommand.DeviceStatus mError = HmpCommand.DeviceStatus.DISCONNECTED;
 
     // TODO メンバ変数にm付ける
-    String number;
-    Activity activityHandyPrinter;
-
+    String mNumber;
+    Activity mActivityHandyPrinter;
+    
     @Override
     public void print(String propertyNumber , Activity activity) {
 
-        number = propertyNumber;
-        activityHandyPrinter = activity;
+        mNumber = propertyNumber;
+        mActivityHandyPrinter = activity;
 
         HmpService.initialize(activity.getApplicationContext());
         if (mAdapter == null) {
@@ -122,8 +113,7 @@ public class HandyPrintService implements PrintService {
             case CONNECTION_CONNECTED:
                 Event.post(HmpPrinter.Event.CONNECTION_CONNECTED);
 
-                generateQRCode(number,activityHandyPrinter);
-                Log.i(TAG,"after generateQRCode() time = " + (System.currentTimeMillis() - mStartTime));
+                generateQRCode(mNumber,mActivityHandyPrinter);
                 HmpSettings settings = new HmpSettings(HmpSettings.Position.CENTER, HmpSettings.Direction.RIGHT, HmpSettings.Pass.SINGLE, HmpSettings.Theta.ENABLE);
                 mPrinter.print(mImages.get(0),settings,1);
 
@@ -171,7 +161,6 @@ public class HandyPrintService implements PrintService {
      *プリンタアダプタリスナ
      */
     final HmpAdapter.Listener mAdapterListener = (hmpAdapter,  event) -> {
-        Log.i(TAG,"onReceive time = " + (System.currentTimeMillis() - mStartTime));
         Log.i(TAG, "mAdapterListener - info HMPSDK : SDK->APP:  event=" + event);
         switch (event) {
             case FOUND:
@@ -196,9 +185,8 @@ public class HandyPrintService implements PrintService {
             mPrinter.close();
             Log.i(TAG,"onDestroy");
             // TODO if分の外に出す cancelDiscoveryは必ずする。
-            mAdapter.cancelDiscovery();
-
         }
+        mAdapter.cancelDiscovery();
     }
 
 
@@ -292,41 +280,6 @@ public class HandyPrintService implements PrintService {
         }
     }
 
-    /////////////////////////////
-
-
-    // TODO *がおかしい正しいjavadocの書き方は以下の通りなので修正する
-    // そもそもこのメソッド使ってないので消す
-    /**
-     * メソッドの説明
-     * @param printer 引数の説明
-     */
-    /** * 接続 * *
-     @param printer プリンタデバイス
-     */
-    public synchronized void open(HmpPrinter printer) {
-        if (printer == null) {
-            Event.post(HmpPrinter.Event.CONNECTION_FAILED);
-            return;
-        }
-
-        if (mPrinter != null) {
-            /* リスナをクリア */
-            Log.i(TAG, "open()- info HMPSDK : APP->SDK:  Clear listener by clearListener().");
-            mPrinter.clearListener();
-            /* リスナをクリア */
-            Log.i(TAG, "open()- info HMPSDK : APP->SDK:  Close device by close().");
-            mPrinter.close();
-        }
-        mPrinter = printer;
-        /* リスナをレジスト */
-        Log.i(TAG, "open()- info HMPSDK : APP->SDK:  Register Listener to listen to printer by setListener().");
-        mPrinter.setListener(mPrinterListener);
-        /* プリントを接続 */
-        Log.i(TAG, "open()- info HMPSDK : APP->SDK:  Connect Printer by open().");
-        mPrinter.open();
-    }
-
     /**
      * プリント状態通知
      */
@@ -360,25 +313,6 @@ public class HandyPrintService implements PrintService {
     }
 
 
-    // TODO　ここもジャバドックの書き方おかしい
-    // TODO 使ってないメソッド消す
-    /**
-     印刷 *
-     @param images 印刷イメージ
-     @param settings 設定
-     @param copies  部数
-     @return 実行可否
-     */
-    public synchronized boolean print(ArrayList<HmpImage> images, HmpSettings settings, int copies) {
-        if (mPrinter == null || images == null || settings == null || copies <= 0 || copies > 999) {
-            Log.e(TAG, "print() - error : parameter is invalid");
-            return false;
-        }
-        /* 印刷 */
-        Log.i(TAG, "print()- info HMPSDK : APP->SDK: Print data by print().");
-        return mPrinter.print(images, settings, copies);
-    }
-
     // TODO メンバ変数m private
     /**
      * 誤り訂正レベル
@@ -401,7 +335,6 @@ public class HandyPrintService implements PrintService {
      QRコードを生成
      */
     void generateQRCode(String propertyNumber,Activity activity) {
-        Log.i(TAG,"generateQRCode() time = " + (System.currentTimeMillis() - mStartTime));
         mImages.clear();
         mBitmap = null;
 

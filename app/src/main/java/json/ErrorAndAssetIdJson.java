@@ -1,13 +1,11 @@
 // TODO 実際のパッケージフォルダ名が変わってない、なんでここだけclassってついとるん？
 // TODO jsonっていうパッケージでいいんじゃない？JsonResolutionってやつもそのパッケージにまとめたらいいと思う
-package jsonclass;
+package json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-
 // TODO キャメルケース ErrorAndAssetIdJson
-public class ErrorAndAssetidJSON {
+public class ErrorAndAssetIdJson {
 
     @JsonProperty("error")
     public String mError;

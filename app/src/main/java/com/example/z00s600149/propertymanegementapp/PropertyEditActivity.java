@@ -12,27 +12,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import Dialog.ShowDialog;
+import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.PropertyInfo;
 import task.AsyncTaskListener.CallbackListener;
 import task.Request.EditPropertyRequest;
-import task.EditPropertyTask;
-import task.GetNameTask;
 import webApi.WebApi;
 import webApi.WebApiImpl;
-import webApi.WebApiMock;
-import task.mock.GetNameTaskMock;
-import task.mock.GetReferenceInfoTaskMock;
 import task.response.GetNameResponse;
 
+/**
+ * 資産情報を変更して、再度登録させるActivity
+ */
 public class PropertyEditActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String TAG = "PropertyEditAct";
 
     /*ログインユーザー情報保持用リスト*/
     // TODO onPostExecuteでしか使ってないからローカル変数にする
     // TODO キャメルケース
-    ArrayAdapter<String> myAdapter_Manager;
     /** 資産情報登録用ボタン */
     private Button mPropertyEdit;
     /** 資産管理者用スピナー */
@@ -59,22 +57,17 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
     public PropertyEditActivity() {
         super();
         // TODO 使わないやつ消す
-//        mEditPropertyTaskImpl = new EditPropertyTask(mCallBackListener_Edit);
-//        mGetNameTaskImpl = new GetNameTask(mCallBackListener);
         mWebApi = new WebApiImpl();
-        Log.i("PropertyEdit", "PropertyEdit activity contstructor");
+        Log.i(TAG, "PropertyEdit activity start");
     }
 
-
     // TODO ローカル変数の最初は小文字
-    public PropertyEditActivity(WebApi WebApi) {
+    public PropertyEditActivity(WebApi webApi) {
         super();
         // TODO 使わないやつ消す
-//        mEditPropertyTaskImpl = new EditPropertyTask(mCallBackListener_Edit);
-//        mGetNameTaskImpl = new GetNameTask(mCallBackListener);・
         // TODO 引数を設定する
-        mWebApi = new WebApiMock();
-        Log.i("PropertyEdit", "PropertyEdit activity contstructor");
+        mWebApi = webApi;
+        Log.i(TAG, "PropertyEdit activity start");
     }
 
     @Override
@@ -95,7 +88,6 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
         mPropertyEdit = (Button) findViewById(R.id.edit_button_edit);
 
         //ログイン名一覧取得
-//        mGetNameTaskImpl.execute();
         mWebApi.getName(mCallBackListener);
 
         //ボタン押下の動作
@@ -108,7 +100,7 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
             case R.id.edit_button_edit: {
 
                 mWebApi.editProperty(new EditPropertyRequest(
-                        LoginUserNameHolder.getInstanse().getName(),
+                        LoginUserNameHolder.getInstance().getName(),
                         Integer.parseInt(getIntent().getStringExtra(IntentKey.CONTROL_NUMBER)),
                         new PropertyInfo((String) mManager.getSelectedItem(),
                                 (String)mPropertyUser.getSelectedItem(),
@@ -125,30 +117,13 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
 
     // サーバー接続結果  ログイン名取得用
     private CallbackListener<GetNameResponse> mCallBackListener = new CallbackListener<GetNameResponse>() {
+
+        private ArrayAdapter<String> myAdapterManager;
+
         @Override
         public void onPostExecute(GetNameResponse response) {
-            if(Integer.parseInt(response.getError()) == 1){
-                new ShowDialog(PropertyEditActivity.this).show(R.string.error);
-            }
-            else {
-                myAdapter_Manager = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, response.getNames());
-                // TODO 変数キャメルケースにする、elseの中が大体おかしい
-                ArrayAdapter<String> myAdapter_User = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, response.getNames());
-                ArrayAdapter<String> myAdapter_Purchase_Category = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Purchase_Category));
-                ArrayAdapter<String> myAdapter_Property_Category = new ArrayAdapter<String>(PropertyEditActivity.this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Property_Category));
-
-                myAdapter_Manager.setDropDownViewResource(android.R.layout.simple_list_item_1);
-                myAdapter_User.setDropDownViewResource(android.R.layout.simple_list_item_1);
-                myAdapter_Purchase_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
-                myAdapter_Property_Category.setDropDownViewResource(android.R.layout.simple_list_item_1);
-
-                myAdapter_Manager.getContext().toString();
-
-                mManager.setAdapter(myAdapter_Manager);
-                mPropertyUser.setAdapter(myAdapter_User);
-                mPurchase_Category_Spinner.setAdapter(myAdapter_Purchase_Category);
-                mProperty_Category_Spinner.setAdapter(myAdapter_Property_Category);
-            }
+            final String role = "EDIT";
+            new GetNames(PropertyEditActivity.this).getLoginName(role,response);
         }
     };
 
@@ -161,7 +136,7 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
                         .setMessage(R.string.edit_success)
                         // TODO stringsに追加
                         // TODO 小見山君が自分で"OK"でプロジェクト全体検索して漏れがないか確認する
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(PropertyEditActivity.this, MenuActivity.class);

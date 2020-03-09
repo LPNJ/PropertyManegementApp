@@ -1,11 +1,10 @@
 package task.mock;
 
 import task.AsyncTaskListener.CallbackListener;
-import task.Executer;
+import task.Request.RegisterPropertyRequest;
 import task.response.RegisterPropertyResponse;
-import task.Request.PropertyRegistRequest;
 
-public class RegisterPropertyInfoTaskMock implements Executer<PropertyRegistRequest> {
+public class RegisterPropertyInfoTaskMock{
 
     private CallbackListener<RegisterPropertyResponse> listener = null;
 
@@ -13,8 +12,7 @@ public class RegisterPropertyInfoTaskMock implements Executer<PropertyRegistRequ
         this.listener = listener;
     }
 
-    @Override
-    public void execute(PropertyRegistRequest propertyRegistRequest) {
+    public void execute(RegisterPropertyRequest request) {
         listener.onPostExecute(new RegisterPropertyResponse("0","10001"));
     }
 }

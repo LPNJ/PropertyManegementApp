@@ -1,9 +1,7 @@
 package validator;
 
 import java.util.regex.Pattern;
-
 import entity.EditableUserInfo;
-import entity.UserInfo;
 
 public class NewAccountValidator implements Validator<EditableUserInfo> {
 

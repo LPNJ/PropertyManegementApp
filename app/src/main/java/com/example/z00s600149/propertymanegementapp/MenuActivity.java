@@ -10,6 +10,9 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * 資産情報登録、資産情報選択、QRカメラ起動画面に遷移させるためのActivity
+ */
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "MenuAct";
@@ -65,21 +68,21 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             }
             break;
             case R.id.menu_button_qrcodereader: {
-                Intent intent = new Intent(MenuActivity.this, QRcodeReaderActivity.class);
+                Intent intent = new Intent(MenuActivity.this, QRCodeReaderActivity.class);
                 startActivity(intent);
             }
             break;
             case R.id.menu_button_logout: {
                 new AlertDialog.Builder(MenuActivity.this)
-                        .setMessage("ログアウトしますか？")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setMessage(R.string.logout)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                                 startActivity(intent);
                             }
                         })
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(R.string.cancel, null)
                         .create()
                         .show();
             }
@@ -92,15 +95,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         // BackBtnアクション
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(MenuActivity.this)
-                    .setMessage("ログアウトしますか？")
-                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.logout)
+                    .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton(R.string.cancel,null)
                     .create()
                     .show();
         }

@@ -1,5 +1,7 @@
 package task;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONException;
@@ -7,18 +9,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import jsonclass.ErrorJson;
+import json.ErrorJson;
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
 
 public class NewAccountTask extends ServerTask<UserInfo,String> {
 
     // TODO 必要ない消す
-    private CallbackListener<String> listener = null;
+    private static final String TAG = "NewAccountTask";
 
     public NewAccountTask(CallbackListener<String> listener) {
-        super(listener,"POST",new Urls().getNewAccount());
-        this.listener = listener;
+        super(listener,RequestType.NEW_ACCOUNT);
     }
 
     @Override
@@ -29,7 +30,7 @@ public class NewAccountTask extends ServerTask<UserInfo,String> {
             json.put("password", userInfo.getPassword());
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Log.e(TAG, "JSONException occurred." , e);
         }
         return json;
     }
@@ -40,11 +41,19 @@ public class NewAccountTask extends ServerTask<UserInfo,String> {
         ObjectMapper mapper = new ObjectMapper();
         try {
             ErrorJson info = mapper.readValue(readSd, ErrorJson.class);
-            returnCode = info.error;
+            returnCode = info.mError;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException occurred." , e);
+            returnCode = "1";
+            return returnCode;
         }
         return returnCode;
+    }
+
+    @Override
+    String returnErrorCode() {
+        String errorCode = "1";
+        return errorCode;
     }
 
 }

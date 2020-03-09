@@ -2,18 +2,16 @@ package task;
 
 import android.os.AsyncTask;
 import android.util.Log;
-
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.annotation.Target;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
 import task.AsyncTaskListener.CallbackListener;
 
 abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
@@ -23,35 +21,35 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
 
     private final String mUrl;
 
+    private final String mGET = "GET";
+
+    private static final String TAG = "ServerTask";
+
+    public ServerTask(CallbackListener<R> listener, String method , String Url) {
+        mMethod = method;
+        mListener = listener;
+        mUrl = Url;
+    }
+
     public ServerTask(CallbackListener<R> listener, RequestType type) {
         mMethod = type.getMethod();
         mListener = listener;
         mUrl = type.getUrl();
     }
 
-    public ServerTask(CallbackListener<R> listener, String url, String method) {
-        mMethod = method;
-        mListener = listener;
-        mUrl = url;
-    }
-
     @Override
     protected R doInBackground(V... params) {
         JSONObject json = null;
-        if(!mMethod.equals("GET")) {
+        if(!mMethod.equals(mGET)) {
             json = createJson(params[0]);
         }
 
         HttpURLConnection con = null;
 
         try {
-            try {
                 // URLの作成
-                con = setup(mMethod,mUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            if(!mMethod.equals("GET") && json != null) {
+            con = setup(mMethod,mUrl);
+            if(!mMethod.equals(mGET) && json != null) {
                 dataOutPut(con, json.toString());
             }
             // 接続
@@ -60,22 +58,22 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
             // TODO エラーコードをもつレスポンスクラスはabstract methodで生成
 
             if(con.getResponseCode() != 200){
-                return ooo();
+                return returnErrorCode();
             }
 
             // TODO parseJsonでnullが返ってくる場合を考慮して実装する
             return parseJson(dataInput(con));
         } catch (MalformedURLException e) {
-            Log.e("ServTask", "Illegal url :" + mUrl, e);
+            Log.e(TAG, "Illegal url :" + mUrl, e);
             throw new IllegalStateException("Illegal url :" + mUrl);
         } catch (IOException e) {
-            Log.e("ServTask", "IOException occurred." , e);
-            // TODO サーバーエラーコードを持つレスポンスクラスを返す
+            Log.e(TAG, "IOException occurred." , e);
+            // TODO エラーコードを持つレスポンスクラスを返す
+            return returnErrorCode();
         }
         finally {
             con.disconnect();
         }
-        return null;
     }
 
     @Override
@@ -87,7 +85,7 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
 
     abstract R parseJson(String readSd);
 
-
+    abstract R returnErrorCode();
 
     public String dataInput(HttpURLConnection con) throws IOException {
         InputStream in = con.getInputStream();
@@ -95,7 +93,7 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
             String readSt = readInputStream(in);
             return readSt;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException occurred." , e);
         }
         return null;
     }
@@ -120,7 +118,7 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
         // URL接続からデータを読み取る場合はtrue
         con.setDoInput(true);
         // URL接続にデータを書き込む場合はtrue
-        if(!method.equals("GET")){
+        if(!method.equals(mGET)){
             con.setDoOutput(true);
         }
         con.setRequestProperty("Content-Type", "application/json");
@@ -142,7 +140,7 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            Log.e(TAG, "Exception occurred." , e);
         }
 
         return sb.toString();

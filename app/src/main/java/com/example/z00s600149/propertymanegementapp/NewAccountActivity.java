@@ -10,16 +10,17 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import Dialog.ShowDialog;
+import dialog.ShowDialog;
 import entity.EditableUserInfo;
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.NewAccountTask;
 import webApi.WebApi;
 import webApi.WebApiImpl;
-import task.mock.NewAccountTaskMock;
 import validator.NewAccountValidator;
 
+/**
+ * アカウントを新規作成するためのActivity
+ */
 public class NewAccountActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "NewAccountAct";
@@ -40,13 +41,13 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
     public NewAccountActivity() {
         super();
         mWebApi = new WebApiImpl();
-        Log.i(TAG, "NEW ACCOUNT Activity constructor");
+        Log.i(TAG, "NEW ACCOUNT Activity start");
     }
 
     public NewAccountActivity(WebApi WebApi) {
         super();
         mWebApi = WebApi;
-        Log.i(TAG, "NEW ACCOUNT Activity constructor");
+        Log.i(TAG, "NEW ACCOUNT Activity start");
     }
 
 
@@ -84,7 +85,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                 } else {
                     new AlertDialog.Builder(NewAccountActivity.this)
                             .setMessage(R.string.register_permit)
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     mWebApi.newAccount(new UserInfo(mIdInfo, mPassInfo),listener);
@@ -124,7 +125,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
             new AlertDialog.Builder(NewAccountActivity.this)
                     .setMessage(R.string.to_login)
                     // TODO OKもStringに追加
-                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(NewAccountActivity.this, LoginActivity.class);
@@ -132,7 +133,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                         }
                     })
                     // TODO cancelもStringに追加、ほかのクラスも同様
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton(R.string.cancel,null)
                     .create()
                     .show();
         }

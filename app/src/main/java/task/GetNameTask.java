@@ -1,5 +1,7 @@
 package task;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
@@ -7,14 +9,16 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import jsonclass.ErrorAndUserListJson;
+import json.ErrorAndUserListJson;
 import task.AsyncTaskListener.CallbackListener;
 import task.response.GetNameResponse;
 
 public class GetNameTask extends ServerTask<String, GetNameResponse> {
 
+    private static final String TAG = "GetNameTask";
+
     public GetNameTask(CallbackListener<GetNameResponse> listener) {
-        super(listener , "GET",new Urls().getName());
+        super(listener , RequestType.GET_NAMES);
     }
 
     @Override
@@ -27,7 +31,7 @@ public class GetNameTask extends ServerTask<String, GetNameResponse> {
 
         GetNameResponse response = null;
         String returnCode = null;
-        ArrayList<String> names;
+        ArrayList<String> names = null;
 
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -36,8 +40,18 @@ public class GetNameTask extends ServerTask<String, GetNameResponse> {
             names = info.mNames;
             response = new GetNameResponse(returnCode,names);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "IOException occurred." , e);
+            response = new GetNameResponse("1",names);
+            return response;
         }
+        return response;
+    }
+
+    @Override
+    GetNameResponse returnErrorCode() {
+        GetNameResponse response;
+        ArrayList<String> names = null;
+        response = new GetNameResponse("1",names);
         return response;
     }
 

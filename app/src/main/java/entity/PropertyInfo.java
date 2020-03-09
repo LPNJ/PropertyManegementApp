@@ -2,7 +2,6 @@ package entity;
 
 public class PropertyInfo {
 
-    private static final String TAG = "PropertyInfo";
     private final String mPropertyManager;
     private final String mPropertyUser;
     private final String mLocation;
@@ -16,15 +15,15 @@ public class PropertyInfo {
      * コンストラクタ
      */
     // TODO ローカル変数にm付けない
-    public PropertyInfo(String mPropertyManager, String mPropertyUser, String mLocation, String mControlNumber, String mProductName, String mPurchaseCategory, String mPropertyCategory, String mComplement) {
-        this.mPropertyManager = mPropertyManager;
-        this.mPropertyUser = mPropertyUser;
-        this.mLocation = mLocation;
-        this.mControlNumber = mControlNumber;
-        this.mProductName = mProductName;
-        this.mPurchaseCategory = mPurchaseCategory;
-        this.mPropertyCategory = mPropertyCategory;
-        this.mComplement = mComplement;
+    public PropertyInfo(String propertyManager, String propertyUser, String location, String controlNumber, String productName, String purchaseCategory, String propertyCategory, String complement) {
+        this.mPropertyManager = propertyManager;
+        this.mPropertyUser = propertyUser;
+        this.mLocation = location;
+        this.mControlNumber = controlNumber;
+        this.mProductName = productName;
+        this.mPurchaseCategory = purchaseCategory;
+        this.mPropertyCategory = propertyCategory;
+        this.mComplement = complement;
     }
 
     public String getControlNumber() {

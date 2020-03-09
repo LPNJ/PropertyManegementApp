@@ -7,7 +7,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+/**
+ * 検索表示画面に遷移させるためのActivity
+ */
 public class PropertySelectActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String TAG = "PropertySelectAct";
 
     private Button mManagerButton;
     private Button mUserButton;
@@ -15,7 +20,7 @@ public class PropertySelectActivity extends AppCompatActivity implements View.On
 
     public PropertySelectActivity() {
         super();
-        Log.i("PropertySelect", "PropertySelect activity contstructor");
+        Log.i(TAG, "PropertySelect activity start");
     }
 
     @Override
@@ -36,7 +41,7 @@ public class PropertySelectActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.select_manager: {
-                Intent intent = new Intent(PropertySelectActivity.this, PropertySelectManegerActivity.class);
+                Intent intent = new Intent(PropertySelectActivity.this, PropertySelectManagerActivity.class);
                 startActivity(intent);
             }
             break;

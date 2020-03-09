@@ -1,9 +1,7 @@
-package jsonclass;
+package json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.ArrayList;
-
 import task.response.GetPropertyEntity;
 
 // TODO ファイル名がキャメルケースになってない

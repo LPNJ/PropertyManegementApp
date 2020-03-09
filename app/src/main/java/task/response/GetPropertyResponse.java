@@ -3,8 +3,6 @@ package task.response;
 
 import java.util.ArrayList;
 
-import entity.PropertyInfo;
-
 public class GetPropertyResponse {
 
     private final String mError;
