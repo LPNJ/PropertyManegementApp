@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MenuActivity" />
-        <activity android:name=".QRcodeReaderActivity" />
+        <activity android:name=".QRCodeReaderActivity" />
         <activity android:name=".NewAccountActivity" />
         <activity android:name=".PropertyInfoActivity" />
         <activity android:name=".ControlNumberIssuedActivity" />
@@ -39,7 +39,7 @@
         <activity android:name=".AnotherQRcodeReaderActivity" />
         <activity android:name=".PropertyEditActivity" />
         <activity android:name=".PropertyReferenceActivity" />
-        <activity android:name=".PropertySelectManegerActivity" />
+        <activity android:name=".PropertySelectManagerActivity" />
         <activity android:name=".PropertySelectAllActivity" />
         <activity android:name=".PropertySelectUserActivity" />
         <activity android:name=".PrinterActivity" />

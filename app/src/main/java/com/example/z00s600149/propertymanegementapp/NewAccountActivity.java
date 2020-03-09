@@ -10,38 +10,47 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
+import dialog.ShowDialog;
 import entity.EditableUserInfo;
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.NewAccountTask;
-import task.ResultListener;
-import task.impl.NewAccountTaskImpl;
+import webApi.WebApi;
+import webApi.WebApiImpl;
 import validator.NewAccountValidator;
 
-public class NewAccountActivity extends AppCompatActivity implements ResultListener<Integer> , View.OnClickListener{
+/**
+ * アカウントを新規作成するためのActivity
+ */
+public class NewAccountActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private static final String TAG = "NewAccountAct";
 
     /*データ登録用ボタン*/
-    private Button mRegist;
+    private Button mRegister;
     /*ユーザーIDデータ保持用*/
-    // TODO javaは基本キャメルケースで統一する　mIdInfo
-    // ほかの箇所も同様
-    private String mId_info;
-    /*ユーザーPASSWARDデータ保持用*/
-    private String mPass_info;
-    /*再入力用PASSWARD*/
-    private String mConfirmationPass_info;
-    /* MOCK 動作確認用 */
-    private NewAccountTask mNewAccountTask;
-    /*サーバー接続用*/
-    private NewAccountTaskImpl mNewAccountTaskImpl;
+    private String mIdInfo;
+    /*ユーザーパスワードデータ保持用*/
+    private String mPassInfo;
+    /*再入力用パスワード*/
+    private String mConfirmationPassInfo;
+
+    private final WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
+
     public NewAccountActivity() {
         super();
-        mNewAccountTaskImpl = new NewAccountTaskImpl(listener);
-        Log.i("NEWACCOUNT", "NEWACCOUNT Activity constructor");
+        mWebApi = new WebApiImpl();
+        Log.i(TAG, "NEW ACCOUNT Activity start");
     }
+
+    public NewAccountActivity(WebApi WebApi) {
+        super();
+        mWebApi = WebApi;
+        Log.i(TAG, "NEW ACCOUNT Activity start");
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +58,10 @@ public class NewAccountActivity extends AppCompatActivity implements ResultListe
         setContentView(R.layout.activity_new_account);
 
         //IDと対応付け
-        mRegist = (Button) findViewById(R.id.newaccount_button_regist);
+        mRegister = (Button) findViewById(R.id.newaccount_button_regist);
 
         //ボタン押下の動作
-        mRegist.setOnClickListener(this);
+        mRegister.setOnClickListener(this);
 
     }
 
@@ -63,42 +72,31 @@ public class NewAccountActivity extends AppCompatActivity implements ResultListe
             case R.id.newaccount_button_regist: {
 
                 //IDと対応付け
-                mId_info = ((EditText) findViewById(R.id.newaccount_id)).getText().toString();
-                mPass_info = ((EditText) findViewById(R.id.newaccount_passward)).getText().toString();
-                mConfirmationPass_info = ((EditText) findViewById(R.id.newaccount_repassward)).getText().toString();
+                mIdInfo = ((EditText) findViewById(R.id.newaccount_id)).getText().toString();
+                mPassInfo = ((EditText) findViewById(R.id.newaccount_passward)).getText().toString();
+                mConfirmationPassInfo = ((EditText) findViewById(R.id.newaccount_repassward)).getText().toString();
 
                 /*入力チェック*/
-                int validationResult = new NewAccountValidator().validate(new EditableUserInfo(mId_info, mPass_info, mConfirmationPass_info));
+                int validationResult = new NewAccountValidator().validate(new EditableUserInfo(mIdInfo, mPassInfo, mConfirmationPassInfo));
                 if (validationResult == 1) {
-                    show("入力されていない項目があります");
+                    new ShowDialog(NewAccountActivity.this).show(R.string.not_input);
                 } else if (validationResult == 2) {
-                    show("許可されていない文字が含まれています");
+                    new ShowDialog(NewAccountActivity.this).show(R.string.not_permit_character);
                 } else {
                     new AlertDialog.Builder(NewAccountActivity.this)
-                            .setMessage("登録してもよろしいですか？")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            .setMessage(R.string.register_permit)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    mNewAccountTaskImpl.execute(new UserInfo(mId_info, mPass_info));
+                                    mWebApi.newAccount(new UserInfo(mIdInfo, mPassInfo),listener);
                                 }
                             })
-                            .setNegativeButton("Cancel", null)
+                            .setNegativeButton(R.string.cancel, null)
                             .show();
                 }
             }
             break;
         }
-    }
-
-    /*エラーメッセージ表示*/
-    // TODO ほかのところにも同じ処理があるので共通化する
-    // ダイアログのutilsクラスみたいなんを作るとよい
-    void show(String msg) {
-        new AlertDialog.Builder(NewAccountActivity.this)
-                .setMessage(msg)
-                .setPositiveButton("OK", null)
-                .create()
-                .show();
     }
 
     CallbackListener<String> listener = new CallbackListener<String>() {
@@ -107,10 +105,10 @@ public class NewAccountActivity extends AppCompatActivity implements ResultListe
         public void onPostExecute(String result) {
             int resultCode = Integer.parseInt(result);
             if(resultCode == 1){
-                show("RuntimeException");
+                new ShowDialog(NewAccountActivity.this).show(R.string.cannot_connect);
             }
             else if(resultCode == 11){
-                show("すでにユーザーが登録されています");
+                new ShowDialog(NewAccountActivity.this).show(R.string.already_register);
             }
             else {
                 Intent intent = new Intent(NewAccountActivity.this, LoginActivity.class);
@@ -120,38 +118,25 @@ public class NewAccountActivity extends AppCompatActivity implements ResultListe
     };
 
     @Override
-    /* MOCK用*/
-    public void onResult(Integer result) {
-        if (result != 0) {
-            show("サーバーへの接続が失敗しました");
-            return;
-        }
-        Intent intent = new Intent(NewAccountActivity.this, LoginActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
     /*BACKキー押下後の動作確認*/
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // BackBtnアクション
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(NewAccountActivity.this)
-                    .setMessage("ログイン画面に戻りますか？")
-                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.to_login)
+                    .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-
                             Intent intent = new Intent(NewAccountActivity.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton(R.string.cancel,null)
                     .create()
                     .show();
         }
         return true;
     }
-
 }
 
 

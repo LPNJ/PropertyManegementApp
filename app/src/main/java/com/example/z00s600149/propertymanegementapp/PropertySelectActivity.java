@@ -1,43 +1,26 @@
 package com.example.z00s600149.propertymanegementapp;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
-import java.util.ArrayList;
-
-import entity.PropertyInfo;
-import task.GetTargetNamePropertyInfoTask;
-import task.PropertyInfoTask;
-import task.ResultListener;
-import task.mock.GetNameTaskMock;
-import task.mock.GetTargetNamePropertyInfoTaskMock;
-import task.mock.PropertyInfoTaskMock;
-import task.serialize.PropertyRegistResponse;
-
+/**
+ * 検索表示画面に遷移させるためのActivity
+ */
 public class PropertySelectActivity extends AppCompatActivity implements View.OnClickListener{
 
-    // TODO コメントに意味がないからこのコメントであれば書く必要がない
-    /*ボタン*/
+    private static final String TAG = "PropertySelectAct";
+
     private Button mManagerButton;
-    /*ボタン*/
     private Button mUserButton;
-    /*ボタン*/
     private Button mAllPropertyButton;
 
-    // TODO コメントに意味がないからこのコメントであれば書く必要がない
-    /*デフォルトコンストラクタ*/
     public PropertySelectActivity() {
         super();
-        Log.i("PropertySelect", "PropertySelect activity contstructor");
+        Log.i(TAG, "PropertySelect activity start");
     }
 
     @Override
@@ -58,7 +41,7 @@ public class PropertySelectActivity extends AppCompatActivity implements View.On
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.select_manager: {
-                Intent intent = new Intent(PropertySelectActivity.this, PropertySelectManegerActivity.class);
+                Intent intent = new Intent(PropertySelectActivity.this, PropertySelectManagerActivity.class);
                 startActivity(intent);
             }
             break;

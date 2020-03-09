@@ -8,9 +8,9 @@ public class GetNameResponse {
 
     private final ArrayList<String> mNames;
 
-    public GetNameResponse(String mError, ArrayList<String> mNames) {
-        this.mError = mError;
-        this.mNames = mNames;
+    public GetNameResponse(String error, ArrayList<String> names) {
+        this.mError = error;
+        this.mNames = names;
     }
 
     public String getError() {
