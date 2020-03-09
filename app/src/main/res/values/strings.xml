@@ -1,2 +1,41 @@
 <resources>
+    <string name="app_name">資産管理アプリ</string>
+
+    <string-array name="Purchase_Category">
+        <item>レンタル</item>
+        <item>リース</item>
+    </string-array>
+
+    <string-array name="Property_Category">
+        <item>ディスプレイ</item>
+        <item>PC</item>
+        <item>ネットワーク機器</item>
+        <item>周辺機器</item>
+        <item>USB・SD</item>
+    </string-array>
+
+    <string name="cannot_connect">サーバーの通信に異常がありました</string>
+    <string name="not_input">"入力されていない項目があります"</string>
+    <string name="already_register">"すでにユーザーが登録されています"</string>
+    <string name="not_permit_character">"すでにユーザーが登録されています"</string>
+    <string name="to_login">"ログイン画面に戻りますか？"</string>
+    <string name="register_permit">"登録してもよろしいですか？"</string>
+    <string name="cancel">"Cancel"</string>
+    <string name="error">"不明なエラー"</string>
+    <string name="cannot_find_user">"指定したユーザーが見つかりません"</string>
+    <string name="cannot_find_property">"指定した資産が見つかりません"</string>
+    <string name="edit_success">"編集が完了しました"</string>
+    <string name="limit">"資産登録上限に達しています"</string>
+    <string name="to_menu">"メニュー画面に戻りますか？"</string>
+    <string name="push">"印刷ボタンを押下してください"</string>
+    <string name="ok">"OK"</string>
+    <string name="delete">"削除してもよろしいですか？"</string>
+    <string name="delete_complete">"削除が完了しました"</string>
+    <string name="scan_result">"Scan Result"</string>
+    <string name="back">"戻る"</string>
+    <string name="view_property_info">"戻る"</string>
+    <string name="logout">"ログアウトしますか？"</string>
+    <string name="role_m">"MANAGER"</string>
+    <string name="role_u">"USER"</string>
+
 </resources>
