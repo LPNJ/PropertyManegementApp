@@ -1,7 +1,6 @@
 package task.AsyncTaskListener;
 
-import task.response.GetNameResponse;
-
 public interface CallbackListener<V> {
+    //onResult
     void onPostExecute(V v);
 }

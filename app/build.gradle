@@ -55,6 +55,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    // Timber - A logger with a small, extensible API which provides utility on top of Android"s normal Log class. https://github.com/JakeWharton/timber
     implementation 'com.jakewharton.timber:timber:4.6.0'
+
+    testImplementation "org.robolectric:robolectric:3.6.1"
+    testImplementation "org.mockito:mockito-core:2.+"
 }

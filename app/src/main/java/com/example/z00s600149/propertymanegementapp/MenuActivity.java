@@ -10,29 +10,26 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.ArrayList;
-
-import entity.LoginNameSingleton;
-import task.LogoutTask;
-import task.ResultListener;
-import task.mock.LogoutTaskMock;
-import task.mock.NewAccountTaskMock;
-
+/**
+ * 資産情報登録、資産情報選択、QRカメラ起動画面に遷移させるためのActivity
+ */
 public class MenuActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private static final String TAG = "MenuAct";
+
     /*資産情報画面遷移用ボタン*/
-    private Button mPropertyRegist;
+    private Button mPropertyRegister;
     /*資産情報一覧確認画面遷移用ボタン*/
     private Button mPropertyInfo;
     /*資産情報一覧確認遷移用ボタン*/
-    private Button mQRcodeReader;
+    private Button mQRCodeReader;
     /** QRカメラ画面用遷移ボタン */
     private Button mLogout;
 
     /*デフォルトコンストラクタ*/
     public MenuActivity() {
         super();
-        Log.i("MENU", "MENU Activity contstructor");
+        Log.i(TAG, "MENU Activity start");
     }
 
     @Override
@@ -41,15 +38,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_menu);
 
         //IDと対応付け
-        mPropertyRegist = (Button) findViewById(R.id.menu_button_propertyregist);
+        mPropertyRegister = (Button) findViewById(R.id.menu_button_propertyregist);
         mPropertyInfo = (Button) findViewById(R.id.menu_button_propertyinfo);
-        mQRcodeReader = (Button) findViewById(R.id.menu_button_qrcodereader);
+        mQRCodeReader = (Button) findViewById(R.id.menu_button_qrcodereader);
         mLogout = (Button) findViewById(R.id.menu_button_logout);
 
         //ボタン押下の動作
-        mPropertyRegist.setOnClickListener(this);
+        mPropertyRegister.setOnClickListener(this);
         mPropertyInfo.setOnClickListener(this);
-        mQRcodeReader.setOnClickListener(this);
+        mQRCodeReader.setOnClickListener(this);
         mLogout.setOnClickListener(this);
 
     }
@@ -69,21 +66,21 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
             }
             break;
             case R.id.menu_button_qrcodereader: {
-                Intent intent = new Intent(MenuActivity.this, QRcodeReaderActivity.class);
+                Intent intent = new Intent(MenuActivity.this, QRCodeReaderActivity.class);
                 startActivity(intent);
             }
             break;
             case R.id.menu_button_logout: {
                 new AlertDialog.Builder(MenuActivity.this)
-                        .setMessage("ログアウトしますか？")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setMessage(R.string.logout)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                                 startActivity(intent);
                             }
                         })
-                        .setNegativeButton("Cancel", null)
+                        .setNegativeButton(R.string.cancel, null)
                         .create()
                         .show();
             }
@@ -96,15 +93,15 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
         // BackBtnアクション
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(MenuActivity.this)
-                    .setMessage("ログアウトしますか？")
-                    .setPositiveButton("OK",new DialogInterface.OnClickListener() {
+                    .setMessage(R.string.logout)
+                    .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                             startActivity(intent);
                         }
                     })
-                    .setNegativeButton("Cancel",null)
+                    .setNegativeButton(R.string.cancel,null)
                     .create()
                     .show();
         }

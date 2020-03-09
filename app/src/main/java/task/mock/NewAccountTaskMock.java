@@ -1,18 +1,25 @@
 package task.mock;
 
-import com.example.z00s600149.propertymanegementapp.NewAccountActivity;
-
 import entity.UserInfo;
-import task.NewAccountTask;
-import task.ResultListener;
+import task.AsyncTaskListener.CallbackListener;
 
-public class NewAccountTaskMock implements NewAccountTask {
-    @Override
-    public void execute(UserInfo userInfo, ResultListener resultListener) {
+public class NewAccountTaskMock{
+
+    CallbackListener<String> resultListener;
+
+    public NewAccountTaskMock(CallbackListener<String> resultListener) {
+        resultListener = resultListener;
+    }
+
+    public void execute(UserInfo userInfo) {
+
         if("failure".equals(userInfo.getUserId())) {
-            resultListener.onResult(1);
+            resultListener.onPostExecute("1");
         } else {
-            resultListener.onResult(0);
+            resultListener.onPostExecute("0");
         }
+
     }
 }
+
+

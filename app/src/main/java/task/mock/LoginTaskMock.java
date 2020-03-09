@@ -1,17 +1,24 @@
 package task.mock;
 
 import entity.UserInfo;
-import task.LoginTask;
-import task.ResultListener;
+import task.AsyncTaskListener.CallbackListener;
 
-public class LoginTaskMock implements LoginTask {
+public class LoginTaskMock{
 
-    @Override
-    public void execute(UserInfo userInfo, ResultListener resultListener) {
+
+    CallbackListener<String> resultListener;
+
+    public LoginTaskMock(CallbackListener<String> resultListener) {
+        resultListener = resultListener;
+    }
+
+    public void execute(UserInfo userInfo) {
+
         if("failure".equals(userInfo.getUserId())) {
-            resultListener.onResult(1);
+            resultListener.onPostExecute("1");
         } else {
-            resultListener.onResult(0);
+            resultListener.onPostExecute("0");
         }
+
     }
 }
