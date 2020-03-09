@@ -1,17 +1,2 @@
 <resources>
-    <string name="app_name">資産管理アプリ</string>
-
-    <string-array name="Purchase_Category">
-        <item>レンタル</item>
-        <item>リース</item>
-    </string-array>
-
-    <string-array name="Property_Category">
-        <item>ディスプレイ</item>
-        <item>PC</item>
-        <item>ネットワーク機器</item>
-        <item>周辺機器</item>
-        <item>USB・SD</item>
-    </string-array>
-
 </resources>
