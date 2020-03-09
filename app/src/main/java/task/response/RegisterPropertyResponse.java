@@ -6,9 +6,9 @@ public class RegisterPropertyResponse {
 
     private final String mControlNumber;
 
-    public RegisterPropertyResponse(String mError, String mControlNumber) {
-        this.mError = mError;
-        this.mControlNumber = mControlNumber;
+    public RegisterPropertyResponse(String error, String controlNumber) {
+        this.mError = error;
+        this.mControlNumber = controlNumber;
     }
 
     public String getError() {

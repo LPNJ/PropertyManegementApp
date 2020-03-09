@@ -15,7 +15,6 @@ import task.AsyncTaskListener.CallbackListener;
 
 public class NewAccountTask extends ServerTask<UserInfo,String> {
 
-    // TODO 必要ない消す
     private static final String TAG = "NewAccountTask";
 
     public NewAccountTask(CallbackListener<String> listener) {

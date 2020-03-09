@@ -29,8 +29,6 @@ public class MenuActivity extends AppCompatActivity implements View.OnClickListe
     /*デフォルトコンストラクタ*/
     public MenuActivity() {
         super();
-        // TODO ログのタグは private static final String TAG = "MenuAct"という感じでメンバ変数として宣言する
-        // 何度も使うので、ほかのクラスも同様
         Log.i(TAG, "MENU Activity start");
     }
 

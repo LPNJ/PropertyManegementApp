@@ -1,6 +1,5 @@
 package com.example.z00s600149.propertymanegementapp;
 
-// TODO import全部見直して、または必要ないimportは自動削除できるようにできるからそれを設定して
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
  */
 public class QRCodeReaderActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler{
 
-    // TODO 使ってないから消す
     private ZXingScannerView scannerView;
 
     @Override
@@ -50,16 +48,13 @@ public class QRCodeReaderActivity extends AppCompatActivity implements ZXingScan
     public void handleResult(Result result) {
         final String scanResult = result.getText();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // TODO stringsに追加
         builder.setTitle(R.string.scan_result);
-        // TODO stringsに追加
         builder.setPositiveButton(R.string.back, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 scannerView.resumeCameraPreview(QRCodeReaderActivity.this);
             }
         });
-        // TODO stringsに追追加
         builder.setNeutralButton(R.string.view_property_info, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {

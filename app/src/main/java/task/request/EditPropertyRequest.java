@@ -1,4 +1,4 @@
-package task.Request;
+package task.request;
 
 import entity.PropertyInfo;
 
@@ -24,7 +24,6 @@ public class EditPropertyRequest {
         return mAssetId;
     }
 
-    // TODO mいらん
     public PropertyInfo getPropertyInfo() {
         return mPropertyInfo;
     }

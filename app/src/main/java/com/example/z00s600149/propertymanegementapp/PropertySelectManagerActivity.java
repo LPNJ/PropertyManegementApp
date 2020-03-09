@@ -29,7 +29,6 @@ public class PropertySelectManagerActivity extends AppCompatActivity{
     public PropertySelectManagerActivity() {
         super();
         mWebApi = new WebApiImpl();
-        // TODO 命名規則に合わせる最後にactivity付ける
         Log.i(TAG, "PropertySelectManager activity start");
     }
 

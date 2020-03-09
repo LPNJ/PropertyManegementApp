@@ -1,7 +1,7 @@
 package task.mock;
 
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.DeletePropertyRequest;
+import task.request.DeletePropertyRequest;
 
 public class DeletePropertyInfoTaskMock{
 

@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -16,7 +15,7 @@ import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.PropertyInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.EditPropertyRequest;
+import task.request.EditPropertyRequest;
 import webApi.WebApi;
 import webApi.WebApiImpl;
 import task.response.GetNameResponse;
@@ -28,9 +27,6 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
 
     private static final String TAG = "PropertyEditAct";
 
-    /*ログインユーザー情報保持用リスト*/
-    // TODO onPostExecuteでしか使ってないからローカル変数にする
-    // TODO キャメルケース
     /** 資産情報登録用ボタン */
     private Button mPropertyEdit;
     /** 資産管理者用スピナー */
@@ -56,16 +52,12 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
     /*デフォルトコンストラクタ*/
     public PropertyEditActivity() {
         super();
-        // TODO 使わないやつ消す
         mWebApi = new WebApiImpl();
         Log.i(TAG, "PropertyEdit activity start");
     }
 
-    // TODO ローカル変数の最初は小文字
     public PropertyEditActivity(WebApi webApi) {
         super();
-        // TODO 使わないやつ消す
-        // TODO 引数を設定する
         mWebApi = webApi;
         Log.i(TAG, "PropertyEdit activity start");
     }
@@ -118,8 +110,6 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
     // サーバー接続結果  ログイン名取得用
     private CallbackListener<GetNameResponse> mCallBackListener = new CallbackListener<GetNameResponse>() {
 
-        private ArrayAdapter<String> myAdapterManager;
-
         @Override
         public void onPostExecute(GetNameResponse response) {
             final String role = "EDIT";
@@ -134,8 +124,6 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
             if (Integer.parseInt(response) == 0) {
                 new AlertDialog.Builder(PropertyEditActivity.this)
                         .setMessage(R.string.edit_success)
-                        // TODO stringsに追加
-                        // TODO 小見山君が自分で"OK"でプロジェクト全体検索して漏れがないか確認する
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

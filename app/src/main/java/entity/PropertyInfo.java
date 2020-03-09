@@ -14,7 +14,6 @@ public class PropertyInfo {
     /**
      * コンストラクタ
      */
-    // TODO ローカル変数にm付けない
     public PropertyInfo(String propertyManager, String propertyUser, String location, String controlNumber, String productName, String purchaseCategory, String propertyCategory, String complement) {
         this.mPropertyManager = propertyManager;
         this.mPropertyUser = propertyUser;

@@ -10,14 +10,10 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import json.PropertyInfoJson;
 import entity.LoginUserNameHolder;
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.DeletePropertyRequest;
+import task.request.DeletePropertyRequest;
 import webApi.WebApi;
 import webApi.WebApiImpl;
 import task.response.GetReferencePropertyResponse;
@@ -59,7 +55,6 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
     public PropertyReferenceActivity() {
         super();
         mWebApi = new WebApiImpl();
-        // TODO TAGを定義する
         Log.i(TAG, "PropertyReference activity start");
     }
 
@@ -67,7 +62,6 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
     public PropertyReferenceActivity(WebApi webApi) {
         super();
         mWebApi = webApi;
-        // TODO constructorが全部タイポ、ほかのクラスも確認する
         Log.i(TAG, "PropertyReference activity start");
     }
 
@@ -110,7 +104,6 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
             break;
             case R.id.reference_delete: {
                 new AlertDialog.Builder(PropertyReferenceActivity.this)
-                        // TODO stringsに追加、「.setMessage("」とかで検索して漏れないか確認してください
                         .setMessage(R.string.delete)
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
@@ -136,27 +129,16 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         @Override
         public void onPostExecute(GetReferencePropertyResponse response) {
 
-            // TODO この処理はGetReferenceInfoTaskのparseJsonで行わる処理
-            ObjectMapper mapper = new ObjectMapper();
-            try {
-                PropertyInfoJson info = mapper.readValue(response.getInfo(), PropertyInfoJson.class);
+            PropertyInfoJson info = response.getInfo();
 
-                mManager.setText(info.mPropertyManager);
-                mUser.setText(info.mPropertyUser);
-                mPlace.setText(info.mLocation);
-                mControlNumber.setText(getIntent().getStringExtra(IntentKey.NUMBER));
-                mProduct.setText(info.mProductName);
-                mPurchase.setText(info.mPurchaseCategory);
-                mAssets.setText(info.mPropertyCategory);
-                mRemark.setText(info.mComplement);
-
-            } catch (JsonParseException e) {
-                e.printStackTrace();
-            } catch (JsonMappingException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            mManager.setText(info.mPropertyManager);
+            mUser.setText(info.mPropertyUser);
+            mPlace.setText(info.mLocation);
+            mControlNumber.setText(getIntent().getStringExtra(IntentKey.NUMBER));
+            mProduct.setText(info.mProductName);
+            mPurchase.setText(info.mPurchaseCategory);
+            mAssets.setText(info.mPropertyCategory);
+            mRemark.setText(info.mComplement);
         }
     };
 

@@ -124,7 +124,6 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(NewAccountActivity.this)
                     .setMessage(R.string.to_login)
-                    // TODO OKもStringに追加
                     .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -132,7 +131,6 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                             startActivity(intent);
                         }
                     })
-                    // TODO cancelもStringに追加、ほかのクラスも同様
                     .setNegativeButton(R.string.cancel,null)
                     .create()
                     .show();

@@ -6,9 +6,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import entity.PropertyInfo;
 import json.ErrorAndAssetsListJson;
+import json.PropertyInfoJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.response.GetPropertyEntity;
+import json.GetPropertyJson;
 import task.response.GetReferencePropertyResponse;
 
 public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropertyResponse> {
@@ -26,29 +29,31 @@ public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropert
 
     @Override
     GetReferencePropertyResponse parseJson(String readSd) {
-        String returnCode = null;
-        // TODO タイポ
-        ArrayList<GetPropertyEntity> preferenceProperty = null;
-        GetReferencePropertyResponse response = null;
 
         ObjectMapper mapper = new ObjectMapper();
         try {
             ErrorAndAssetsListJson info = mapper.readValue(readSd, ErrorAndAssetsListJson.class);
-            returnCode = info.mError;
-            preferenceProperty = info.mProperties;
-            response = new GetReferencePropertyResponse(returnCode,preferenceProperty.get(0).getProperty());
+            PropertyInfoJson propertyInfoJson = createPropertyInfoJson(info.mProperties.get(0));
+            return new GetReferencePropertyResponse(info.mError, propertyInfoJson);
         } catch (IOException e) {
             Log.e(TAG, "IOException occurred." , e);
-            response = new GetReferencePropertyResponse("1",preferenceProperty.get(0).getProperty());
-            return response;
+            return returnErrorCode();
         }
-        return response;
+    }
+
+    private PropertyInfoJson createPropertyInfoJson(GetPropertyJson getPropertyJson) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(getPropertyJson.getProperty(), PropertyInfoJson.class);
+        } catch (IOException e) {
+            Log.e(TAG, "IOException occurred." , e);
+            return new PropertyInfoJson();
+        }
     }
 
     @Override
     GetReferencePropertyResponse returnErrorCode() {
-        GetReferencePropertyResponse response = new GetReferencePropertyResponse("1","NoData");
-        return response;
+        return new GetReferencePropertyResponse("1",new PropertyInfoJson());
     }
 
 }

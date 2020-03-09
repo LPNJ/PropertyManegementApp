@@ -22,9 +22,8 @@ public class PrinterActivity extends AppCompatActivity implements View.OnClickLi
     private final PrintService mPrinterService;
 
     /*リクエストコード*/
-    static final int REQUEST_ENABLE_BT = 1;
+    private static final int REQUEST_ENABLE_BT = 1;
 
-    // TODO private
     /*Bluetooth使用可否*/
     private Button mMenu;
 
@@ -55,12 +54,12 @@ public class PrinterActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    /**結果取得
-     *@param requestCode リクエスト
-     *@param resultCode  リザルト
-     *@param data        データ
-     **/
-
+    /**
+     * 結果取得
+     * @param requestCode リクエスト
+     * @param resultCode  リザルト
+     * @param data        データ
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "onActivityResult requestCode = "+requestCode + " ResultCode = "+resultCode);
         if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_OK) {
@@ -73,9 +72,7 @@ public class PrinterActivity extends AppCompatActivity implements View.OnClickLi
         // BackBtnアクション
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(PrinterActivity.this)
-                    // TODO stringsについか
                     .setMessage(R.string.to_menu)
-                    // TODO stringsについか
                     .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -83,7 +80,6 @@ public class PrinterActivity extends AppCompatActivity implements View.OnClickLi
                             startActivity(intent);
                         }
                     })
-                    // TODO stringsについか
                     .setNegativeButton(R.string.cancel,null)
                     .create()
                     .show();

@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import json.ErrorJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.DeletePropertyRequest;
+import task.request.DeletePropertyRequest;
 
 public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String> {
 

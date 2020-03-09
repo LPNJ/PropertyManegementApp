@@ -1,10 +1,10 @@
-package task.response;
+package json;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import entity.PropertyInfo;
 
-public class GetPropertyEntity {
+public class GetPropertyJson {
 
     @JsonProperty("userId")
     private String mUserId;

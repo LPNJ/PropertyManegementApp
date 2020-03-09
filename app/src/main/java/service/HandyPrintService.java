@@ -24,45 +24,33 @@ public class HandyPrintService implements PrintService {
     ArrayList<HmpImage> mImages = new ArrayList<>();
 
     private static final String TAG = "HandyPrintService";
-
-    // TODO 使わん消す
-
     private static final HandyPrintService INSTANCE = new HandyPrintService();
 
     public static HandyPrintService getInstance() {
         return INSTANCE;
     }
-
-    // TODO privateがない
     /**
      * リクエストコード
      */
     private static final int REQUEST_ENABLE_BT = 1;
 
-
     /**
      * プリンタアダプタ
      */
-    HmpAdapter mAdapter;
-
-    /**
-     * 接続タスク
-     */
-    // TODO 使わん消す
+    private HmpAdapter mAdapter;
 
     /**
      * 選択したプリンタデバイス
      */
-    HmpPrinter mPrinter = null;
+    private HmpPrinter mPrinter = null;
 
     /**
      * エラー状態
      */
-    HmpCommand.DeviceStatus mError = HmpCommand.DeviceStatus.DISCONNECTED;
+    private HmpCommand.DeviceStatus mError = HmpCommand.DeviceStatus.DISCONNECTED;
 
-    // TODO メンバ変数にm付ける
-    String mNumber;
-    Activity mActivityHandyPrinter;
+    private String mNumber;
+    private Activity mActivityHandyPrinter;
     
     @Override
     public void print(String propertyNumber , Activity activity) {
@@ -183,8 +171,6 @@ public class HandyPrintService implements PrintService {
             Log.i(TAG,"startScan() - info : HMPSDK : APP->SDK: Close device by close().");
 
             mPrinter.close();
-            Log.i(TAG,"onDestroy");
-            // TODO if分の外に出す cancelDiscoveryは必ずする。
         }
         mAdapter.cancelDiscovery();
     }
@@ -312,24 +298,17 @@ public class HandyPrintService implements PrintService {
         }
     }
 
-
-    // TODO メンバ変数m private
     /**
      * 誤り訂正レベル
      */
-    Qrcode.Level mLevel = M;
+    private Qrcode.Level mLevel = M;
 
     /**
      * セルサイズ
      */
-    Qrcode.Ratio mRatio = NORMAL;
+    private Qrcode.Ratio mRatio = NORMAL;
 
-    /**
-     * 部数
-     */
-    int mCopies = 1;
-
-    Bitmap mBitmap = null;
+    private Bitmap mBitmap = null;
 
     /**
      QRコードを生成

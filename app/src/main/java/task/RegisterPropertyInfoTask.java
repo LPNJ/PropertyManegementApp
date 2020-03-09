@@ -9,7 +9,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import json.ErrorAndAssetIdJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.RegisterPropertyRequest;
+import task.request.RegisterPropertyRequest;
 import task.response.RegisterPropertyResponse;
 
 public class RegisterPropertyInfoTask extends ServerTask<RegisterPropertyRequest, RegisterPropertyResponse> {

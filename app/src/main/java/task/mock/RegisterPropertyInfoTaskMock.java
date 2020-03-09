@@ -1,7 +1,7 @@
 package task.mock;
 
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.RegisterPropertyRequest;
+import task.request.RegisterPropertyRequest;
 import task.response.RegisterPropertyResponse;
 
 public class RegisterPropertyInfoTaskMock{

@@ -2,9 +2,9 @@ package webApi;
 
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.DeletePropertyRequest;
-import task.Request.EditPropertyRequest;
-import task.Request.RegisterPropertyRequest;
+import task.request.DeletePropertyRequest;
+import task.request.EditPropertyRequest;
+import task.request.RegisterPropertyRequest;
 import task.response.GetNameResponse;
 import task.response.GetPropertyResponse;
 import task.response.GetReferencePropertyResponse;
@@ -14,7 +14,6 @@ public interface WebApi {
     void login(UserInfo userInfo, CallbackListener<String>  listener);
     void newAccount(UserInfo userInfo, CallbackListener<String>  listener);
     void getName(CallbackListener<GetNameResponse> listener);
-    // TODO 動詞から始める registerProperty
     void registerProperty(RegisterPropertyRequest request, CallbackListener<RegisterPropertyResponse>  listener);
     void getProperty(CallbackListener<GetPropertyResponse> listener);
     void getReferenceProperty(CallbackListener<GetReferencePropertyResponse> listener, String assetId);

@@ -16,10 +16,8 @@ import webApi.WebApi;
 import webApi.WebApiImpl;
 import validator.UserLoginValidator;
 
-// TODO Javadoc ほかのクラスも書く, 以下のクラスの感じでよい
 /**
  * ログインするためのActivity
- *
  */
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,10 +31,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText mId;
     /** ログイン用パスワード */
     private EditText mPass;
-    // TODO private
     /** ログインIDデータ保持用 */
     private String mIdInfo;
-    // TODO private
     /** ログイン用パスワードデータ保持用 */
     private String mPassInfo;
 

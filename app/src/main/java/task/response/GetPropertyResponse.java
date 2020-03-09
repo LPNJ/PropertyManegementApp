@@ -1,24 +1,25 @@
-// TODO Requestとserializeパッケージの違いは何？分ける必要はある？
 package task.response;
 
 import java.util.ArrayList;
+
+import json.GetPropertyJson;
 
 public class GetPropertyResponse {
 
     private final String mError;
 
-    private final ArrayList<GetPropertyEntity> mInfos;
+    private final ArrayList<GetPropertyJson> mInfos;
 
-    public GetPropertyResponse(String mError, ArrayList<GetPropertyEntity> mInfos) {
-        this.mError = mError;
-        this.mInfos = mInfos;
+    public GetPropertyResponse(String error, ArrayList<GetPropertyJson> infos) {
+        this.mError = error;
+        this.mInfos = infos;
     }
 
     public String getError() {
         return mError;
     }
 
-    public ArrayList<GetPropertyEntity> getInfos() {
+    public ArrayList<GetPropertyJson> getInfos() {
         return mInfos;
     }
 

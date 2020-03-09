@@ -16,7 +16,7 @@ import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.PropertyInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.RegisterPropertyRequest;
+import task.request.RegisterPropertyRequest;
 import webApi.WebApi;
 import webApi.WebApiImpl;
 import task.response.GetNameResponse;
@@ -107,7 +107,6 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    // TODO PropertyInfoActivtyと全く一緒なら共通化
     //GetNameTask実行後の結果の処理
     private CallbackListener<GetNameResponse> mCallBackListener = new CallbackListener<GetNameResponse>() {
         @Override

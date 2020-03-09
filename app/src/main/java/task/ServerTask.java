@@ -54,21 +54,17 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
             }
             // 接続
             con.connect();
-            // TODO 200以外ならサーバーエラーコードを持つレスポンスクラスを返す
-            // TODO エラーコードをもつレスポンスクラスはabstract methodで生成
 
             if(con.getResponseCode() != 200){
                 return returnErrorCode();
             }
 
-            // TODO parseJsonでnullが返ってくる場合を考慮して実装する
             return parseJson(dataInput(con));
         } catch (MalformedURLException e) {
             Log.e(TAG, "Illegal url :" + mUrl, e);
             throw new IllegalStateException("Illegal url :" + mUrl);
         } catch (IOException e) {
             Log.e(TAG, "IOException occurred." , e);
-            // TODO エラーコードを持つレスポンスクラスを返す
             return returnErrorCode();
         }
         finally {
@@ -130,16 +126,12 @@ abstract class ServerTask<V, R> extends AsyncTask<V, Void, R> {
         String st = "";
 
         BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-        while((st = br.readLine()) != null)
-        {
+        while((st = br.readLine()) != null) {
             sb.append(st);
         }
-        try
-        {
+        try {
             in.close();
-        }
-        catch(Exception e)
-        {
+        } catch(Exception e) {
             Log.e(TAG, "Exception occurred." , e);
         }
 

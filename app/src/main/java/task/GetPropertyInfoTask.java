@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import json.ErrorAndAssetsListJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.response.GetPropertyEntity;
+import json.GetPropertyJson;
 import task.response.GetPropertyResponse;
 
 public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse> {
@@ -31,7 +31,7 @@ public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse>
     GetPropertyResponse parseJson(String readSd) {
         GetPropertyResponse response = null;
         String returnCode = null;
-        ArrayList<GetPropertyEntity> properties = null;
+        ArrayList<GetPropertyJson> properties = null;
 
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -40,20 +40,16 @@ public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse>
             properties = info.mProperties;
             response = new GetPropertyResponse(returnCode,properties);
         } catch (IOException e) {
-            // TODO e.printStackTraceじゃなくてログ出す　ほかも全部
-            // e.printStackTraceで検索
             Log.e(TAG, "IOException occurred." , e);
             response = new GetPropertyResponse("1",properties);
             return response;
         }
-        // TODO IOExceptinoが発生したらnullを返すので問題ない？
-
         return response;
     }
 
     @Override
     GetPropertyResponse returnErrorCode() {
-        ArrayList<GetPropertyEntity> properties = null;
+        ArrayList<GetPropertyJson> properties = null;
         GetPropertyResponse response = new GetPropertyResponse("1",properties);
         return response;
     }

@@ -1,4 +1,4 @@
-package task.Request;
+package task.request;
 
 import entity.PropertyInfo;
 
@@ -8,9 +8,9 @@ public class RegisterPropertyRequest {
 
     private final PropertyInfo mInfos;
 
-    public RegisterPropertyRequest(String mUserId, PropertyInfo mInfos) {
-        this.mUserId = mUserId;
-        this.mInfos = mInfos;
+    public RegisterPropertyRequest(String userId, PropertyInfo infos) {
+        this.mUserId = userId;
+        this.mInfos = infos;
     }
 
     public String getError() {

@@ -47,7 +47,6 @@ public class PropertySelectUserActivity extends AppCompatActivity{
         mWebApi.getProperty(listener);
     }
 
-    // TODO PRopertySElectMangerActivytと共通なら共通化
     CallbackListener<GetPropertyResponse> listener = new CallbackListener<GetPropertyResponse>() {
         final String roleUser = "USER";
         @Override

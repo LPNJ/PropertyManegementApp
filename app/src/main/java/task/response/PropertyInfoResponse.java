@@ -6,8 +6,8 @@ public class PropertyInfoResponse {
 
     private final PropertyInfo mPropertyInfo;
 
-    public PropertyInfoResponse(PropertyInfo mPropertyInfo) {
-        this.mPropertyInfo = mPropertyInfo;
+    public PropertyInfoResponse(PropertyInfo propertyInfo) {
+        this.mPropertyInfo = propertyInfo;
     }
 
     public PropertyInfo getPropertyInfo() {

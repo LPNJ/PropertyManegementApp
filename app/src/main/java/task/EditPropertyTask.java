@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import json.ErrorJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.Request.EditPropertyRequest;
+import task.request.EditPropertyRequest;
 
 public class EditPropertyTask extends ServerTask<EditPropertyRequest, String> {
 
