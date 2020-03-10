@@ -3,7 +3,6 @@ package com.example.z00s600149.propertymanegementapp;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-
 import org.robolectric.Robolectric;
 import org.robolectric.Shadows;
 import org.robolectric.shadows.ShadowActivity;
