@@ -1,7 +1,6 @@
 package com.example.z00s600149.propertymanegementapp;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
 
 /**

@@ -1,8 +1,8 @@
 package com.example.z00s600149.propertymanegementapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,9 +12,9 @@ import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
+import validator.UserLoginValidator;
 import webApi.WebApi;
 import webApi.WebApiImpl;
-import validator.UserLoginValidator;
 
 /**
  * ログインするためのActivity
@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     /** ログイン用パスワードデータ保持用 */
     private String mPassInfo;
 
-    private final WebApi mWebApi;
+    private WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
     public LoginActivity() {
@@ -45,10 +45,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, "LOGIN Activity start");
     }
 
-    public LoginActivity(WebApi webApi) {
-        super();
+//    public LoginActivity(WebApi webApi) {
+//        super();
+//        mWebApi = webApi;
+//        Log.i(TAG, "LOGIN Activity start");
+//    }
+
+    void setApi(WebApi webApi) {
         mWebApi = webApi;
-        Log.i(TAG, "LOGIN Activity start");
     }
 
     @Override
