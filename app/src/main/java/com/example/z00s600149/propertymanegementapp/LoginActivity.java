@@ -45,11 +45,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, "LOGIN Activity start");
     }
 
-//    public LoginActivity(WebApi webApi) {
-//        super();
-//        mWebApi = webApi;
-//        Log.i(TAG, "LOGIN Activity start");
-//    }
+    public LoginActivity(WebApi webApi) {
+        super();
+        mWebApi = webApi;
+        Log.i(TAG, "LOGIN Activity start");
+    }
 
     void setApi(WebApi webApi) {
         mWebApi = webApi;
@@ -105,7 +105,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new ShowDialog(LoginActivity.this).show(R.string.cannot_connect);
             }
             else if(resultCode == 21){
-                new ShowDialog(LoginActivity.this).show(R.string.already_register);
+                new ShowDialog(LoginActivity.this).show(R.string.not_register);
             }
             else {
                 Intent intent = new Intent(LoginActivity.this, MenuActivity.class);

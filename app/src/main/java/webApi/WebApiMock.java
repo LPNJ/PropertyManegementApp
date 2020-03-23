@@ -2,21 +2,21 @@ package webApi;
 
 import entity.UserInfo;
 import task.AsyncTaskListener.CallbackListener;
-import task.DeletePropertyTask;
-import task.EditPropertyTask;
-import task.GetPropertyInfoTask;
-import task.GetReferenceInfoTask;
-import task.RegisterPropertyInfoTask;
-import task.request.DeletePropertyRequest;
-import task.request.EditPropertyRequest;
-import task.request.RegisterPropertyRequest;
+import task.mock.DeletePropertyInfoTaskMock;
 import task.mock.GetNameTaskMock;
+import task.mock.GetPropertyInfoTaskMock;
+import task.mock.GetReferenceInfoTaskMock;
 import task.mock.LoginTaskMock;
 import task.mock.NewAccountTaskMock;
-import task.response.GetNameResponse;
-import task.response.GetPropertyResponse;
-import task.response.GetReferencePropertyResponse;
-import task.response.RegisterPropertyResponse;
+import task.mock.PropertyEditTaskMock;
+import task.mock.RegisterPropertyInfoTaskMock;
+import request.DeletePropertyRequest;
+import request.EditPropertyRequest;
+import request.RegisterPropertyRequest;
+import response.GetNameResponse;
+import response.GetPropertyResponse;
+import response.GetReferencePropertyResponse;
+import response.RegisterPropertyResponse;
 
 public class WebApiMock implements WebApi {
     @Override
@@ -36,26 +36,26 @@ public class WebApiMock implements WebApi {
 
     @Override
     public void registerProperty(RegisterPropertyRequest request, CallbackListener<RegisterPropertyResponse> listener) {
-        new RegisterPropertyInfoTask(listener).execute(request);
+        new RegisterPropertyInfoTaskMock(listener).execute(request);
     }
 
     @Override
     public void getProperty(CallbackListener<GetPropertyResponse> listener) {
-        new GetPropertyInfoTask(listener).execute();
+        new GetPropertyInfoTaskMock(listener).execute();
     }
 
     @Override
     public void getReferenceProperty(CallbackListener<GetReferencePropertyResponse> listener , String assetId) {
-        new GetReferenceInfoTask(listener , assetId).execute();
+        new GetReferenceInfoTaskMock(listener).execute();
     }
 
     @Override
     public void editProperty(EditPropertyRequest request, CallbackListener<String> listener) {
-        new EditPropertyTask(listener).execute(request);
+        new PropertyEditTaskMock(listener).execute(request);
     }
 
     @Override
     public void deleteProperty(DeletePropertyRequest request, CallbackListener<String> listener) {
-        new DeletePropertyTask(listener).execute(request);
+        new DeletePropertyInfoTaskMock(listener).execute(request);
     }
 }

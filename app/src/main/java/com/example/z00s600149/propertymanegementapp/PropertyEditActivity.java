@@ -14,11 +14,13 @@ import android.widget.TextView;
 import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.PropertyInfo;
+import entity.PropertyInfoForValidator;
 import task.AsyncTaskListener.CallbackListener;
-import task.request.EditPropertyRequest;
+import request.EditPropertyRequest;
+import validator.PropertyInfoValidator;
 import webApi.WebApi;
 import webApi.WebApiImpl;
-import task.response.GetNameResponse;
+import response.GetNameResponse;
 
 /**
  * 資産情報を変更して、再度登録させるActivity
@@ -47,7 +49,7 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
 
     private TextView mControlNumber;
 
-    private final WebApi mWebApi;
+    private WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
     public PropertyEditActivity() {
@@ -60,6 +62,11 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
         super();
         mWebApi = webApi;
         Log.i(TAG, "PropertyEdit activity start");
+    }
+
+    void setApi(WebApi webApi) {
+        mWebApi = webApi;
+        Log.i(TAG, "MOCK start");
     }
 
     @Override
@@ -90,18 +97,22 @@ public class PropertyEditActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.edit_button_edit: {
-
-                mWebApi.editProperty(new EditPropertyRequest(
-                        LoginUserNameHolder.getInstance().getName(),
-                        Integer.parseInt(getIntent().getStringExtra(IntentKey.CONTROL_NUMBER)),
-                        new PropertyInfo((String) mManager.getSelectedItem(),
-                                (String)mPropertyUser.getSelectedItem(),
-                                mLocation.getText().toString(),
-                                "",
-                                mProductName.getText().toString(),
-                                (String)mPurchase_Category_Spinner.getSelectedItem(),
-                                (String)mProperty_Category_Spinner.getSelectedItem(),
-                                mRemarks.getText().toString())),mCallBackListenerEdit);
+                int validationResult = new PropertyInfoValidator().validate(new PropertyInfoForValidator(mLocation.getText().toString(),mProductName.getText().toString()));
+                if (validationResult == 1) {
+                    new ShowDialog(PropertyEditActivity.this).show(R.string.not_input);
+                } else {
+                    mWebApi.editProperty(new EditPropertyRequest(
+                            LoginUserNameHolder.getInstance().getName(),
+                            Integer.parseInt(mControlNumber.getText().toString()),
+                            new PropertyInfo((String) mManager.getSelectedItem(),
+                                    (String) mPropertyUser.getSelectedItem(),
+                                    mLocation.getText().toString(),
+                                    "",
+                                    mProductName.getText().toString(),
+                                    (String) mPurchase_Category_Spinner.getSelectedItem(),
+                                    (String) mProperty_Category_Spinner.getSelectedItem(),
+                                    mRemarks.getText().toString())), mCallBackListenerEdit);
+                }
             }
             break;
         }

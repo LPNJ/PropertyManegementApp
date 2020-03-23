@@ -2,28 +2,49 @@ package task.mock;
 
 import java.util.ArrayList;
 
-import entity.PropertyInfo;
+import json.GetPropertyJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.response.GetPropertyResponse;
+import response.GetPropertyResponse;
 
 public class GetPropertyInfoTaskMock{
 
-    private CallbackListener<GetPropertyResponse> listener = null;
+    private CallbackListener<GetPropertyResponse> mListener;
 
     public GetPropertyInfoTaskMock(CallbackListener<GetPropertyResponse> listener) {
-        this.listener = listener;
+        mListener = listener;
     }
 
-    ArrayList<PropertyInfo> propertyInfos = new ArrayList<>();
+    ArrayList<GetPropertyJson> propertyInfo = new ArrayList<>();
 
-    public void execute(String s) {
+    public void execute() {
 
         GetPropertyResponse response = null;
 
-        propertyInfos.add(new PropertyInfo("komiyama","maeda","新横浜","10001","ディスプレイ","レンタル","ディスプレイ",""));
-        propertyInfos.add(new PropertyInfo("maeda","kimura","海老名","10002","マウス","レンタル","周辺機器",""));
-        propertyInfos.add(new PropertyInfo("kimura","komiyama","大森","10003","SDカード","レンタル","USB・SD",""));
+        String productManager = "komiyama";
+        String productUser = "komiyama";
+        String location = "新横浜";
+        String controlNumber = "10001";
+        String productNmae = "ハンディプリンタ";
+        String purchaseCategory = "レンタル";
+        String propertyCategory = "機器";
+        String complete = "";
 
-        listener.onPostExecute(response);
+        GetPropertyJson json = new GetPropertyJson("komiyama", 10001, "{" +
+                "\"mPropertyManager\":" + "\""+ productManager+ "\"" +
+                ","+"\"mPropertyUser\":" + "\""+ productUser + "\"" +
+                ","+"\"mLocation\":" + "\""+location + "\"" +
+                ","+"\"mControlNumber\":" + "\""+controlNumber + "\"" +
+                ","+"\"mProductName\":" + "\""+productNmae + "\"" +
+                ","+"\"mPurchaseCategory\":" +"\""+ purchaseCategory + "\"" +
+                ","+"\"mPropertyCategory\":" + "\""+propertyCategory + "\"" +
+                ","+"\"mComplement\":" + "\""+ complete + "\"" +
+                '}');
+
+        propertyInfo.add(json);
+        propertyInfo.add(json);
+
+        response = new GetPropertyResponse("1",propertyInfo);
+
+        mListener.onPostExecute(response);
     }
 }

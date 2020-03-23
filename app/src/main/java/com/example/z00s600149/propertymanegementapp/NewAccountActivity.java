@@ -34,7 +34,7 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
     /*再入力用パスワード*/
     private String mConfirmationPassInfo;
 
-    private final WebApi mWebApi;
+    private WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
 
@@ -48,6 +48,10 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
         super();
         mWebApi = WebApi;
         Log.i(TAG, "NEW ACCOUNT Activity start");
+    }
+
+    void setApi(WebApi webApi) {
+        mWebApi = webApi;
     }
 
 
@@ -82,6 +86,12 @@ public class NewAccountActivity extends AppCompatActivity implements View.OnClic
                     new ShowDialog(NewAccountActivity.this).show(R.string.not_input);
                 } else if (validationResult == 2) {
                     new ShowDialog(NewAccountActivity.this).show(R.string.not_permit_character);
+                } else if (validationResult == 3) {
+                    new ShowDialog(NewAccountActivity.this).show(R.string.input_rule_id);
+                } else if (validationResult == 4) {
+                    new ShowDialog(NewAccountActivity.this).show(R.string.input_rule_pass);
+                } else if (validationResult == 5) {
+                    new ShowDialog(NewAccountActivity.this).show(R.string.not_match_pass);
                 } else {
                     new AlertDialog.Builder(NewAccountActivity.this)
                             .setMessage(R.string.register_permit)

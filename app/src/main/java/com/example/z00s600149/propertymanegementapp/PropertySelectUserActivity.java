@@ -7,8 +7,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import dialog.ShowDialog;
+import response.GetPropertyResponse;
 import task.AsyncTaskListener.CallbackListener;
-import task.response.GetPropertyResponse;
 import webApi.WebApi;
 import webApi.WebApiImpl;
 
@@ -20,7 +21,7 @@ public class PropertySelectUserActivity extends AppCompatActivity{
     private static final String TAG = "PropertySelectUserAct";
 
     private ArrayList<String> mProductNumber;
-    private final WebApi mWebApi;
+    private WebApi mWebApi;
     ListView properties;
 
     /*デフォルトコンストラクタ*/
@@ -37,6 +38,10 @@ public class PropertySelectUserActivity extends AppCompatActivity{
         Log.i(TAG, "PropertySelectUser activity start");
     }
 
+    void setApi(WebApi webApi) {
+        mWebApi = webApi;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +56,11 @@ public class PropertySelectUserActivity extends AppCompatActivity{
         final String roleUser = "USER";
         @Override
         public void onPostExecute(GetPropertyResponse response) {
-            new SelectProperties(PropertySelectUserActivity.this).getProperties(roleUser,response);
+            if (response.getError().equals("1")){
+                new ShowDialog(PropertySelectUserActivity.this).show(R.string.error);
+            }else {
+                new SelectProperties(PropertySelectUserActivity.this).getProperties(roleUser, response);
+            }
         }
     };
 }

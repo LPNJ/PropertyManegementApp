@@ -20,11 +20,10 @@ public class LoginTask extends ServerTask<UserInfo,String> {
 
     @Override
     JSONObject createJson(UserInfo userInfo) {
-        JSONObject json = new org.json.JSONObject();
+        JSONObject json = new JSONObject();
         try {
             json.put("userId", userInfo.getUserId());
             json.put("password", userInfo.getPassword());
-
         } catch (JSONException e) {
             Log.e(TAG, "JSONException occurred." , e);
         }

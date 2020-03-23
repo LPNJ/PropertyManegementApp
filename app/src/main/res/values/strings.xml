@@ -16,8 +16,9 @@
 
     <string name="cannot_connect">サーバーの通信に異常がありました</string>
     <string name="not_input">"入力されていない項目があります"</string>
+    <string name="not_register">"ユーザーIDまたはパスワードが違います"</string>
     <string name="already_register">"すでにユーザーが登録されています"</string>
-    <string name="not_permit_character">"すでにユーザーが登録されています"</string>
+    <string name="not_permit_character">"許可されていない文字が含まれています"</string>
     <string name="to_login">"ログイン画面に戻りますか？"</string>
     <string name="register_permit">"登録してもよろしいですか？"</string>
     <string name="cancel">"Cancel"</string>
@@ -37,5 +38,12 @@
     <string name="logout">"ログアウトしますか？"</string>
     <string name="role_m">"MANAGER"</string>
     <string name="role_u">"USER"</string>
+    <string name="input_rule_id">"IDは6文字以上128文字未満の長さで入力してください"</string>
+    <string name="input_rule_pass">"PASSWARDは8文字以上128文字未満の長さで入力してください"</string>
+    <string name="not_match_pass">"パスワードが一致していません"</string>
+    <string name="not_permit_element">"不正なパラメーター"</string>
+    <string name="not_management">"ユーザーは資産管理者ではありません"</string>
+
+    <string name="not_found_property">"資産が見つかりません"</string>
 
 </resources>

@@ -1,4 +1,4 @@
-package task.request;
+package request;
 
 public class DeletePropertyRequest {
 

@@ -5,14 +5,12 @@ import android.util.Log;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
 import java.io.IOException;
-import java.util.ArrayList;
 
-import entity.PropertyInfo;
 import json.ErrorAndAssetsListJson;
 import json.PropertyInfoJson;
 import task.AsyncTaskListener.CallbackListener;
 import json.GetPropertyJson;
-import task.response.GetReferencePropertyResponse;
+import response.GetReferencePropertyResponse;
 
 public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropertyResponse> {
 

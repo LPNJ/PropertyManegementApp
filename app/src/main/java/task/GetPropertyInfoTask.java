@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import json.ErrorAndAssetsListJson;
 import task.AsyncTaskListener.CallbackListener;
 import json.GetPropertyJson;
-import task.response.GetPropertyResponse;
+import response.GetPropertyResponse;
 
 public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse> {
 
@@ -29,7 +29,7 @@ public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse>
 
     @Override
     GetPropertyResponse parseJson(String readSd) {
-        GetPropertyResponse response = null;
+    GetPropertyResponse response = null;
         String returnCode = null;
         ArrayList<GetPropertyJson> properties = null;
 

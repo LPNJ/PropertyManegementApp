@@ -3,7 +3,6 @@ package com.example.z00s600149.propertymanegementapp;
 import android.os.Build;
 import android.widget.Button;
 import android.widget.EditText;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +11,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLog;
-
 import webApi.WebApiMock;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -50,8 +47,8 @@ public class LoginActivityTest {
     public void loginSuccess() {
         // ●setup(準備)
         // IDとPassを設定
-        enterIdAndPass("komiyama", "komiyama");
         // LoginTaskで必ず成功が返るように設定
+        inputIdAndPass("komiyama", "komiyama");
         mLoginActivity.setApi(new WebApiMock());
         Button loginButton = (Button) mLoginActivity.findViewById(R.id.login_button_login);
 
@@ -65,14 +62,15 @@ public class LoginActivityTest {
     }
 
     /**
-     * サーバーに問い合わせてログイン失敗してダイアログを表示するかの確認
+     * サーバーの通信に異常があり、ログインに失敗してダイアログを表示するかの確認
      */
     @Test
-    public void loginFailedByDifferent() {
+    public void loginFailedByConnectError() {
         // ●setup(準備)
         // IDとPassを設定
-        enterIdAndPass("failure", "aaaaaaaa");
         // LoginTaskで必ず失敗が返るように設定
+        inputIdAndPass("failure", "aaaaaaaa");
+        mLoginActivity.setApi(new WebApiMock());
         Button loginButton = (Button) mLoginActivity.findViewById(R.id.login_button_login);
 
         // ●execute(テストの実施)
@@ -85,33 +83,74 @@ public class LoginActivityTest {
     }
 
     /**
-     * パスワードが空でログイン失敗しでメニュー画面に遷移するかの確認
+     * サーバーに問い合わせてログイン失敗して（サーバーに情報を登録していない）ダイアログを表示するかの確認
      */
-//    @Test
-//    public void loginFailedByEnptytPassword() {
-//        // ●setup(準備)
-//        // IDとPassを設定
-//        enterIdAndPass("aaaaaaaaaaaaaaaaa", "");
-//        // LoginTaskで必ず失敗が返るように設定
-//        LoginTask task = createTask( 1);
-//        mMainActivity.setTask(task);
-//        Button loginButton = mMainActivity.findViewById(R.id.login);
-//
-//        // ●execute(テストの実施)
-//        // ログインボタンを押下
-//        loginButton.performClick();
-//
-//        // ●verify(検証)
-//        String message = TestUtils.getLatestAlertDialogMessage();
-//        assertThat(message, is(RuntimeEnvironment.application.getString(R.string.login_error)));
-//    }
+    @Test
+    public void loginFailedByDifferent() {
+        // ●setup(準備)
+        // IDとPassを設定
+        // LoginTaskで必ず失敗が返るように設定
+        inputIdAndPass("nakayama", "aaaaaaaa");
+        mLoginActivity.setApi(new WebApiMock());
+        Button loginButton = (Button) mLoginActivity.findViewById(R.id.login_button_login);
+
+        // ●execute(テストの実施)
+        // ログインボタンを押下
+        loginButton.performClick();
+
+        // ●verify(検証)
+        String message = TestUtils.getLatestAlertDialogMessage();
+        assertThat(message, is(RuntimeEnvironment.application.getString(R.string.not_register)));
+    }
+
+    /**
+     * IDが空でログインに失敗しダイアログを表示するかの確認
+     */
+    @Test
+    public void loginFailedByEmptyId() {
+        // ●setup(準備)
+        // IDとPassを設定
+        // LoginTaskで必ず失敗が返るように設定
+        inputIdAndPass("", "aaaaaaaaaaaaaaaaa");
+        Button loginButton = (Button) mLoginActivity.findViewById(R.id.login_button_login);
+
+        // ●execute(テストの実施)
+        // ログインボタンを押下
+        loginButton.performClick();
+
+        // ●verify(検証)
+        String message = TestUtils.getLatestAlertDialogMessage();
+        assertThat(message, is(RuntimeEnvironment.application.getString(R.string.not_input)));
+    }
+
+    /**
+     * パスワードが空でログインに失敗しダイアログを表示するかの確認
+     */
+    @Test
+    public void loginFailedByEmptyByPassWard() {
+        // ●setup(準備)
+        // IDとPassを設定
+        /// LoginTaskで必ず失敗が返るように設定
+        inputIdAndPass("aaaaaaaaaaaaaaaaa", "");
+        Button loginButton = (Button) mLoginActivity.findViewById(R.id.login_button_login);
+
+        // ●execute(テストの実施)
+        // ログインボタンを押下
+        loginButton.performClick();
+
+        // ●verify(検証)
+        String message = TestUtils.getLatestAlertDialogMessage();
+        assertThat(message, is(RuntimeEnvironment.application.getString(R.string.not_input)));
+    }
+
+
 
     /**
      * 引数に指定したId, Passを設定します。
      * @param id
      * @param pass
      */
-    private void enterIdAndPass(String id, String pass) {
+    private void inputIdAndPass(String id, String pass) {
         EditText idText = (EditText) mLoginActivity.findViewById(R.id.login_id);
         EditText passText = (EditText) mLoginActivity.findViewById(R.id.login_passward);
         idText.setText(id);

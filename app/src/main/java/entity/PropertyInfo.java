@@ -25,10 +25,37 @@ public class PropertyInfo {
         this.mComplement = complement;
     }
 
+    public String getPropertyManager() {
+        return mPropertyManager;
+    }
+
+    public String getPropertyUser() {
+        return mPropertyUser;
+    }
+
+    public String getLocation() {
+        return mLocation;
+    }
+
     public String getControlNumber() {
         return mControlNumber;
     }
 
+    public String getProductName() {
+        return mProductName;
+    }
+
+    public String getPurchaseCategory() {
+        return mPurchaseCategory;
+    }
+
+    public String getPropertyCategory() {
+        return mPropertyCategory;
+    }
+
+    public String getComplement() {
+        return mComplement;
+    }
 
     @Override
     public String toString() {

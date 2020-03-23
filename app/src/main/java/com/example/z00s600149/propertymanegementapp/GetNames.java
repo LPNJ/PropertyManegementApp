@@ -5,7 +5,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import dialog.ShowDialog;
-import task.response.GetNameResponse;
+import response.GetNameResponse;
 
 public class GetNames {
 
@@ -32,7 +32,6 @@ public class GetNames {
         if (Integer.parseInt(response.getError()) == 1) {
             new ShowDialog(mActivity).show(R.string.error);
         } else {
-
             if(role.equals(roleName)){
                 mManager = mActivity.findViewById(R.id.property_info_spinner_1);
                 mPropertyUser = mActivity.findViewById(R.id.property_info_spinner_2);

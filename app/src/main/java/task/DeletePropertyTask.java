@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import json.ErrorJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.request.DeletePropertyRequest;
+import request.DeletePropertyRequest;
 
 public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String> {
 
@@ -27,6 +27,7 @@ public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String
         } catch (JSONException e) {
             Log.e(TAG, "JSONException occurred.", e);
         }
+        Log.i("AAAAA",json.toString());
         return json;
     }
 

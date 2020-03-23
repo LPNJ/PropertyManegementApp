@@ -6,12 +6,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 
+import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import json.JsonResolution;
-import task.response.GetPropertyResponse;
+import response.GetPropertyResponse;
 
 public class SelectProperties {
 
@@ -35,6 +35,10 @@ public class SelectProperties {
         ArrayList<String> pName = new ArrayList<>();
         ArrayList<String> SendNumber = new ArrayList<>();
 
+        if (response.getError().equals("1")){
+            new ShowDialog(mActivity).show(R.string.error);
+        }
+
         //JSON文字列にキーを指定して値を取得
         if(rule.equals(roleUser)) {
             new JsonResolution().toListUser(response, pUser, pName);
@@ -42,8 +46,8 @@ public class SelectProperties {
             mProductNumber = new ArrayList<>();
             for (int i = 0; i < response.getInfos().size(); i++) {
                 if(pUser.get(i).equals(LoginUserNameHolder.getInstance().getName())) {
-                    mProductNumber.add(response.getInfos().get(i).getAssetId().toString() + " " + pName.get(i));
-                    SendNumber.add(response.getInfos().get(i).getAssetId().toString());
+                    mProductNumber.add(String.valueOf(response.getInfos().get(i).getAssetId()) + " " + pName.get(i));
+                    SendNumber.add(String.valueOf(response.getInfos().get(i).getAssetId()));
                 }
             }
         }
@@ -53,10 +57,14 @@ public class SelectProperties {
             mProductNumber = new ArrayList<>();
             for (int i = 0; i < response.getInfos().size(); i++) {
                 if(pManager.get(i).equals(LoginUserNameHolder.getInstance().getName())) {
-                    mProductNumber.add(response.getInfos().get(i).getAssetId().toString() + " " + pName.get(i));
-                    SendNumber.add(response.getInfos().get(i).getAssetId().toString());
+                    mProductNumber.add(String.valueOf(response.getInfos().get(i).getAssetId()) + " " + pName.get(i));
+                    SendNumber.add(String.valueOf(response.getInfos().get(i).getAssetId()));
                 }
             }
+        }
+
+        if(mProductNumber.size()==0){
+            new ShowDialog(mActivity).show(R.string.not_found_property);
         }
         ArrayAdapter<String> myAdapter_Manager = new ArrayAdapter<String>(mActivity, android.R.layout.simple_list_item_1, mProductNumber);
         myAdapter_Manager.setDropDownViewResource(android.R.layout.simple_list_item_1);

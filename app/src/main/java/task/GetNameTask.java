@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import json.ErrorAndUserListJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.response.GetNameResponse;
+import response.GetNameResponse;
 
 public class GetNameTask extends ServerTask<String, GetNameResponse> {
 

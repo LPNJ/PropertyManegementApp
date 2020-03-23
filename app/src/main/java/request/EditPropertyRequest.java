@@ -1,4 +1,4 @@
-package task.request;
+package request;
 
 import entity.PropertyInfo;
 
