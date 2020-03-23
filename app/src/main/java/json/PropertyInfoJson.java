@@ -21,4 +21,36 @@ public class PropertyInfoJson {
     @JsonProperty("mComplement")
     public String mComplement;
 
+
+    public void setPropertyManager(String mPropertyManager) {
+        this.mPropertyManager = mPropertyManager;
+    }
+
+    public void setPropertyUser(String mPropertyUser) {
+        this.mPropertyUser = mPropertyUser;
+    }
+
+    public void setLocation(String mLocation) {
+        this.mLocation = mLocation;
+    }
+
+    public void setControlNumber(String mControlNumber) {
+        this.mControlNumber = mControlNumber;
+    }
+
+    public void setProductName(String mProductName) {
+        this.mProductName = mProductName;
+    }
+
+    public void setPurchaseCategory(String mPurchaseCategory) {
+        this.mPurchaseCategory = mPurchaseCategory;
+    }
+
+    public void setPropertyCategory(String mPropertyCategory) {
+        this.mPropertyCategory = mPropertyCategory;
+    }
+
+    public void setComplement(String mComplement) {
+        this.mComplement = mComplement;
+    }
 }

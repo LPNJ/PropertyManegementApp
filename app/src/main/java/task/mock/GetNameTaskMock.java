@@ -3,14 +3,14 @@ package task.mock;
 import java.util.ArrayList;
 
 import task.AsyncTaskListener.CallbackListener;
-import task.response.GetNameResponse;
+import response.GetNameResponse;
 
 public class GetNameTaskMock{
 
-    CallbackListener<GetNameResponse> listener;
+    CallbackListener<GetNameResponse> mListener;
 
     public GetNameTaskMock(CallbackListener<GetNameResponse> listener) {
-        this.listener = listener;
+        mListener = listener;
     }
 
     public void execute() {
@@ -26,7 +26,7 @@ public class GetNameTaskMock{
 
         response = new GetNameResponse(error,names);
 
-        listener.onPostExecute(response);
+        mListener.onPostExecute(response);
 
     }
 }

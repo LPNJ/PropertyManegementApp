@@ -10,13 +10,15 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import dialog.ShowDialog;
 import json.PropertyInfoJson;
 import entity.LoginUserNameHolder;
 import task.AsyncTaskListener.CallbackListener;
-import task.request.DeletePropertyRequest;
+import request.DeletePropertyRequest;
 import webApi.WebApi;
 import webApi.WebApiImpl;
-import task.response.GetReferencePropertyResponse;
+import response.GetReferencePropertyResponse;
 
 /**
  * 選択した資産情報を表示させるActivity
@@ -49,7 +51,7 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
     /*印刷画面遷移用ボタン*/
     private Button mPrinterButton;
 
-    private final WebApi mWebApi;
+    private WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
     public PropertyReferenceActivity() {
@@ -63,6 +65,10 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         super();
         mWebApi = webApi;
         Log.i(TAG, "PropertyReference activity start");
+    }
+
+    void setApi(WebApi webApi) {
+        mWebApi = webApi;
     }
 
     @Override
@@ -84,6 +90,8 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         mPrinterButton = (Button) findViewById(R.id.reference_print);
 
         //サーバー接続（名前取得）
+
+
         mWebApi.getReferenceProperty(mGetProperty , getIntent().getStringExtra(IntentKey.NUMBER));
 
         //ボタン押下
@@ -108,7 +116,11 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mWebApi.deleteProperty(new DeletePropertyRequest(LoginUserNameHolder.getInstance().getName(),Integer.parseInt(getIntent().getStringExtra(IntentKey.NUMBER))),mDeleteProperty);
+                                Log.i("AAAAA",mControlNumber.getText().toString());
+                                if(mControlNumber.getText().toString().equals("")){
+                                    mControlNumber.setText("1");
+                                }
+                                mWebApi.deleteProperty(new DeletePropertyRequest(LoginUserNameHolder.getInstance().getName(),Integer.parseInt(mControlNumber.getText().toString())),mDeleteProperty);
                             }
                         })
                         .setNegativeButton(R.string.cancel, null)
@@ -131,14 +143,15 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
 
             PropertyInfoJson info = response.getInfo();
 
-            mManager.setText(info.mPropertyManager);
-            mUser.setText(info.mPropertyUser);
-            mPlace.setText(info.mLocation);
+            mManager.setText(response.getInfo().mPropertyManager);
+            mUser.setText(response.getInfo().mPropertyUser);
+            mPlace.setText(response.getInfo().mLocation);
             mControlNumber.setText(getIntent().getStringExtra(IntentKey.NUMBER));
-            mProduct.setText(info.mProductName);
-            mPurchase.setText(info.mPurchaseCategory);
-            mAssets.setText(info.mPropertyCategory);
-            mRemark.setText(info.mComplement);
+            mProduct.setText(response.getInfo().mProductName);
+            mPurchase.setText(response.getInfo().mPurchaseCategory);
+            mAssets.setText(response.getInfo().mPropertyCategory);
+            mRemark.setText(response.getInfo().mComplement);
+
         }
     };
 
@@ -149,16 +162,33 @@ public class PropertyReferenceActivity extends AppCompatActivity implements View
         @Override
         public void onPostExecute(String response) {
 
-            new AlertDialog.Builder(PropertyReferenceActivity.this)
-                    .setMessage(R.string.delete_complete)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(PropertyReferenceActivity.this, MenuActivity.class);
-                            startActivity(intent);
-                        }
-                    })
-                    .show();
+            if (response.equals("1")) {
+                new ShowDialog(PropertyReferenceActivity.this).show(R.string.cannot_connect);
+            }
+            if (response.equals("2")) {
+                new ShowDialog(PropertyReferenceActivity.this).show(R.string.not_permit_character);
+            }
+            if (response.equals("12")) {
+                new ShowDialog(PropertyReferenceActivity.this).show(R.string.cannot_find_user);
+            }
+            if (response.equals("13")) {
+                new ShowDialog(PropertyReferenceActivity.this).show(R.string.not_management);
+            }
+            if (response.equals("31")) {
+                new ShowDialog(PropertyReferenceActivity.this).show(R.string.cannot_find_property);
+            }
+            if (response.equals("0")) {
+                new AlertDialog.Builder(PropertyReferenceActivity.this)
+                        .setMessage(R.string.delete_complete)
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(PropertyReferenceActivity.this, MenuActivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .show();
+            }
         }
     };
 

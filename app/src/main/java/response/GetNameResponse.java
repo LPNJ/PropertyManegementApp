@@ -1,4 +1,4 @@
-package task.response;
+package response;
 
 import java.util.ArrayList;
 

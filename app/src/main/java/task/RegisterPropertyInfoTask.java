@@ -1,16 +1,14 @@
 package task;
 
 import android.util.Log;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
 import json.ErrorAndAssetIdJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.request.RegisterPropertyRequest;
-import task.response.RegisterPropertyResponse;
+import request.RegisterPropertyRequest;
+import response.RegisterPropertyResponse;
 
 public class RegisterPropertyInfoTask extends ServerTask<RegisterPropertyRequest, RegisterPropertyResponse> {
 
@@ -24,9 +22,8 @@ public class RegisterPropertyInfoTask extends ServerTask<RegisterPropertyRequest
     JSONObject createJson(RegisterPropertyRequest registerPropertyRequest) {
         org.json.JSONObject json = new org.json.JSONObject();
         try {
-            json.put("userId",registerPropertyRequest.getError());
-            json.put("data",registerPropertyRequest.getInfos().toString());
-
+            json.put("userId",registerPropertyRequest.getUserId());
+            json.put("data",registerPropertyRequest.getInfo().toString());
         } catch (JSONException e) {
             Log.e(TAG, "JSONException occurred." , e);
         }

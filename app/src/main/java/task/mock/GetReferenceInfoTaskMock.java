@@ -3,35 +3,37 @@ package task.mock;
 import java.util.ArrayList;
 
 import entity.PropertyInfo;
+import json.PropertyInfoJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.response.GetPropertyResponse;
+import response.GetReferencePropertyResponse;
 
 public class GetReferenceInfoTaskMock{
 
-    private CallbackListener<GetPropertyResponse> listener = null;
+    private CallbackListener<GetReferencePropertyResponse> mListener = null;
 
-    public GetReferenceInfoTaskMock(CallbackListener<GetPropertyResponse> listener) {
-        listener = listener;
+    public GetReferenceInfoTaskMock(CallbackListener<GetReferencePropertyResponse> listener) {
+        mListener= listener;
     }
 
     ArrayList<PropertyInfo> mPropertyInfo = new ArrayList<>();
-    int mNumber = 0;
 
-    public void execute(String propertyInfoRequest) {
+    public void execute() {
 
-        GetPropertyResponse response = null;
+        GetReferencePropertyResponse response = null;
 
-        mPropertyInfo.add(new PropertyInfo("komiyama","maeda","新横浜","10001","ディスプレイ","レンタル","ディスプレイ",""));
-        mPropertyInfo.add(new PropertyInfo("maeda","kimura","海老名","10002","マウス","レンタル","周辺機器",""));
-        mPropertyInfo.add(new PropertyInfo("kimura","komiyama","大森","10003","SDカード","レンタル","USB・SD",""));
+        PropertyInfoJson json = new PropertyInfoJson();
+        json.setPropertyManager("komiyama");
+        json.setPropertyUser("komiyama");
+        json.setLocation("新横浜");
+        json.setControlNumber("10001");
+        json.setProductName("ハンディプリンタ");
+        json.setPurchaseCategory("レンタル");
+        json.setPropertyCategory("機器");
+        json.setComplement("");
 
-        for(int i=0;i<mPropertyInfo.size();i++){
-            if(propertyInfoRequest.equals(mPropertyInfo.get(i).getControlNumber())){
-                mNumber = i;
-            }
-        }
+        response = new GetReferencePropertyResponse("0",json);
 
-        listener.onPostExecute(response);
+        mListener.onPostExecute(response);
 
     }
 }

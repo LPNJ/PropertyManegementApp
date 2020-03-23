@@ -1,4 +1,4 @@
-package task.response;
+package response;
 
 public class RegisterPropertyResponse {
 

@@ -3,7 +3,7 @@ package json;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
-import task.response.GetPropertyResponse;
+import response.GetPropertyResponse;
 
 public class JsonResolution {
 

@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import json.ErrorJson;
 import task.AsyncTaskListener.CallbackListener;
-import task.request.EditPropertyRequest;
+import request.EditPropertyRequest;
 
 public class EditPropertyTask extends ServerTask<EditPropertyRequest, String> {
 
@@ -33,6 +33,7 @@ public class EditPropertyTask extends ServerTask<EditPropertyRequest, String> {
 
     @Override
     String parseJson(String readSd) {
+
         String returnCode = null;
         ObjectMapper mapper = new ObjectMapper();
         try {

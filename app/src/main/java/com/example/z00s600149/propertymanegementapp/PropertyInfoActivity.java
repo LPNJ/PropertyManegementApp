@@ -3,8 +3,8 @@ package com.example.z00s600149.propertymanegementapp;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,15 +12,18 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+
 import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.PropertyInfo;
+import entity.PropertyInfoForValidator;
 import task.AsyncTaskListener.CallbackListener;
-import task.request.RegisterPropertyRequest;
+import request.RegisterPropertyRequest;
+import response.GetNameResponse;
+import response.RegisterPropertyResponse;
+import validator.PropertyInfoValidator;
 import webApi.WebApi;
 import webApi.WebApiImpl;
-import task.response.GetNameResponse;
-import task.response.RegisterPropertyResponse;
 
 /**
  * 資産情報を登録させるActivity
@@ -49,7 +52,7 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
     /** 備考情報保持用 */
     private EditText mRemarks;
 
-    private final WebApi mWebApi;
+    private WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
     public PropertyInfoActivity() {
@@ -64,6 +67,11 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
         Log.i(TAG, "Property activity start");
     }
 
+    void setApi(WebApi webApi) {
+        mWebApi = webApi;
+        Log.i(TAG, "MOCK start");
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,10 +81,10 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
         mPropertyRegist = (Button) findViewById(R.id.property_button_regist);
         mManager = (Spinner) findViewById(R.id.property_info_spinner_1);
         mPropertyUser = (Spinner) findViewById(R.id.property_info_spinner_2);
-        mPurchase_Category_Spinner = (Spinner) findViewById(R.id.property_info_spinner_3);
-        mProperty_Category_Spinner = (Spinner) findViewById(R.id.property_info_spinner_4);
         mLocation = (EditText) findViewById(R.id.property_info_editText_location);
         mProductName = (EditText) findViewById(R.id.property_info_editText_productname);
+        mPurchase_Category_Spinner = (Spinner) findViewById(R.id.property_info_spinner_3);
+        mProperty_Category_Spinner = (Spinner) findViewById(R.id.property_info_spinner_4);
         mRemarks = (EditText) findViewById(R.id.property_info_editText_remarks);
 
         //ボタン押下の動作
@@ -84,7 +92,6 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
 
         //ログイン名一覧取得
         mWebApi.getName(mCallBackListener);
-
     }
 
     @Override
@@ -92,16 +99,22 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.property_button_regist: {
-                mWebApi.registerProperty(new RegisterPropertyRequest(
-                        LoginUserNameHolder.getInstance().getName(),
-                        new PropertyInfo((String) mManager.getSelectedItem(),
-                                (String)mPropertyUser.getSelectedItem(),
-                                mLocation.getText().toString(),
-                                "",
-                                mProductName.getText().toString(),
-                                (String)mPurchase_Category_Spinner.getSelectedItem(),
-                                (String)mProperty_Category_Spinner.getSelectedItem(),
-                                mRemarks.getText().toString())),mCallBackListenerAssetId);
+                /*入力チェック*/
+                int validationResult = new PropertyInfoValidator().validate(new PropertyInfoForValidator(mLocation.getText().toString(),mProductName.getText().toString()));
+                if (validationResult == 1) {
+                    new ShowDialog(PropertyInfoActivity.this).show(R.string.not_input);
+                } else {
+                    mWebApi.registerProperty(new RegisterPropertyRequest(
+                            LoginUserNameHolder.getInstance().getName(),
+                            new PropertyInfo((String) mManager.getSelectedItem(),
+                                    (String) mPropertyUser.getSelectedItem(),
+                                    mLocation.getText().toString(),
+                                    "",
+                                    mProductName.getText().toString(),
+                                    (String) mPurchase_Category_Spinner.getSelectedItem(),
+                                    (String) mProperty_Category_Spinner.getSelectedItem(),
+                                    mRemarks.getText().toString())), mCallBackListenerAssetId);
+                }
             }
             break;
         }
@@ -136,9 +149,6 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
             }
             else if(Integer.parseInt(response.getError()) == 12){
                 new ShowDialog(PropertyInfoActivity.this).show(R.string.cannot_find_user);
-            }
-            else if(Integer.parseInt(response.getError()) == 31){
-                new ShowDialog(PropertyInfoActivity.this).show(R.string.cannot_find_property);
             }
             else if(Integer.parseInt(response.getError()) == 32){
                 new ShowDialog(PropertyInfoActivity.this).show(R.string.limit);

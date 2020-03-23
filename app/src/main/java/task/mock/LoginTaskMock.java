@@ -5,19 +5,20 @@ import task.AsyncTaskListener.CallbackListener;
 
 public class LoginTaskMock{
 
-
-    CallbackListener<String> resultListener;
+    CallbackListener<String> mResultListener;
 
     public LoginTaskMock(CallbackListener<String> resultListener) {
-        resultListener = resultListener;
+        mResultListener = resultListener;
     }
 
     public void execute(UserInfo userInfo) {
 
         if("failure".equals(userInfo.getUserId())) {
-            resultListener.onPostExecute("1");
-        } else {
-            resultListener.onPostExecute("0");
+            mResultListener.onPostExecute("1");
+        } else if("nakayama".equals(userInfo.getUserId())){
+            mResultListener.onPostExecute("21");
+        }else {
+            mResultListener.onPostExecute("0");
         }
 
     }

@@ -7,8 +7,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import dialog.ShowDialog;
 import task.AsyncTaskListener.CallbackListener;
-import task.response.GetPropertyResponse;
+import response.GetPropertyResponse;
 import webApi.WebApi;
 import webApi.WebApiImpl;
 
@@ -23,7 +24,7 @@ public class PropertySelectManagerActivity extends AppCompatActivity{
 
     ListView properties;
 
-    private final WebApi mWebApi;
+    private WebApi mWebApi;
 
     /*デフォルトコンストラクタ*/
     public PropertySelectManagerActivity() {
@@ -39,6 +40,10 @@ public class PropertySelectManagerActivity extends AppCompatActivity{
         Log.i(TAG, "PropertySelectManager activity start");
     }
 
+    void setApi(WebApi webApi) {
+        mWebApi = webApi;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +57,12 @@ public class PropertySelectManagerActivity extends AppCompatActivity{
         final String roleManager = "MANAGER";
         @Override
         public void onPostExecute(GetPropertyResponse response) {
-            new SelectProperties(PropertySelectManagerActivity.this).getProperties(roleManager,response);
+            if (response.getError().equals("1")){
+                new ShowDialog(PropertySelectManagerActivity.this).show(R.string.error);
+            }
+            else {
+                new SelectProperties(PropertySelectManagerActivity.this).getProperties(roleManager, response);
+            }
         }
     };
 }
