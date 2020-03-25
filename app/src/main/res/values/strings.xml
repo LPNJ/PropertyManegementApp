@@ -14,17 +14,18 @@
         <item>USB・SD</item>
     </string-array>
 
-    <string name="cannot_connect">サーバーの通信に異常がありました</string>
+    <string name="cannot_connect">サーバーへの通信が失敗しました</string>
     <string name="not_input">"入力されていない項目があります"</string>
     <string name="not_register">"ユーザーIDまたはパスワードが違います"</string>
     <string name="already_register">"すでにユーザーが登録されています"</string>
     <string name="not_permit_character">"許可されていない文字が含まれています"</string>
-    <string name="to_login">"ログイン画面に戻りますか？"</string>
-    <string name="register_permit">"登録してもよろしいですか？"</string>
+    <string name="to_login">"保存しませんがよろしいですか？"</string>
+    <string name="register_permit">"登録しますか？"</string>
+    <string name="register_permit_2">"登録してもよろしいですか？"</string>
     <string name="cancel">"Cancel"</string>
     <string name="error">"不明なエラー"</string>
     <string name="cannot_find_user">"指定したユーザーが見つかりません"</string>
-    <string name="cannot_find_property">"指定した資産が見つかりません"</string>
+    <string name="cannot_find_property">"その資産は登録されていません"</string>
     <string name="edit_success">"編集が完了しました"</string>
     <string name="limit">"資産登録上限に達しています"</string>
     <string name="to_menu">"メニュー画面に戻りますか？"</string>
@@ -32,9 +33,9 @@
     <string name="ok">"OK"</string>
     <string name="delete">"削除してもよろしいですか？"</string>
     <string name="delete_complete">"削除が完了しました"</string>
-    <string name="scan_result">"Scan Result"</string>
+    <string name="scan_result">"QRコードを読み込みました"</string>
     <string name="back">"戻る"</string>
-    <string name="view_property_info">"戻る"</string>
+    <string name="view_property_info">"資産情報参照画面へ"</string>
     <string name="logout">"ログアウトしますか？"</string>
     <string name="role_m">"MANAGER"</string>
     <string name="role_u">"USER"</string>
@@ -44,6 +45,7 @@
     <string name="not_permit_element">"不正なパラメーター"</string>
     <string name="not_management">"ユーザーは資産管理者ではありません"</string>
 
+    <string name="edit_permit">"変更してもよろしいですか？"</string>
     <string name="not_found_property">"資産が見つかりません"</string>
 
 </resources>

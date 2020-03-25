@@ -29,7 +29,7 @@ public class GetPropertyInfoTask extends ServerTask<String, GetPropertyResponse>
 
     @Override
     GetPropertyResponse parseJson(String readSd) {
-    GetPropertyResponse response = null;
+        GetPropertyResponse response = null;
         String returnCode = null;
         ArrayList<GetPropertyJson> properties = null;
 

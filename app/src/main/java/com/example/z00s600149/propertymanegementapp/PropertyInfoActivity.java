@@ -17,10 +17,10 @@ import dialog.ShowDialog;
 import entity.LoginUserNameHolder;
 import entity.PropertyInfo;
 import entity.PropertyInfoForValidator;
-import task.AsyncTaskListener.CallbackListener;
 import request.RegisterPropertyRequest;
 import response.GetNameResponse;
 import response.RegisterPropertyResponse;
+import task.AsyncTaskListener.CallbackListener;
 import validator.PropertyInfoValidator;
 import webApi.WebApi;
 import webApi.WebApiImpl;
@@ -41,9 +41,9 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
     /** 資産利用者用スピナー */
     private Spinner mPropertyUser;
     /** 購入区分スピナー */
-    private Spinner mPurchase_Category_Spinner;
+    private Spinner mPurchaseCategorySpinner;
     /** 資産区分スピナー */
-    private Spinner mProperty_Category_Spinner;
+    private Spinner mPropertyCategorySpinner;
 
     /** 管理場所情報保持用 */
     private EditText mLocation;
@@ -83,8 +83,8 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
         mPropertyUser = (Spinner) findViewById(R.id.property_info_spinner_2);
         mLocation = (EditText) findViewById(R.id.property_info_editText_location);
         mProductName = (EditText) findViewById(R.id.property_info_editText_productname);
-        mPurchase_Category_Spinner = (Spinner) findViewById(R.id.property_info_spinner_3);
-        mProperty_Category_Spinner = (Spinner) findViewById(R.id.property_info_spinner_4);
+        mPurchaseCategorySpinner = (Spinner) findViewById(R.id.property_info_spinner_3);
+        mPropertyCategorySpinner = (Spinner) findViewById(R.id.property_info_spinner_4);
         mRemarks = (EditText) findViewById(R.id.property_info_editText_remarks);
 
         //ボタン押下の動作
@@ -104,16 +104,29 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
                 if (validationResult == 1) {
                     new ShowDialog(PropertyInfoActivity.this).show(R.string.not_input);
                 } else {
-                    mWebApi.registerProperty(new RegisterPropertyRequest(
-                            LoginUserNameHolder.getInstance().getName(),
-                            new PropertyInfo((String) mManager.getSelectedItem(),
-                                    (String) mPropertyUser.getSelectedItem(),
-                                    mLocation.getText().toString(),
-                                    "",
-                                    mProductName.getText().toString(),
-                                    (String) mPurchase_Category_Spinner.getSelectedItem(),
-                                    (String) mProperty_Category_Spinner.getSelectedItem(),
-                                    mRemarks.getText().toString())), mCallBackListenerAssetId);
+
+                    new AlertDialog.Builder(PropertyInfoActivity.this)
+                            .setMessage(R.string.register_permit_2)
+                            .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    mWebApi.registerProperty(new RegisterPropertyRequest(
+                                            LoginUserNameHolder.getInstance().getName(),
+                                            new PropertyInfo((String) mManager.getSelectedItem(),
+                                                    (String) mPropertyUser.getSelectedItem(),
+                                                    mLocation.getText().toString(),
+                                                    "",
+                                                    mProductName.getText().toString(),
+                                                    (String) mPurchaseCategorySpinner.getSelectedItem(),
+                                                    (String) mPropertyCategorySpinner.getSelectedItem(),
+                                                    mRemarks.getText().toString())), mCallBackListenerAssetId);
+
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel,null)
+                            .create()
+                            .show();
                 }
             }
             break;
@@ -162,7 +175,7 @@ public class PropertyInfoActivity extends AppCompatActivity implements View.OnCl
         // BackBtnアクション
         if(keyCode==KeyEvent.KEYCODE_BACK){
             new AlertDialog.Builder(PropertyInfoActivity.this)
-                    .setMessage(R.string.to_menu)
+                    .setMessage(R.string.to_login)
                     .setPositiveButton(R.string.ok,new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

@@ -12,17 +12,15 @@ public class GetPropertyJson {
     public String mProperty;
 
     String mUserID;
-    int mControlNumber;
-    String mData;
 
     public GetPropertyJson() {
 
     }
 
-    public GetPropertyJson(String userID, int mControlNumber, String mData) {
+    public GetPropertyJson(String userID, int controlNumber, String data) {
         mUserID = userID;
-        mAssetId = mControlNumber;
-        mProperty = mData;
+        mAssetId = controlNumber;
+        mProperty = data;
     }
 
     public String getUserId() {

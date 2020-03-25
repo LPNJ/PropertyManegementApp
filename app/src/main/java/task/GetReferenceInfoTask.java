@@ -33,6 +33,8 @@ public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropert
             ErrorAndAssetsListJson info = mapper.readValue(readSd, ErrorAndAssetsListJson.class);
             PropertyInfoJson propertyInfoJson = createPropertyInfoJson(info.mProperties.get(0));
             return new GetReferencePropertyResponse(info.mError, propertyInfoJson);
+        } catch (java.lang.IndexOutOfBoundsException e) {
+            return returnErrorCodeNotFound();
         } catch (IOException e) {
             Log.e(TAG, "IOException occurred." , e);
             return returnErrorCode();
@@ -52,6 +54,10 @@ public class GetReferenceInfoTask extends ServerTask<String, GetReferencePropert
     @Override
     GetReferencePropertyResponse returnErrorCode() {
         return new GetReferencePropertyResponse("1",new PropertyInfoJson());
+    }
+
+    GetReferencePropertyResponse returnErrorCodeNotFound() {
+        return new GetReferencePropertyResponse("3",new PropertyInfoJson());
     }
 
 }

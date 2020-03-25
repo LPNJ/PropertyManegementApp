@@ -27,7 +27,6 @@ public class DeletePropertyTask extends ServerTask<DeletePropertyRequest, String
         } catch (JSONException e) {
             Log.e(TAG, "JSONException occurred.", e);
         }
-        Log.i("AAAAA",json.toString());
         return json;
     }
 

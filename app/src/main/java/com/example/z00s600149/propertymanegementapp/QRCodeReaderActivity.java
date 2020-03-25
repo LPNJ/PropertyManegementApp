@@ -49,13 +49,13 @@ public class QRCodeReaderActivity extends AppCompatActivity implements ZXingScan
         final String scanResult = result.getText();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.scan_result);
-        builder.setPositiveButton(R.string.back, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 scannerView.resumeCameraPreview(QRCodeReaderActivity.this);
             }
         });
-        builder.setNeutralButton(R.string.view_property_info, new DialogInterface.OnClickListener() {
+        builder.setNeutralButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int i) {
                 Intent intent = new Intent(QRCodeReaderActivity.this , PropertyReferenceActivity.class);
