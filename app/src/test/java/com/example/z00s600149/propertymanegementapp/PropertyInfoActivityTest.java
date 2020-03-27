@@ -59,6 +59,8 @@ public class PropertyInfoActivityTest {
         // ●execute(テストの実施)
         // 登録ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String nextActivityName = TestUtils.getNextActivityName(mPropertyInfoActivity);
@@ -124,6 +126,8 @@ public class PropertyInfoActivityTest {
         // ●execute(テストの実施)
         // 登録ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();
@@ -148,6 +152,8 @@ public class PropertyInfoActivityTest {
         // ●execute(テストの実施)
         // 登録ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();
@@ -172,6 +178,8 @@ public class PropertyInfoActivityTest {
         // ●execute(テストの実施)
         // 登録ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();
@@ -198,6 +206,8 @@ public class PropertyInfoActivityTest {
         // ●execute(テストの実施)
         // 登録ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();

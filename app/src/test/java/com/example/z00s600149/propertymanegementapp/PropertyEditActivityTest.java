@@ -47,30 +47,6 @@ public class PropertyEditActivityTest {
     }
 
     /**
-     * 資産情報変更完了でMenu画面に遷移するかの確認
-     */
-    @Test
-    public void editPropertyInfoSuccess() {
-        // ●setup(準備)
-        registerPropertyInfo("10001","新横浜", "ハンディプリンタ");
-        // PropertyEditTaskで必ず成功が返るように設定
-        mPropertyEditActivity.setApi(new WebApiMock());
-        Button button = (Button) mPropertyEditActivity.findViewById(R.id.edit_button_edit);
-
-        //ユーザー名を固定
-        LoginUserNameHolder name = LoginUserNameHolder.getInstance();
-        name.setName("komiyama");
-
-        // ●execute(テストの実施)
-        // 編集ボタンを押下
-        button.performClick();
-
-        // ●verify(検証)
-        String message = TestUtils.getLatestAlertDialogMessage();
-        assertThat(message, is(RuntimeEnvironment.application.getString(R.string.edit_success)));
-    }
-
-    /**
      * サーバーの通信に失敗し、失敗したダイアログを出すテスト
      */
     @Test
@@ -88,6 +64,8 @@ public class PropertyEditActivityTest {
         // ●execute(テストの実施)
         // 編集ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();
@@ -112,6 +90,8 @@ public class PropertyEditActivityTest {
         // ●execute(テストの実施)
         // 編集ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();
@@ -136,6 +116,8 @@ public class PropertyEditActivityTest {
         // ●execute(テストの実施)
         // 編集ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();
@@ -161,6 +143,8 @@ public class PropertyEditActivityTest {
         // ●execute(テストの実施)
         // 編集ボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();
@@ -181,6 +165,8 @@ public class PropertyEditActivityTest {
         // ●execute(テストの実施)
         // ログインボタンを押下
         button.performClick();
+        // ダイアログのOKボタンを押下
+        TestUtils.clickOKOnAlertDialog();
 
         // ●verify(検証)
         String message = TestUtils.getLatestAlertDialogMessage();
