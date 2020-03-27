@@ -11,20 +11,18 @@ public class GetPropertyJson {
     @JsonProperty("data")
     public String mProperty;
 
-    String mUserID;
-
     public GetPropertyJson() {
 
     }
 
     public GetPropertyJson(String userID, int controlNumber, String data) {
-        mUserID = userID;
+        mUserId = userID;
         mAssetId = controlNumber;
         mProperty = data;
     }
 
     public String getUserId() {
-        return mUserID;
+        return mUserId;
     }
 
     public int getAssetId() {
